@@ -11,6 +11,7 @@ import Home from './Components/Home';
 import { Provider } from 'react-redux';
 import main from './Store/main.js';
 import Todo from './Components/Todo.js';
+import CreateTeam from './Components/CreateTeam.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
         {path:'/Home',element:<Home/> , children:[
           { path: '/Home', element: <LandingPage /> },
           { path: '/Home/Todos', element: <Todo /> },
+          {path:'/Home/create-team',element: <CreateTeam/>}
         ]}
     ]
   },

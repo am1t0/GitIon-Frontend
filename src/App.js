@@ -51,7 +51,7 @@ function App() {
       }
     };
     fetchUserData();
-  }, [dispatch,localStorage]);
+  }, [dispatch]);
 
   // useEffect(() => {
   //   if (isLoggedIn) {

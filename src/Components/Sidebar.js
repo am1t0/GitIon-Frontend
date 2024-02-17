@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Sidebar() {
+export default function Sidebar({teams,handleTeamCreated}) {
   return (
     <div>
     {
@@ -33,7 +33,18 @@ export default function Sidebar() {
         </button>
         <div class="collapse" id="orders-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark rounded">Create Team</a></li>
+            <li><Link
+            to={{
+              pathname: '/Home/create-team',
+              state: { handleTeamCreated: handleTeamCreated }
+            }} 
+            
+            className="link-dark rounded">Create Team</Link></li>
+            {
+            teams.map((team)=>{
+               return  <li><a href="#" class="link-dark rounded">{team.name}</a></li>
+            })
+            }
           </ul>
         </div>
       </li>
