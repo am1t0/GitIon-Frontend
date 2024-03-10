@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Ok() {
+export default function TeamIntro() {
   return (
     <div>
-      <h1>Hello AmiiittJIII</h1>
+     <h1>Team Page</h1>
     </div>
   )
 }

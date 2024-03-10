@@ -8,8 +8,10 @@ import getAccessToken from '../Store/auth';
 const Home = () => {
 
      const [teams,setTeams] = useState([]);
-     const user = useSelector((state)=> state.user.user?.data)
 
+     const handleTeamCreated=(newTeam)=>{
+      setTeams((prevTeams)=> [...prevTeams,newTeam]);
+ }
      useEffect(()=>{
 
        const fetchTeams=async ()=>{
@@ -27,11 +29,11 @@ const Home = () => {
             console.error('Error:', response.statusText);
             return;
           }
-          
+          //console.log('response',response);
           const data = await response.json();
 
-          setTeams(data.data);
-          console.log('Teams ',teams);
+           
+          await setTeams(data.data);
   
 
       } catch (error) {
@@ -41,14 +43,12 @@ const Home = () => {
       fetchTeams();
 
    },[])
-
-   const handleTeamCreated=(newTeam)=>{
-        setTeams((prevTeams)=> [...prevTeams,newTeam]);
-   }
     
+  
+
   return (
-   <div style={{display:'flex'}}>
-    <Sidebar teams={teams} handleTeamCreated={handleTeamCreated}/>
+   <div style={{display:'flex'}}>    
+    <Sidebar teams={teams} handleTeamCreated={handleTeamCreated} />
     <Outlet/>
    </div>
   );

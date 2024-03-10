@@ -15,7 +15,7 @@ const UsersSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload;
-       console.log("This is user Detail in redux ",state.user);
+       //console.log("This is user Detail in redux ",state.user);
     },
   },
 });

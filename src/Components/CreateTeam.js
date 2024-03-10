@@ -1,9 +1,10 @@
 import React, { useRef } from 'react'
 import getAccessToken from '../Store/auth';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function CreateTeam(props) {
     const location = useLocation();
+    const navigate = useNavigate();
     const handleTeamCreated = location.state?.handleTeamCreated || (()=>{});
 
     const nameRef = useRef();
@@ -11,6 +12,7 @@ export default function CreateTeam(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        
         
         try {
           const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/create-team`, {
@@ -29,9 +31,10 @@ export default function CreateTeam(props) {
             return;
           }
           const newTeam = await response.json();
-          console.log("New Team created is ",newTeam)
-          handleTeamCreated(newTeam.data);
-    
+          //console.log("New Team created is ",newTeam.data)
+          await handleTeamCreated(newTeam.data);
+           
+          navigate(`/${newTeam.data.name}`, { state:{ team : newTeam.data}});  //navigates to
           // Clear form fields
           nameRef.current.value = '';
           descriptionRef.current.value = '';

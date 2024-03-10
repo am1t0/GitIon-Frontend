@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import getAccessToken from '../Store/auth';
 import { useDispatch } from 'react-redux';
 import { setLoggedIn,setUser } from './Features/UsersSlice';
+import '../Styles/Login.css'
 
 const  Login = () => {
   const dispatch = useDispatch();
@@ -50,31 +50,50 @@ const  Login = () => {
   };
 
   return (
-        <div>
-          <h2>Login</h2>
-          <form>
-            <label>
-              Username:
-              <input type="text" ref={usernameRef} />
-            </label>
-            <br />
-            <label>
-              email:
-              <input type="text" ref={emailRef} />
-            </label>
-            <br />
-            <label>
-              Password:
-              <input type="password" ref={passwordRef} />
-            </label>
-            <br />
-            <button type="button" onClick={handleLogin}>
-              Login
-            </button>
-          </form>
-          <p ref={errorRef} style={{ color: 'red' }}></p>
+    <div className="account">
+    <div className="content">
+      <div className='regLog'>
+      <h2>Login</h2>
+      </div>
+      <div className="form">
+        <div className="inputBox">
+          <input type="text" ref={usernameRef} required   placeholder='Username'/>
+    
         </div>
-      );
+        <div className="inputBox">
+          <input type="text" ref={emailRef} required  placeholder='email'/>
+        </div>
+        <div className="inputBox">
+          <input type="password" ref={passwordRef} required  placeholder='password'/>
+    
+        </div>
+        <div className="inputBox">
+          <button style={{width:'120px'}}className='btn btn-warning' type="button" onClick={handleLogin}>
+            Login
+          </button>
+        </div>
+
+      {/* <div className="logOpt">
+      <div className="option">
+        Google
+      </div>
+      <div className="option">
+        Github
+      </div>
+        </div> */}
+      </div>
+    </div>
+    <div className="other">
+
+       <div className="image">
+      <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/PracticeSetsLaunchBlogHeader.width-1200.format-webp.webp" alt="" />
+      </div>
+      <div className="para">
+       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam id libero incidunt repellendus aperiam voluptatum minima fugit harum beatae? Voluptatibus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque obcaecati ratione explicabo nobis dolorem maiores rem ipsa veritatis perspiciatis. Aliquid incidunt cum quaerat quae aspernatur aperiam voluptatem beatae excepturi? Earum rem consequatur eaque id harum quibusdam cum optio atque error?</p> 
+       </div>
+    </div>
+  </div>
+);
 
   }
 

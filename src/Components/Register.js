@@ -54,33 +54,48 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <form>
-        <label>
-          Username:
-          <input type="text"  ref={usernameRef} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" ref={emailRef} />
-        </label>
-        <br />
-        <label>
-          fullname:
-          <input type="fullname" ref={fullnameRef} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" ref={passwordRef}  />
-        </label>
-        <br />
-        <button type="button" onClick={handleRegister}>
+    <div className='account'>
+      <div className="content">
+        <div className="regLog">
+         <h2>Register</h2>
+        </div>
+      <div className='form'>
+        <div className='inputBox'>
+          <input type="text"  ref={usernameRef} placeholder='Username'/>
+        </div>
+  
+        <div className='inputBox'>
+          <input type="email" ref={emailRef} placeholder='email'/>
+        </div>
+        
+        <div className='inputBox'>
+          <input type="fullname" ref={fullnameRef} placeholder='fullname'/>
+        </div>
+        
+        <div className='inputBox'>
+          <input type="password" ref={passwordRef}  placeholder='password'/>
+        </div>
+        
+        <div className="inputBox">
+        <button 
+        style={{width:'120px'}}
+        className='btn btn-warning'
+        type="button" 
+        onClick={handleRegister}>
           Register
         </button>
-      </form>
+        </div>
+      </div>
+      </div>
+      <div className="other">
+
+<div className="image">
+<img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/PracticeSetsLaunchBlogHeader.width-1200.format-webp.webp" alt="" />
+</div>
+<div className="para">
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam id libero incidunt repellendus aperiam voluptatum minima fugit harum beatae? Voluptatibus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque obcaecati ratione explicabo nobis dolorem maiores rem ipsa veritatis perspiciatis. Aliquid incidunt cum quaerat quae aspernatur aperiam voluptatem beatae excepturi? Earum rem consequatur eaque id harum quibusdam cum optio atque error?</p> 
+</div>
+</div>
     </div>
   );
 };

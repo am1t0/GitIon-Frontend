@@ -7,6 +7,8 @@ import getAccessToken from './Store/auth';
 import { setLoggedIn, setUser } from './Components/Features/UsersSlice';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Home from './Components/Home';
+import Login from './Components/Login';
+import RegisterPage from './Components/Register';
 
 function App() {
   const navigate = useNavigate();
@@ -53,17 +55,11 @@ function App() {
     fetchUserData();
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigate('/Home');
-  //   }
-  // }, [isLoggedIn, navigate]);
-
   return (
    <>
-    <Header/>
+    <Header isLoggedIn={isLoggedIn}/>
      <Outlet/>
-    <Footer/>
+    {/* <Footer/> */}
    </>
   );
 }

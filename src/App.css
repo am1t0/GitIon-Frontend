@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+body{
+  font-family: "Baloo 2", sans-serif;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
