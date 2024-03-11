@@ -7,7 +7,7 @@ import getAccessToken from '../Store/auth';
 
 const Home = () => {
 
-     const [teams,setTeams] = useState([]);
+     const [teams,setTeams] = useState(null);
 
      const handleTeamCreated=(newTeam)=>{
       setTeams((prevTeams)=> [...prevTeams,newTeam]);
@@ -47,8 +47,11 @@ const Home = () => {
   
 
   return (
-   <div style={{display:'flex'}}>    
-    <Sidebar teams={teams} handleTeamCreated={handleTeamCreated} />
+   <div style={{display:'flex'}}>   
+     {
+      teams &&
+      <Sidebar teams={teams} handleTeamCreated={handleTeamCreated} />
+     }
     <Outlet/>
    </div>
   );

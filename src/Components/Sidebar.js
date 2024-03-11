@@ -12,9 +12,11 @@ export default function Sidebar({ teams, handleTeamCreated }) {
     <div className='sidebar'>
       {
         <div className="flex-shrink-0 p-3 bg-white" style={{ width: "280px" }}>
-          <a href="/" className="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-            <span className="fs-5 fw-semibold">Gittu</span>
-          </a>
+            <div className="logo">
+             <i class="fa-brands fa-github"></i>
+             <span style={{fontWeight:'bolder'}}>Gittion</span>
+            </div>
+  
           <ul className="list-unstyled ps-0">
             <li className="mb-1">
               <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="true">

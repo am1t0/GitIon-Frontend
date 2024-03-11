@@ -1,0 +1,11 @@
+.notodo{
+    /* border: 2px solid; */
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+}
+
+.notodo img{
+    margin:15px 0px 20px 0px;
+    height: 50%;
+    width: 50%;
+}

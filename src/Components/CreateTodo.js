@@ -1,7 +1,8 @@
 import React, { useRef } from 'react'
 import getAccessToken from '../Store/auth';
+import "../Styles/CreateTodo.css"
 
-export default function CreateTodo({setCreate,handleTodoCreated}) {
+export default function CreateTodo({handleTodoCreated}) {
 
     const titleRef = useRef();
     const descriptionRef = useRef();
@@ -27,7 +28,7 @@ export default function CreateTodo({setCreate,handleTodoCreated}) {
         
           handleTodoCreated(newTodo.data);
 
-          setCreate(false);
+          // setCreate(false);
     
           // Clear form fields
           titleRef.current.value = '';
@@ -38,21 +39,23 @@ export default function CreateTodo({setCreate,handleTodoCreated}) {
         }
       };
   return (
-    <div>
-    <h2>Create New Todo</h2>
+    <div className='todoCreate'>
+       <div className="todoImg">
+        <img src="https://static.wixstatic.com/media/4bd742_76770b3167eb5e76ad1027505afce56b.png/v1/fill/w_560,h_252,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4bd742_76770b3167eb5e76ad1027505afce56b.png" alt="" />
+       </div>
+      <div className='todoForm'>
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" ref={titleRef} required />
+      <div className='inputs'>
+        <input type="text" id="title" ref={titleRef} required  placeholder='title'/>
+      </div>
+      <div className='inputs'>
+        <textarea id="description" ref={descriptionRef} required placeholder='description'></textarea>
       </div>
       <div>
-        <label htmlFor="description">Description:</label>
-        <textarea id="description" ref={descriptionRef} required></textarea>
-      </div>
-      <div>
-        <button type="submit">Create Todo</button>
+        <button className='btn btn-warning' type="submit">Create</button>
       </div>
     </form>
+      </div>
   </div>
 
   )

@@ -29,7 +29,8 @@
 .detail-1 p{
     /* height: 70%; */
     text-align: center;
-    background-color: skyblue;
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(43,55,209,1) 0%, rgba(34,193,195,1) 100%, rgba(245,45,45,1) 100%);
     padding:40px;
     border-radius: 100px;
 }

@@ -39,7 +39,7 @@ const  Login = () => {
       localStorage.setItem('access_token', accessToken);
       dispatch(setLoggedIn(true));
       dispatch(setUser(user));
-      navigate('/Home')
+      navigate('/')
 
       
       // e.g., history.push('/dashboard');
