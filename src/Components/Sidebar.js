@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import getAccessToken from '../Store/auth';
 import '../Styles/Sidebar.css'
 
 export default function Sidebar({ teams, handleTeamCreated }) {
@@ -8,15 +9,36 @@ export default function Sidebar({ teams, handleTeamCreated }) {
     navigate(`/${team.name}`, { state: { team } })
   }
 
+  const handleLogOut  = async () => {
+      try {
+        console.log("logging out");
+         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/logout`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+        })
+        if (!response.ok) {
+          console.error('Error:', response.statusText);
+          return;
+        }
+        const data = await response.json();
+        console.log(data);
+        navigate('/login')
+      } catch (error) {
+        console.log('Error in logging out : ',error);
+      }
+  }
+
   return (
-    <div className='sidebar'>
-      {
-        <div className="flex-shrink-0 p-3 bg-white" style={{ width: "280px" }}>
+    <div >
+        <div className="flex-shrink-0 p-3 sidebar">
             <div className="logo">
              <i class="fa-brands fa-github"></i>
              <span style={{fontWeight:'bolder'}}>Gittion</span>
             </div>
-  
+            <li className="border-top my-3 list-unstyled"></li>
           <ul className="list-unstyled ps-0">
             <li className="mb-1">
               <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="true">
@@ -69,12 +91,12 @@ export default function Sidebar({ teams, handleTeamCreated }) {
             <li className="border-top my-3"></li>
             <li className="mb-1">
               <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-                Account
+                <h6>Account</h6>
               </button>
               <div className="collapse" id="account-collapse">
                 <ul className="forw">
+                  <li onClick={handleLogOut}><a href="#" className="link-dark rounded">logout</a></li>
                   <li><a href="#" className="link-dark rounded">New...</a></li>
-                  <li><a href="#" className="link-dark rounded">Profile</a></li>
                   <li><a href="#" className="link-dark rounded">Settings</a></li>
                   <li><a href="#" className="link-dark rounded">Sign out</a></li>
                 </ul>
@@ -82,7 +104,6 @@ export default function Sidebar({ teams, handleTeamCreated }) {
             </li>
           </ul>
         </div>
-      }
     </div>
   )
 }

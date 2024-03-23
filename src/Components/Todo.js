@@ -58,12 +58,13 @@ export default function Todo() {
     <div className='todoContainer'>
       <div className="content-2">
         <div className="head">
-          <h3>Todo List</h3>
+          <h2>Todo</h2>
         </div>
   
         {todos.length > 0 ? (
           <>
               <TodoCreateBtn  create={create} setCreate={setCreate} handleTodoCreated={handleTodoCreated} handleCreate={handleCreate}/>
+              <h4>Your Todos</h4>
             <TodoList todoList={todos} handleTodoDelete={handleTodoDelete} />
           </>
         ) : (

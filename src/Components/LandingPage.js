@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import '../Styles/LandingPage.css'
+import  team from '../Images/LandingTeam.png'
+import personal from '../Images/personal.png'
 
  
  const LandingPage = () => {
@@ -8,7 +10,7 @@ import '../Styles/LandingPage.css'
     <div className='landingPage'>
        <div className="content-1">
          <div className="image-1">
-            <img src="https://img.freepik.com/free-vector/business-team-planning-working-process-flat-vector-illustration-cartoon-colleagues-talking-sharing-thoughts-smiling-company-office-teamwork-workflow-concept_74855-9813.jpg?size=626&ext=jpg&ga=GA1.1.1395880969.1709942400&semt=ais" alt="" />
+            <img src={team} alt="" />
          </div>
          <div className="detail-1">
           <h4>Collaborate</h4>
@@ -22,7 +24,7 @@ import '../Styles/LandingPage.css'
             </p>
           </div>
           <div className="image-1">
-            <img src="https://img.freepik.com/premium-vector/young-business-woman-cartoon-character-with-pen-writing-notes-todo-list-notebook-making-schedule_341509-5691.jpg" alt="" />
+            <img src={personal} alt="" />
           </div>
        </div>
     </div>

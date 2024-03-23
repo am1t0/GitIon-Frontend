@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import getAccessToken from '../Store/auth';
 import "../Styles/CreateTodo.css"
 
-export default function CreateTodo({handleTodoCreated}) {
+export default function CreateTodo({handleTodoCreated,handleCreate}) {
 
     const titleRef = useRef();
     const descriptionRef = useRef();
@@ -28,7 +28,7 @@ export default function CreateTodo({handleTodoCreated}) {
         
           handleTodoCreated(newTodo.data);
 
-          // setCreate(false);
+          handleCreate();
     
           // Clear form fields
           titleRef.current.value = '';
@@ -40,11 +40,11 @@ export default function CreateTodo({handleTodoCreated}) {
       };
   return (
     <div className='todoCreate'>
-       <div className="todoImg">
-        <img src="https://static.wixstatic.com/media/4bd742_76770b3167eb5e76ad1027505afce56b.png/v1/fill/w_560,h_252,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4bd742_76770b3167eb5e76ad1027505afce56b.png" alt="" />
-       </div>
       <div className='todoForm'>
     <form onSubmit={handleSubmit}>
+       <div className="inputs">
+         <h5>Create your todos</h5>
+       </div>
       <div className='inputs'>
         <input type="text" id="title" ref={titleRef} required  placeholder='title'/>
       </div>
@@ -52,7 +52,8 @@ export default function CreateTodo({handleTodoCreated}) {
         <textarea id="description" ref={descriptionRef} required placeholder='description'></textarea>
       </div>
       <div>
-        <button className='btn btn-warning' type="submit">Create</button>
+        <button className='btn btn-success mx-2' type="submit">Create</button>
+        <button className='btn btn-danger mx-2' onClick={handleCreate}>Cancel</button>
       </div>
     </form>
       </div>

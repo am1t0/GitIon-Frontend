@@ -54,12 +54,9 @@ export default function EachTodo({ todo, handleTodoDelete }) {
           <i onClick={handleDelete} className="fa-solid fa-trash"></i>
         </div>
       </div>
-      {
-        arrow &&
-        <div className="description">
+        <div className="description" style={{display: arrow ? "block": "none"}}>
           <p>{todo.description}</p>
         </div>
-       }
     </div>
     
   )

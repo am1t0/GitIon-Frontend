@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import getAccessToken from '../Store/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
+import "../Styles/CreateTeam.css"
 
 export default function CreateTeam(props) {
     const location = useLocation();
@@ -44,23 +45,35 @@ export default function CreateTeam(props) {
         }
       };
   return (
-    <>
-       <div>
-    <h2>Create New Team</h2>
+    <div className='content-3'>
+       <div className='detail-3'>
+      <div className="heading">
+    <h2>Create Team</h2>
+          </div>  
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" ref={nameRef} required />
+      <div  className="input-group">
+        <input type="text" ref={nameRef} required placeholder='name'/>
+      </div>
+      <div className="input-group">
+        <textarea  ref={descriptionRef} required placeholder='description ' style={{height:'80px'}} ></textarea>
       </div>
       <div>
-        <label htmlFor="description">Description:</label>
-        <textarea id="description" ref={descriptionRef} required></textarea>
-      </div>
-      <div>
-        <button type="submit">Create Team</button>
+        <button 
+        type="submit"
+        className='btn btn-warning my-3'
+        >Create</button>
       </div>
     </form>
   </div>
-    </>
+  <div className="info">
+  <div className="teamImg">
+    <img src="https://as2.ftcdn.net/v2/jpg/02/90/47/09/1000_F_290470972_9rC0a3Cy1CAPCzz7ziTEIIkxbauYd9Oc.jpg" alt="" />
+  </div>
+      <h5>Teamwork</h5>
+   <div className="para">
+     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis, est blanditiis. Voluptate ducimus impedit nisi non delectus ea, dolorum possimus quibusdam quae, consequatur, accusantium distinctio quas vero nobis fugit veniam ullam pariatur enim inventore quia molestias voluptatem! Doloribus cum libero error vitae facilis.</p>
+   </div>
+   </div>
+    </div>
   )
 }

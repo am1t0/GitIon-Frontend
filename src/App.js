@@ -59,7 +59,7 @@ function App() {
    <>
     <Header isLoggedIn={isLoggedIn}/>
      <Outlet/>
-    {/* <Footer/> */}
+    <Footer/>
    </>
   );
 }

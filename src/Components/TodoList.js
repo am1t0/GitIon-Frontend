@@ -6,7 +6,7 @@ export default function TodoList({todoList,handleTodoDelete}) {
   return (
     <div className='box'>
        <div className="todos">
-       {
+       { 
         todoList.map((todo)=>{
             return <EachTodo todo={todo} handleTodoDelete={handleTodoDelete}/>
         })
