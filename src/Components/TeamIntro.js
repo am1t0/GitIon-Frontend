@@ -2,11 +2,15 @@ import React, { useState,useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import "../Styles/TeamIntro.css"
 import getAccessToken from '../Store/auth';
+import { useSelector } from 'react-redux';
 
 export default function TeamIntro() {
   // getting the team object that passed while navigating this route
   const location = useLocation();
   const team = location.state?.team;
+
+  // getting the user from store
+  const user = useSelector((state)=>state.user.user);
 
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
@@ -47,6 +51,8 @@ export default function TeamIntro() {
     try{
         let username = usernameRef.current.value;
 
+        if(!username) return  alert("Username can't be empty");
+
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/add-members`,{
           method: 'POST',
           body:JSON.stringify({
@@ -65,7 +71,7 @@ export default function TeamIntro() {
         }
         const responseJson = await response.json();
         const addedMember = await responseJson.data;
-        setMember([addedMember,...member]);
+        setMember([...member,addedMember]);
 
         usernameRef.current.value ='';
         
@@ -76,7 +82,6 @@ export default function TeamIntro() {
 
   const handleRemoveMember= async (memberId,memberName) =>{
        try {
-        console.log('member delete clicked')
          const response  = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/remove-members`,{
           method: 'POST',
           body:JSON.stringify({
@@ -119,12 +124,24 @@ export default function TeamIntro() {
             <div id="search-add">
               <div >
               <input type="search" placeholder='Search team members' required/>
+              <div className="logo">
               <i class="fa-solid fa-magnifying-glass"></i>
               </div>
+              </div>
+              { (user?._id===team.owner) &&
               <div>
               <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
+              <div className="logo">
                <i onClick={handleAddMember} className="fa-solid fa-plus"></i>
               </div>
+              </div>
+              }
+              {/* <div>
+              <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
+              <div className="logo">
+               <i onClick={handleAddMember} className="fa-solid fa-plus"></i>
+              </div>
+              </div> */}
             </div>
             <div id="teamMemb">
               {member.length === 0 && (
@@ -133,16 +150,17 @@ export default function TeamIntro() {
               <div id="members">
               {/* <h5 className='com'>Members</h5> */}
               <ul>
-                <li><h5>{member[0].fullname}</h5> <h5>{member[0].email}</h5> <button className='btn btn-success'>admin</button></li>
+                <li><h5>{member[0]?.fullname}</h5><h5>{member[0]?.email}</h5> <button className='btn btn-success'>admin</button></li>
                  
                 {
                   member.map((member)=>(
                     <>
                     <div id="eachMemb">
-                      {
-                    <li><p>{member.fullname}</p> <p>{member.email}</p></li>
-                      }
-                    <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>
+                        
+                       {(member._id!==team.owner) && <li><p>{member.fullname}</p> <p>{member.email}</p></li>}
+                
+                     {(member._id!==team.owner && user?._id===team.owner) && <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
+                       
                     </div>
                     </>
                   ))
