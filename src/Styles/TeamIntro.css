@@ -3,23 +3,29 @@
     display: flex;
     width: 80%;
     justify-content: space-between;
+    color: white;
 }
 
 #intro-memb{
-    border: 2px solid;
+    /* border: 2px solid; */
+    border-radius: 9px;
     margin: 15px 0px 0px 15px;
-    padding: 4px 0px 0px 4px;
+    padding: 12px 4px 0px 4px;
     width: 59%;
+    background: rgb(34,193,195);
+background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, rgba(222,236,54,1) 0%, rgba(23,4,44,1) 0%);
 }
 
 #intro{
     /* border: 2px solid  green; */
     display: flex;
     flex-direction: column;
+    /* background-color: white; */
 }
 
 #intro h3{
     text-align: center;
+    color: yellow;
 }
 
 #desc{
@@ -31,31 +37,33 @@
      /* border: 2px solid yellow; */
      padding: 3px;
      border-radius: 7px;
-     color: black;
+     text-align: center;
 }
 
 #memb{
-    border: 2px solid;
-    padding: 10px 20px 0px 20px;
+    /* border: 2px solid; */
+    padding: 10px 50px 0px 50px;
+   
 }
 #search-add{
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 38px;
     padding: 6px 28px;
+    margin-bottom: 9px;
 }
 #search-add div{
     /* border: 2px solid red; */
     display: flex;
-    width: 46%;
-    padding: 0px 9px 0px 0px;
+    /* width: 46%; */
     border-radius: 36px;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0px 0px 8px rgba(93, 93, 93, 0.4);
+    background-color: white;
 }
 #search-add div input{
     /* border: 2px solid red; */
@@ -64,9 +72,15 @@
     border-radius: 21px;
     outline: none;
     border: none;
-   
 }
-
+.logo{
+    padding: 0px 10px 0px 10px;
+    height: 40px;
+    margin: 0px;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    background: silver !important;
+}
 .add{
     cursor: pointer;
 }
@@ -83,27 +97,39 @@
     color: black;
 }
 
+#members{
+    /* border: 1px solid; */
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px white;
+    padding: 1px 0px 1px 0px;
+    margin-top: 30px;
+}
 #members ul{
-    border: 2px solid;
+    /* border: 2px solid; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
-    padding: 8px 0px 10px 50px;
-    height: 20rem;
+    margin-top: 20px;
+    padding: 4px 0px 4px 0px;
+    max-height: 20rem;
     overflow-y: scroll;
-    gap: 12px;
+    gap: 24px;
+    /* box-shadow: 0px 0px 3px ; */
 }
 #members ul li{
     list-style: none;
     /* border: 2px solid red; */
-    box-shadow: 0px 0px 8px rgba(93, 93, 93, 0.4);
-    margin-top: 10px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 8px rgba(145, 144, 144, 0.4);
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 82%;
     padding: 5px 4px 5px 4px;
+    height: 43px;
+    color: black;
+    background-color: white;
 }
 #eachMemb{
     width: 81%;
@@ -115,4 +141,10 @@
     /* border: 2px solid ; */
     margin: 0px !important;
     width: 45%;
+}
+
+#admin h6{
+   margin: 0px;
+   padding: 0px;
+   color: black;
 }

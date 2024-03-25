@@ -119,6 +119,7 @@ export default function TeamIntro() {
             <div id="desc">
             <h6>{team.description}</h6>
             </div>
+             <div style={{width:'100%',height:'1px',background:'rgba(145, 144, 144, 0.4)'}}></div>
           </div>
           <div id="memb">
             <div id="search-add">
@@ -136,12 +137,6 @@ export default function TeamIntro() {
               </div>
               </div>
               }
-              {/* <div>
-              <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
-              <div className="logo">
-               <i onClick={handleAddMember} className="fa-solid fa-plus"></i>
-              </div>
-              </div> */}
             </div>
             <div id="teamMemb">
               {member.length === 0 && (
@@ -150,14 +145,14 @@ export default function TeamIntro() {
               <div id="members">
               {/* <h5 className='com'>Members</h5> */}
               <ul>
-                <li><h5>{member[0]?.fullname}</h5><h5>{member[0]?.email}</h5> <button className='btn btn-success'>admin</button></li>
-                 
                 {
                   member.map((member)=>(
                     <>
                     <div id="eachMemb">
                         
-                       {(member._id!==team.owner) && <li><p>{member.fullname}</p> <p>{member.email}</p></li>}
+                       {(member._id!==team.owner) 
+                       ? <li><p>{member.fullname}</p> <p>{member.email}</p></li>
+                       : <li id='admin'><h6>{member.fullname}</h6><h6>{member.email}</h6> <button className='btn btn-success'>admin</button></li> }
                 
                      {(member._id!==team.owner && user?._id===team.owner) && <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
                        
