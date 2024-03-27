@@ -1,17 +1,17 @@
 .team-intro{
-    border: 2px solid yellow;
+    /* border: 2px solid yellow; */
     display: flex;
     width: 80%;
-    justify-content: space-between;
+    justify-content: center;
+    background-color: black;
     color: white;
 }
 
 #intro-memb{
     /* border: 2px solid; */
     border-radius: 9px;
-    margin: 15px 0px 0px 15px;
-    padding: 12px 4px 0px 4px;
-    width: 59%;
+    margin: 5px 0px 0px 5px;
+    width: 71%;
     background: rgb(34,193,195);
 background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, rgba(222,236,54,1) 0%, rgba(23,4,44,1) 0%);
 }
@@ -20,12 +20,14 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     /* border: 2px solid  green; */
     display: flex;
     flex-direction: column;
-    /* background-color: white; */
+    background-color: #333333;
+    border-radius: 5px;
 }
 
 #intro h3{
     text-align: center;
-    color: yellow;
+    color: #ffc107;
+    margin-top: 10px;
 }
 
 #desc{
@@ -42,7 +44,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
 
 #memb{
     /* border: 2px solid; */
-    padding: 10px 50px 0px 50px;
+    padding: 10px 68px 0px 68px;
    
 }
 #search-add{
@@ -51,9 +53,10 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 38px;
+    gap: 70px;
     padding: 6px 28px;
-    margin-bottom: 9px;
+    position: relative;
+    top: 8px;
 }
 #search-add div{
     /* border: 2px solid red; */
@@ -79,7 +82,11 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     margin: 0px;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
-    background: silver !important;
+    background: rgb(143, 143, 143) !important;
+    cursor: pointer;
+}
+.logo:hover{
+   background-color: silver !important;
 }
 .add{
     cursor: pointer;
@@ -88,6 +95,10 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
 #team-Imp{
     border: 2px solid;
     width: 45%;
+    background: #ffc107;
+    margin-top: 13px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 
 .com{
@@ -102,7 +113,10 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     border-radius: 10px;
     box-shadow: 0px 0px 2px white;
     padding: 1px 0px 1px 0px;
-    margin-top: 30px;
+    margin-top: 19px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 #members ul{
     /* border: 2px solid; */
@@ -115,6 +129,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     max-height: 20rem;
     overflow-y: scroll;
     gap: 24px;
+    width: 91%;
     /* box-shadow: 0px 0px 3px ; */
 }
 #members ul li{
@@ -142,9 +157,24 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     margin: 0px !important;
     width: 45%;
 }
-
+#admin{
+    height: 50px;
+    margin: 17px 30px;
+    background: #ffc107;
+    border-radius: 8px;
+    width: 71%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 #admin h6{
    margin: 0px;
    padding: 0px;
    color: black;
+}
+
+/* Animation of the arrow */
+.arrow{
+    /* transform:  rotate(-90deg); */
+    transition: all  .3s ease-in-out;
 }

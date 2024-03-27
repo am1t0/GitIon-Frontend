@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import "../Styles/TeamIntro.css"
 import getAccessToken from '../Store/auth';
 import { useSelector } from 'react-redux';
+import membAdd from "../Sound/membAdd.wav"
 
 export default function TeamIntro() {
   // getting the team object that passed while navigating this route
@@ -15,7 +16,29 @@ export default function TeamIntro() {
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
 
+  const [arrow, setArrow] = useState(null);
+
+  const [admin, setAdmin] = useState(null);
+
   const usernameRef = useRef();
+  const audioRef = useRef();
+
+  useEffect(() => {
+    const getAdmin = () => {
+      let adminMember = null;
+
+      member.forEach(member => {
+        if (team?.owner === member._id) {
+          adminMember = member;
+        }
+      });
+
+      return adminMember;
+    };
+
+    // Execute the getAdmin function and set the result to the admin state
+    setAdmin(getAdmin());
+  }, [member, team?.owner]); 
 
   useEffect(() => {
     // Fetch member details when the component mounts
@@ -71,7 +94,10 @@ export default function TeamIntro() {
         }
         const responseJson = await response.json();
         const addedMember = await responseJson.data;
-        setMember([...member,addedMember]);
+        setMember([addedMember,...member]);
+        
+        // playing add sound on member successfully addition
+        audioRef.current.play();
 
         usernameRef.current.value ='';
         
@@ -115,9 +141,9 @@ export default function TeamIntro() {
     <div  className="team-intro">
         <div id="intro-memb">
           <div id="intro">
-            <h3 >Meet the team {team.name}!</h3>
+            <h3 >Meet the team {team?.name}!</h3>
             <div id="desc">
-            <h6>{team.description}</h6>
+            <h6>{team?.description}</h6>
             </div>
              <div style={{width:'100%',height:'1px',background:'rgba(145, 144, 144, 0.4)'}}></div>
           </div>
@@ -129,11 +155,12 @@ export default function TeamIntro() {
               <i class="fa-solid fa-magnifying-glass"></i>
               </div>
               </div>
-              { (user?._id===team.owner) &&
+              { (user?._id===team?.owner) &&
               <div>
               <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
-              <div className="logo">
-               <i onClick={handleAddMember} className="fa-solid fa-plus"></i>
+              <div className="logo" onClick={handleAddMember} >
+               <i className="fa-solid fa-plus"></i>
+               <audio ref={audioRef} src={membAdd}/>
               </div>
               </div>
               }
@@ -143,20 +170,25 @@ export default function TeamIntro() {
           <p>No team members found.</p>
         )}
               <div id="members">
-              {/* <h5 className='com'>Members</h5> */}
+              <li id='admin'><h6>{admin?.fullname}</h6> <h6>{admin?.email}</h6> <button className='btn btn-success'>admin</button></li>
               <ul>
                 {
                   member.map((member)=>(
                     <>
                     <div id="eachMemb">
-                        
-                       {(member._id!==team.owner) 
-                       ? <li><p>{member.fullname}</p> <p>{member.email}</p></li>
-                       : <li id='admin'><h6>{member.fullname}</h6><h6>{member.email}</h6> <button className='btn btn-success'>admin</button></li> }
+
+                     <li>
+                     <div className="arrow" onClick={() => {setArrow(arrow===member.email?null:member.email) }}  style={{ rotate: (arrow===member.email) ? '0deg' : '-90deg'}} ><svg viewBox="-122.9 121.1 105.9 61.9" class="icon-arrow-down-mini" width="10" height="10"><path d="M-63.2,180.3l43.5-43.5c1.7-1.7,2.7-4,2.7-6.5s-1-4.8-2.7-6.5c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.7l-37.2,37.2l-37.2-37.2
+ c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.6c-1.9,1.8-2.8,4.2-2.8,6.6c0,2.3,0.9,4.6,2.6,6.5l0,0c11.4,11.5,41,41.2,43,43.3l0.2,0.2
+ C-73.5,183.9-66.8,183.9-63.2,180.3z"></path></svg></div>
+                      <p>{member.fullname}</p> 
+                      <p>{member.email}</p>
+                      </li>
                 
-                     {(member._id!==team.owner && user?._id===team.owner) && <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
+                     {(user?._id===team?.owner) && <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
                        
                     </div>
+                    {arrow===member.email && <h6>ISKO SHI DETAIL KE SATH SHOW KRNA HAI</h6>}
                     </>
                   ))
                   }
@@ -165,7 +197,7 @@ export default function TeamIntro() {
             </div>
           </div>
         </div>
-        <div id="team-Imp">
+        {/* <div id="team-Imp">
           <div id="obj">
             <div id="objImg">
               nothing now!
@@ -179,7 +211,7 @@ export default function TeamIntro() {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
     </div>
   )
 }

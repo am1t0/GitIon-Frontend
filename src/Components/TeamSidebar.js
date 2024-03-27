@@ -21,27 +21,27 @@ export default function TeamSidebar({team,projects,handleDeleteTeam}) {
      {/* DELETING THE TEAM  */}
      {/* <h6 onClick={()=>{handleDeleteTeam(team._id)}} style={{color:'red',cursor:'pointer'}}>X</h6> */}
       </div>
-      <li class="mb-1 clr">
+      <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          <h6>Projects</h6>
+          <h6 className='clr'>Projects</h6>
         </button>
         <div class="collapse" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li class="mb-1">
         <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#order-collapse" aria-expanded="false">
-          <li>Your Projects</li>
+          <li className='clr'>Your Projects</li>
         </button>
         <div className="collapse" id="order-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
         {projects.map((project) => (
-           <li key={project.id} onClick={()=>{handleProjectClick(project)}}>  
+           <li className='clr' key={project.id} onClick={()=>{handleProjectClick(project)}}>  
             {project.name}
            </li>
             ))}
         </ul>
         </div>
             </li>
-            <li id='createProject' onClick={()=>{handleOnProjectCreate(team.name)}}>Create Project</li>
+            <li className='clr' id='createProject' onClick={()=>{handleOnProjectCreate(team.name)}}>Create Project</li>
           </ul>
         </div>
       </li>
@@ -73,7 +73,7 @@ export default function TeamSidebar({team,projects,handleDeleteTeam}) {
       </li> */}
       <li class="border-top my-3"></li>
       <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+        <button className="clr btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
           Account
         </button>
         <div class="collapse" id="account-collapse">

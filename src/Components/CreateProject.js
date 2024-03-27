@@ -5,6 +5,7 @@ import getAccessToken from '../Store/auth';
 import { useRef } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { setRepo } from './Features/RepoSlice';
+import '../Styles/CreateProject.css'
 
 export default function CreateProject() {
   const nameRef = useRef(null);
@@ -24,7 +25,7 @@ export default function CreateProject() {
 
     const dispatch = useDispatch();
 
-    const [show,setShow] = useState('projectForm');
+    const [show,setShow] = useState('repoForm');
 
     useEffect(() => {
       const fetchLeaderToken = async () => {
@@ -89,7 +90,6 @@ export default function CreateProject() {
       };
 
 const handleCreateRepository = async () => {
-   // console.log(RnameRef.current.value,RdescriptionRef.current.value,RprivacyRef.current.value === 'private');
         try {
           const response = await fetch('https://api.github.com/user/repos', {
             method: 'POST',
@@ -106,7 +106,7 @@ const handleCreateRepository = async () => {
         
           const data = await response.json();
           console.log('Data of repo send is :',data.owner);
-          //dispatch(setRepo(data))
+
 
           if (response.ok) {
            const response =  await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/repoDetail`, {
@@ -139,65 +139,57 @@ const handleCreateRepository = async () => {
         }
       };
   return (
-    <div className='container'>
-   { show==='projectForm' &&   <form>
-    <label>
-      Project Name:
-      <input type="text" ref={nameRef} />
-    </label>
-    <br />
+    <div className="outerBox">
+    <div className='project-n-repo'>
+      
+   { show==='projectForm' &&   <form className='projectForm'>
+       <div id='titleDiv'>
+        <h5>Create Project</h5>
+       </div>
+        
+      <div className="inputs">
+        <label htmlFor="name"><p>Name of Project*</p></label>
+         <input type="text" ref={nameRef} />
+      </div>
+       <div className="inputs">
+       <label htmlFor="description"><p>Description*</p></label>
+         <textarea type="text" ref={descriptionRef}/>
+       </div>
 
-    <label>
-      Description:
-      <input type="text" ref={descriptionRef} />
-    </label>
-    <br />
-
-    <label>
-      Start Date:
-      <input type="datetime-local" ref={startDateRef} />
-    </label>
-    <br />
-
-    <label>
-      End Date:
-      <input type="datetime-local" ref={endDateRef} />
-    </label>
-    <br />
-
-    <button onClick={handleProjectCreate}>Create</button>
+      <div className="inputs">
+      <label htmlFor="start-date"><p>project start date</p></label>
+         <input type="datetime-local" ref={startDateRef} placeholder='start date'/>
+      </div>
+      <div className="inputs">
+      <label htmlFor="end-date"><p>Project end date</p></label>
+         <input type="datetime-local" ref={endDateRef} placeholder='end date'/>
+      </div>
+ 
+    <div className="projectBtn">
+        <button className='btn btn-success' onClick={handleProjectCreate}>Create</button>
+    </div>
   </form>}
 
 
    { show==='repoForm' && <div>
       <h2>Create Repository</h2>
       <form>
-        <label htmlFor="repoName">Repository Name:</label>
-        <input
-          type="text"
-          id="repoName"
-          ref={RnameRef}
-          required
-        /><br />
+        <div className="inputs">
+           <input type="text" id="repoName" ref={RnameRef} required /> 
+        </div>
 
-        <label htmlFor="repoDescription">Repository Description:</label>
-        <textarea
-          id="repoDescription"
-          ref={RdescriptionRef}
-        ></textarea><br />
+        <div className="inputs">
+           <textarea id="repoDescription" ref={RdescriptionRef} ></textarea>
+        </div>
 
-        <label htmlFor="repoPrivacy">Repository Privacy:</label>
-        <select
-          id="repoPrivacy"
-          ref={RprivacyRef}
-        >
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select><br />
+        <div className="inputs">
+           <select id="repoPrivacy" ref={RprivacyRef}>
+             <option value="public">Public</option>
+             <option value="private">Private</option>
+           </select>
+        </div>
 
-        <button type="button" onClick={handleCreateRepository}
-          style={{background:'yellow', padding:'3px',margin:'10px',borderRadius:'10px'}}
-        >
+        <button type="button" className='btn btn-success' onClick={handleCreateRepository}>
           Create Repository
         </button>
 
@@ -205,6 +197,9 @@ const handleCreateRepository = async () => {
       </form>
     </div>}
     </div>
-   
+    <div className="other">
+       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius nihil maiores ut nam laboriosam aut commodi sunt, sed veniam animi quos distinctio. Minima suscipit nihil, perspiciatis cumque esse odit adipisci fuga obcaecati nisi eius, recusandae, consectetur officia optio beatae porro necessitatibus iste. Quia magnam, aliquid quaerat in inventore laudantium expedita perferendis alias ut veritatis aperiam voluptas rem adipisci optio. Cumque accusantium ipsum voluptates minima explicabo, necessitatibus eius quae ab quo quaerat, nesciunt ratione sed porro iusto repellendus, consectetur inventore id impedit esse tenetur. Unde repellat dolores corrupti quaerat! Natus vel fugiat debitis id officia in omnis et explicabo qui eos?</p>
+    </div>
+    </div>
   )
 }

@@ -11,8 +11,11 @@ const RegisterPage = () => {
   const  emailRef = useRef();
   const  fullnameRef = useRef();
   const  passwordRef = useRef();
+  const skillsRef = useRef();
+  const gitTokenRef = useRef();
   
   const handleRegister = async () => {
+  
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/register`, {
         method: 'POST',
@@ -24,6 +27,8 @@ const RegisterPage = () => {
           email: emailRef.current.value,
           fullname: fullnameRef.current.value,
           password: passwordRef.current.value,
+          skills: skillsRef.current.value.split(','),
+          gitToken: gitTokenRef.current.value,
         }),
       });
 
@@ -69,13 +74,23 @@ const RegisterPage = () => {
         </div>
         
         <div className='inputBox'>
-          <input type="fullname" ref={fullnameRef} placeholder='fullname'/>
+          <input type="text" ref={skillsRef}  placeholder='skills with spaces'/>
         </div>
+
+        <div className='inputBox'>
+          <input type="text" ref={fullnameRef} placeholder='fullname'/>
+        </div>
+
+        <div className='inputBox'>
+          <input type="text" ref={gitTokenRef} placeholder='gitToken'/>
+        </div>
+        
         
         <div className='inputBox'>
           <input type="password" ref={passwordRef}  placeholder='password'/>
         </div>
         
+
         <div className="inputBox">
         <button 
         style={{width:'120px'}}

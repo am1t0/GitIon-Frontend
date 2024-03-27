@@ -2,6 +2,8 @@
     height: 100vh;
     width: 280px;
     box-shadow: 0px 0px 7px rgba(93, 93, 93, 0.4);
+    background-color: #3b3b3b !important;
+    color: white;
 }
 
 #createProject{
@@ -9,6 +11,6 @@
     margin-left: 10px;
 }
 
-.clr h6{
-    color: black;
+.clr{
+   color: white;
 }
