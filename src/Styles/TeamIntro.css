@@ -84,6 +84,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
     border-bottom-left-radius: 0 !important;
     background: rgb(143, 143, 143) !important;
     cursor: pointer;
+    color: white;
 }
 .logo:hover{
    background-color: silver !important;

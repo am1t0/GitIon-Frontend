@@ -6,12 +6,13 @@ const CommitHistory = ({ owner, repo, branch }) => {
   useEffect(() => {
     const accessToken = process.env.REACT_APP_ACCESS_TOKEN ;
     const fetchCommits = async () => {
+      console.log('aayaa commits me ')
       try {
         const response = await fetch(
           `https://api.github.com/repos/${owner}/${repo}/commits?sha=${branch}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("gitToken")}`,
+              Authorization: `Bearer ${localStorage.getItem("leaderToken")}`,
             },
           }
         );
@@ -41,7 +42,7 @@ const CommitHistory = ({ owner, repo, branch }) => {
   };
 
   return (
-    <div style={{background:'#c9c9c9',borderRadius:'10px', padding:'10px'}}>
+    <div style={{background:'white',borderRadius:'10px', padding:'10px'}}>
       <h2>Commit History for {branch} branch</h2>
       <ul>
         {commits.map((commit) => (

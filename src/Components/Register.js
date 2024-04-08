@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setLoggedIn, setUser } from './Features/UsersSlice';
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -43,9 +42,6 @@ const RegisterPage = () => {
 
          
       localStorage.setItem('access_token', accessToken);
-
-       dispatch(setLoggedIn(true));
-        dispatch(setUser(user));
 
          // Wait for Redux state to update before navigating
         await new Promise((resolve) => setTimeout(resolve, 0));

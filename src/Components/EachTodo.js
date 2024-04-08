@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import getAccessToken from '../Store/auth';
+import getAccessToken from '../Utils/auth';
 import "../Styles/EachTodo.css"
 
 export default function EachTodo({ todo, handleTodoDelete }) {

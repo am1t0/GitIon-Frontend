@@ -8,18 +8,18 @@ import LandingPage from './Components/LandingPage';
 import RegisterPage from './Components/Register';
 import Login from './Components/Login';
 import Home from './Components/Home';
-import { Provider } from 'react-redux';
-import main from './Store/main.js';
 import Todo from './Components/Todo.js';
 import CreateTeam from './Components/CreateTeam.js';
 import Team from './Components/Team.js';
 import TeamIntro from './Components/TeamIntro.js';
+import {Provider} from 'react-redux'
 import CreateProject from './Components/CreateProject.js';
 import ProjectIntro from './Components/ProjectIntro.js';
 import Project from './Components/Project.js';
 import ProjectTasks from './Components/ProjectTasks.js';
 import ProjectDocs from './Components/ProjectDocs.js';
 import FolderShow from './Components/FolderShow.js';
+import store from './Data_Store/Store/Store.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
  
 ])
 root.render(
-    <Provider store={main}>
+    <Provider store={store}>
       <RouterProvider router={router}>
     <App />
     </RouterProvider>

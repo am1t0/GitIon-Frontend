@@ -8,19 +8,30 @@ import CommitHistory from '../../../frontend2/src/Components/CommitHistory';
 import InitialPushinComands from '../../../frontend2/src/Components/InitialPushinComands';
 import Branches from '../../../frontend2/src/Components/Branches';
 import PullRequestForm from './PullRequestForm';
+import getAccessToken from '../Utils/auth.js';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import '../Styles/RepoFileFolder.css';
 
 
 export default function FilesAndFolders({owner,repoName,path,repo}) {
-
   const [openFile,setOpenFile] = useState(null);
   const [openFolder,setFolder] = useState(null);
-  const [commits,setCommits] = useState(null);
+  const [commits,setCommits] = useState(false);
   const [branches,setBranches] = useState([]);
   const [link,setLink] = useState(false);
+
+  // LINK OF REPO 
+  const repoLink = `https://github.com/${owner}/${repoName}.git`;
+  const [copyStatus,setCopyStatus] = useState(false);
 
   const [contents, setContents] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState('main');
 
+   // COPY TEXT FUNCTION 
+   const onCopyText = () =>{
+      setCopyStatus(true);
+      setTimeout(() => setCopyStatus(false), 2000); // Reset status after 2 seconds
+    }
   // fetching reposatories data 
   useEffect(() => {
    
@@ -38,16 +49,16 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
 
         const response = await fetch(url, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("gitToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
           },
         });
-        //console.log('url is ',url);
+
         if (!response.ok) {
           throw new Error('Failed to fetch repository contents');
         }
 
         const data = await response.json();
-        //console.log(data);
+  
         setContents(data);
       } catch (error) {
         console.error('Error fetching repository contents:', error.message);
@@ -66,7 +77,7 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
   
         const response = await fetch(url, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("gitToken")}`,
+            Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
           },
         });
 
@@ -86,12 +97,12 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
   }, [owner, repoName]);
 
 
-  const handleCommitShow=(repoName)=>{
-    if(commits===repoName) 
-       setCommits(null);
+  const handleCommitShow=()=>{
+    if(commits) 
+       setCommits(false);
      
     else
-    setCommits(repoName);
+    setCommits(true);
   }
 
   const handleBranchChange = (event) => {
@@ -99,43 +110,85 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
   };
   return (
     <div> 
-      <div style={{display:'flex'}}>
+        <div className="bar"></div>
+      <div id='top'>
        { selectedBranch!=='main' && <PullRequestForm/>}
+        
+       {/*-------BRANCH RELATED CONTENT HERE */}
        <Branches contents={contents} branches={branches} handleBranchChange={handleBranchChange} selectedBranch={selectedBranch} owner={owner} repo={repoName}/>
-       <div className="container">
+      
+        {/* ------COMMITS INFO HERE  */}
+        <div id='commitInfo' onClick={handleCommitShow}>
+        <i class="fa-solid fa-timeline"></i>
+        <h6>commits</h6>
+       {
+        // WE HAVE TO SHOW THIS COMMITHISTORY IN A NEW PAGE ONCE REDUX IS IMPLEMENTED 
+       commits && <CommitHistory repo={repoName} owner={owner}  branch={selectedBranch}/>
+       }
+       </div>
+
+        {/* REPO LINK BUTTON  */}
+       <div className="codeBtn">
+        <div className="code">
+        <i class="fa-solid fa-code"></i>
         <button onClick={()=>{setLink(!link)}}>code</button>
-        {
-          link && <h6>{`https://github.com/${owner}/${repoName}.git`}</h6>
+      
+        </div>
+        { link &&
+           <>
+          <div id="codeLink">  
+            <h6>{repoLink}</h6>
+          {/* COPY  TO CLIPBOARD:  */}
+          <div id="copy">
+            <CopyToClipboard text={repoLink}  onCopy={onCopyText}>
+             <i className="fa-solid fa-copy"></i>
+            </CopyToClipboard>
+          </div>
+          </div>
+          { copyStatus && 
+          <div className="status">
+           <p>Copied !</p>
+          </div>
+          }
+          </>
         }
        </div>
       </div>
-       <div className="container">
-       <h6 className='mx-3' style={{color:'green'}} onClick={()=>handleCommitShow(repoName,owner,selectedBranch)}>commits</h6>
-       {
-        (commits===repoName)&& <CommitHistory repo={repoName} owner={owner}  branch={selectedBranch}/>
-       }
-       </div>
-      <ul>
+      
+        {/* FILES AND FOLDERS STRUCURE  */}
+      <ul id='file-n-folders'>
+         <h6 className='first-row'>owner : {owner}</h6>
+         <div className="line"></div>
         { contents.length!==0?
-        contents.map((item) => (
+            contents.map((item) => (
+              
           <li key={item.name}>
+    
+            {/* FOR FILES  */}
             {item.type === 'file' ? (
-              <div className='d-flex'>
+
+            <div className='file-fol'>
+
+             <i class="fa-regular fa-file"></i>
+
               <p onClick={()=> {
               if(openFile===item.name)
               setOpenFile(null)
-            else
-             setOpenFile(item.name)
+              else
+              setOpenFile(item.name)
               }}>
                 {item.name}
                </p>
 
-              {<FileShow isOpen={item.name === openFile} content = {item}/>}
+              {openFile===item.name && <FileShow isOpen={item.name === openFile} content = {item}/>}
               </div>
             ) : (
               <>
-               <div className="folder" onClick={()=> setFolder(item.name)}>
-                <h6>{item.name}</h6>
+               {/* FOR FOLDERS  */}
+
+               <div className="file-fol" onClick={()=> setFolder(item.name)}>
+               <i class="fa-solid fa-folder"></i>
+                <p>{item.name}</p>
                 {
                 (openFolder===item.name) && <FolderShow owner={owner} repoName={repoName} path={item?.path} branch={selectedBranch}/>
                 }
@@ -147,6 +200,9 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
       : <InitialPushinComands owner={owner} repoName={repoName}/>      // if the repo content is empty it has no files and folders
       }
       </ul>
+      <div id="readMe">
+      <h1>README DALNA HAI ?</h1>
+    </div>
     </div>
   );
 };

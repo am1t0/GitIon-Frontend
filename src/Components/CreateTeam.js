@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import getAccessToken from '../Store/auth';
+import getAccessToken from '../Utils/auth.js';
 import { useLocation, useNavigate } from 'react-router-dom';
 import "../Styles/CreateTeam.css"
 

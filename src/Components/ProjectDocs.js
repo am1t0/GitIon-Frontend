@@ -1,9 +1,10 @@
 import React, { useEffect,useState } from 'react'
-import getAccessToken from '../Store/auth';
+import getAccessToken from '../Utils/auth';
 import { useSelector } from 'react-redux';
 import InitialPushinComands from './InitialPushinComands';
 import PullRequestForm from './PullRequestForm';
 import RepoFileFolder from './RepoFileFolder';
+import '../Styles/ProjectDocs.css'
 
 export default function ProjectDocs({ project, team }) {
   const [updProject, setUpdProject] = useState(null);
@@ -38,9 +39,11 @@ export default function ProjectDocs({ project, team }) {
 
 
   return (
-    <div> 
+    <div id='projectDocs'> 
+     <div className="projectHead">
       <h1>{updProject?.name}</h1>
       <h5>{updProject?.repo?.repoName}</h5>
+     </div>
       { updProject && <RepoFileFolder repoName={updProject?.repo?.repoName} owner={updProject?.repo?.owner} path={''}  repo={updProject?.repo}  branch={'main'}/>}
     </div>
   );

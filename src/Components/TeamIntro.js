@@ -1,7 +1,7 @@
 import React, { useState,useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import "../Styles/TeamIntro.css"
-import getAccessToken from '../Store/auth';
+import getAccessToken from '../Utils/auth.js';
 import { useSelector } from 'react-redux';
 import membAdd from "../Sound/membAdd.wav"
 
@@ -11,7 +11,6 @@ export default function TeamIntro() {
   const team = location.state?.team;
 
   // getting the user from store
-  const user = useSelector((state)=>state.user.user);
 
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
@@ -155,7 +154,8 @@ export default function TeamIntro() {
               <i class="fa-solid fa-magnifying-glass"></i>
               </div>
               </div>
-              { (user?._id===team?.owner) &&
+              { 
+              // (user?._id===team?.owner) &&
               <div>
               <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
               <div className="logo" onClick={handleAddMember} >
@@ -185,7 +185,9 @@ export default function TeamIntro() {
                       <p>{member.email}</p>
                       </li>
                 
-                     {(user?._id===team?.owner) && <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
+                     {
+                    //  (user?._id===team?.owner) && 
+                     <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
                        
                     </div>
                     {arrow===member.email && <h6>ISKO SHI DETAIL KE SATH SHOW KRNA HAI</h6>}

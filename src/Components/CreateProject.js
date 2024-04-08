@@ -1,21 +1,23 @@
 import React from 'react'
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
-import getAccessToken from '../Store/auth';
+import getAccessToken from '../Utils/auth.js';
 import { useRef } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import { setRepo } from './Features/RepoSlice';
 import '../Styles/CreateProject.css'
 
 export default function CreateProject() {
-  const nameRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const startDateRef = useRef(null);
-  const endDateRef = useRef(null);
 
-  const RnameRef = useRef();
-  const RdescriptionRef = useRef();
+  const nameRef = useRef(null);
+  const projectOverViewRef = useRef();
+  const projectObjectivesViewRef = useRef();
+  const techStackRef = useRef();
+  
   const RprivacyRef  = useRef();
+  const RdescriptionRef  = useRef();
+  const RnameRef = useRef();
+  const RownerRef = useRef();
+
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,7 +27,8 @@ export default function CreateProject() {
 
     const dispatch = useDispatch();
 
-    const [show,setShow] = useState('repoForm');
+    const [show,setShow] = useState('project');
+    const [connectOrCreate,setConnectOrCreate] = useState(null);
 
     useEffect(() => {
       const fetchLeaderToken = async () => {
@@ -63,11 +66,9 @@ export default function CreateProject() {
               },
               body: JSON.stringify({
                 name: nameRef.current.value,
-                details: {
-                  description: descriptionRef.current.value,
-                  startDate: startDateRef.current.value,
-                  endDate: endDateRef.current.value,
-                },
+                projectOverview : projectOverViewRef.current.value,
+                projectObjectives : projectObjectivesViewRef.current.value.split(','),
+                techStack : techStackRef.current.value.split(','),
                 teamId: team?._id,
               }),
           });
@@ -80,7 +81,7 @@ export default function CreateProject() {
           console.log("New Project created is ",newProject.data)
           setProject(newProject.data);
         
-          setShow('repoForm');
+          setShow('repoOptions');
       
         } catch (error) {
           console.error('Error creating todo:', error.message);
@@ -105,9 +106,7 @@ const handleCreateRepository = async () => {
           });
         
           const data = await response.json();
-          console.log('Data of repo send is :',data.owner);
-
-
+      
           if (response.ok) {
            const response =  await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/repoDetail`, {
                method: 'POST',
@@ -116,12 +115,12 @@ const handleCreateRepository = async () => {
                  'Authorization':`Bearer ${getAccessToken()}`
                },
                body: JSON.stringify({
-                 projectId: project._id, // Replace with the actual project ID
+                 projectId: project._id, 
                  repoName: data.name,
                  owner:data.owner.login,
                }),
              });
-             console.log('Data after project create repo Detail gusayi ',response)
+            
              let result=await response.json();
              console.log('AAGEE ',result);
             alert(`Repository created successfully!`);
@@ -138,13 +137,39 @@ const handleCreateRepository = async () => {
           console.error('Unexpected error:', error);
         }
       };
+ 
+const handleConnectRepository = async () => {
+
+  try {
+    const response =  await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/repoDetail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':`Bearer ${getAccessToken()}`
+      },
+      body: JSON.stringify({
+        projectId: project._id, 
+        repoName: RnameRef.current.value,
+        owner:RownerRef.current.value,
+      }),
+    });
+    let result=await response.json();
+    console.log('AAGEE ',result);
+   alert(`Repository connected successfully!`);
+   
+  } catch (error) {
+     console.log("Some error!");
+  }
+  
+}      
   return (
     <div className="outerBox">
     <div className='project-n-repo'>
       
-   { show==='projectForm' &&   <form className='projectForm'>
-       <div id='titleDiv'>
-        <h5>Create Project</h5>
+      {/* form for project creation  */}
+   { show==='project' &&   <form className='projectForm'>
+       <div className='titleDiv'>
+        <h4>Create Project</h4>
        </div>
         
       <div className="inputs">
@@ -152,17 +177,17 @@ const handleCreateRepository = async () => {
          <input type="text" ref={nameRef} />
       </div>
        <div className="inputs">
-       <label htmlFor="description"><p>Description*</p></label>
-         <textarea type="text" ref={descriptionRef}/>
+       <label htmlFor="project-overview"><p>Project Overview*</p></label>
+         <textarea type="text" ref={projectOverViewRef}/>
        </div>
 
       <div className="inputs">
-      <label htmlFor="start-date"><p>project start date</p></label>
-         <input type="datetime-local" ref={startDateRef} placeholder='start date'/>
+      <label htmlFor="project-objective"><p>Project Objectives*</p></label>
+         <input type="text" ref={projectObjectivesViewRef} />
       </div>
       <div className="inputs">
-      <label htmlFor="end-date"><p>Project end date</p></label>
-         <input type="datetime-local" ref={endDateRef} placeholder='end date'/>
+      <label htmlFor="tech-stack"><p>Tech Stack*</p></label>
+         <input type="text" ref={techStackRef}/>
       </div>
  
     <div className="projectBtn">
@@ -170,30 +195,86 @@ const handleCreateRepository = async () => {
     </div>
   </form>}
 
+    {/* after project creation whether user wants to create or connect an existing repo  */}
+   { (show==='repoOptions') &&
+    <div className='repoBtn'>
+    <button type="button" className='btn btn-success' onClick={() => { setConnectOrCreate('create'); setShow(null); }}>
+      Create Reposatory
+    </button>
+    <button type="button" className='btn btn-success' onClick={() => { setConnectOrCreate('connect'); setShow(null); }}>
+      Access Existing Repo
+    </button>
+   </div>
+   }
 
-   { show==='repoForm' && <div>
-      <h2>Create Repository</h2>
+    {/* connect an existing repo  */}
+   {
+    connectOrCreate==='connect' && <div>
+    <form>
+    <div className='titleDiv'>
+      <h4>Connect Repo</h4>
+     </div>
+      <div className="inputs">
+      <label htmlFor="name"><p>Name of Reposatory*</p></label>
+         <input type="text" id="repoName" ref={RnameRef} required /> 
+      </div>
+
+      <div className="inputs">
+      <label htmlFor="owner"><p>Owner of Reposatory*</p></label>
+         <input type="text" id="repoOwner" ref={RownerRef} required /> 
+      </div>
+
+    <div className='repoBtn'>
+      <button type="button" className='btn btn-success' onClick={handleConnectRepository}>
+        Connect
+      </button>
+    </div>
+
+    <div className="repoBtn">
+    <button type='button' className='btn btn-warning' onClick={()=> navigate('/')}>
+        Cancel 
+      </button>
+    </div>
+
+    </form>
+  </div>}
+
+   {/* creating a repo  */}
+   { connectOrCreate==='create' && <div>
       <form>
+      <div className='titleDiv'>
+        <h4>Create Repo</h4>
+       </div>
         <div className="inputs">
+        <label htmlFor="name"><p>Name of Reposatory*</p></label>
            <input type="text" id="repoName" ref={RnameRef} required /> 
         </div>
 
         <div className="inputs">
+        <label htmlFor="name"><p>Description*</p></label>
            <textarea id="repoDescription" ref={RdescriptionRef} ></textarea>
         </div>
 
-        <div className="inputs">
+        <div className="inputs"> 
+        <label htmlFor="name"><p>Public or Private the repo*</p></label>
            <select id="repoPrivacy" ref={RprivacyRef}>
              <option value="public">Public</option>
              <option value="private">Private</option>
            </select>
         </div>
 
+      <div className='repoBtn'>
         <button type="button" className='btn btn-success' onClick={handleCreateRepository}>
-          Create Repository
+          Create Reposatory
         </button>
+      </div>
 
-        <button type='button' style={{background:'yellow', padding:'3px',margin:'10px',borderRadius:'10px'}} onClick={()=>{navigate('/')}}>Cancel </button>
+      <div className="repoBtn">
+      <button type='button' className='btn btn-warning' onClick={()=> navigate('/')}>
+          Cancel 
+        </button>
+      </div>
+
       </form>
     </div>}
     </div>

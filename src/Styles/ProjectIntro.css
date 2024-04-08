@@ -1,0 +1,26 @@
+#projectDetails{
+  border: 2px solid red;
+  color: white;
+  background-color: black;
+  padding: 20px 0px 0px 40px;
+}
+
+#projectHead{
+    border: 2px solid yellow;
+}
+
+.over-obj{
+    border: 2px solid blue;
+    width: 70%;
+}
+.over-obj h5{
+    color: rebeccapurple;
+}
+
+#overview{
+    border: 3px solid;
+}
+
+#objectives{
+    border: 3px solid;
+}

@@ -8,6 +8,7 @@ export default function TeamSidebar({team,projects,handleDeleteTeam}) {
         navigate(`/${name}/create-project`, {state: {team}})
   }
 
+  console.log('Projects in teamSidebar : ',projects)
   const handleProjectClick=(project)=>{
     //{console.log(name)}
         navigate(`/project/${project.name}`, {state: {project,team}})

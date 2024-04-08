@@ -3,8 +3,6 @@ import Footer from './Components/Footer';
 import Header from './Components/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect,useState } from 'react';
-import getAccessToken from './Store/auth';
-import { setLoggedIn, setUser } from './Components/Features/UsersSlice';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Home from './Components/Home';
 import Login from './Components/Login';
@@ -14,13 +12,11 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const isLoggedIn = useSelector((state)=>state.user.isLoggedIn);
-
   useEffect(() => {
     const fetchUserData = async () => {
 
       try {
-          const accessToken = getAccessToken();
+          const accessToken = localStorage.getItem('access_token');
           console.log(accessToken);
         if (!accessToken) {
           console.error('Access token not found');
@@ -44,9 +40,7 @@ function App() {
         }
        
         const data = await response.json();
-  
-        dispatch(setLoggedIn(true));
-        dispatch(setUser(data));
+
 
       } catch (error) {
         console.error('Error fetching user data:', error.message);
@@ -57,7 +51,7 @@ function App() {
 
   return (
    <>
-    <Header isLoggedIn={isLoggedIn}/>
+    <Header isLoggedIn={true}/>
      <Outlet/>
     <Footer/>
    </>

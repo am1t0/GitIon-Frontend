@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setLoggedIn,setUser } from './Features/UsersSlice';
 import '../Styles/Login.css'
 
 const  Login = () => {
@@ -37,8 +36,7 @@ const  Login = () => {
 
       // Store the access token in localStorage
       localStorage.setItem('access_token', accessToken);
-      dispatch(setLoggedIn(true));
-      dispatch(setUser(user));
+  
       navigate('/')
 
       

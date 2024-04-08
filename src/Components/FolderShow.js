@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import FileShow from '../../../frontend2/src/Components/FileShow';
+import '../Styles/Folder.css'
 
 export default function FolderShow({owner,repoName,path,branch}) {
 
@@ -20,7 +21,7 @@ export default function FolderShow({owner,repoName,path,branch}) {
          console.log(url);
         const response = await fetch(url, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("gitToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("leaderToken")}`,
           },
         });
         if (!response.ok) {
@@ -55,7 +56,7 @@ export default function FolderShow({owner,repoName,path,branch}) {
                 {item.name}
                </p>
 
-              {<FileShow isOpen={item.name === openFile} content = {item}/>}
+              {item.name===openFile && <FileShow isOpen={item.name === openFile} content = {item}/>}
               </div>
             ) : (
               <>
@@ -75,5 +76,4 @@ export default function FolderShow({owner,repoName,path,branch}) {
     </div>
   );
 };
-
 

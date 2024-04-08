@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import getAccessToken from '../Store/auth';
 import '../Styles/Sidebar.css'
 
 export default function Sidebar({ teams, handleTeamCreated }) {
@@ -16,7 +15,7 @@ export default function Sidebar({ teams, handleTeamCreated }) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAccessToken()}`
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
           },
         })
         if (!response.ok) {

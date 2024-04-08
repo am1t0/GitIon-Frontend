@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import '../Styles/Folder.css'
 
 const FileShow = ({ content,isOpen }) => {
   const [fileContent, setFileContent] = useState('');
 
   useEffect(() => {
+    const urlWithoutToken = content.download_url.split('?')[0];
+
     const fetchData = async () => {
       try {
-        const response = await fetch(content.download_url,
-        )
+        const response = await fetch(urlWithoutToken);
         if (!response.ok) {
-          throw new Error(`Failed to fetch file content: ${response.status} ${response.statusText}`);
+          throw new Error(`??????????????Failed to fetch file content: ${response.status} ${response.statusText}`);
         }
 
         const fetchedContent = await response.text();
@@ -40,4 +42,3 @@ const FileShow = ({ content,isOpen }) => {
 };
 
 export default FileShow;
-

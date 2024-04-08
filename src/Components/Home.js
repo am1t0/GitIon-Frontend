@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
-import getAccessToken from '../Store/auth';
 
 
 const Home = () => {
@@ -21,7 +20,7 @@ const Home = () => {
            {
              method:'GET',
              headers:{
-               "Authorization":`Bearer ${getAccessToken()}`
+               "Authorization":`Bearer ${localStorage.getItem('access_token')}`
              }
            })
 

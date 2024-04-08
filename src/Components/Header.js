@@ -5,7 +5,7 @@ import "../Styles/Header.css"
 
 export default function Header() {
 
-  const isLoggedIn = useSelector((state)=>state.user.isLoggedIn);
+  // const isLoggedIn = useSelector((state)=>state.user.isLoggedIn);
 
   return (
     <header className="p-3 text-white header">
@@ -16,14 +16,16 @@ export default function Header() {
           </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          { isLoggedIn && <li><Link to="/" className="nav-link px-2 text-secondary">Home</Link></li>}
+          { 
+          // isLoggedIn && 
+          <li><Link to="/" className="nav-link px-2 text-secondary">Home</Link></li>}
             <li><a href="#" className="nav-link px-2 text-white">Features</a></li>
             <li><a href="#" className="nav-link px-2 text-white">Pricing</a></li>
             <li><a href="#" className="nav-link px-2 text-white">FAQs</a></li>
             <li><a href="#" className="nav-link px-2 text-white">About</a></li>
           </ul>
           { 
-           !isLoggedIn && 
+          //  !isLoggedIn && 
           <div className="text-end">
             <Link to='/login'>
             <button type="button" className="btn btn-outline-light me-2 mx-3">Login</button>
