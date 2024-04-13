@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import getAccessToken from '../Utils/auth';
+import getAccessToken from '../../Utils/auth';
 import TodoList from './TodoList';
 import CreateTodo from './CreateTodo';
-import "../Styles/Todo.css"
+import "../../Styles/Todo.css"
 import NoTodo from './NoTodo';
 import TodoCreateBtn from './TodoCreateBtn';
 

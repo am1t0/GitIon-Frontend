@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
-import getAccessToken from '../Utils/auth.js';
-import "../Styles/CreateTodo.css"
+import getAccessToken from '../../Utils/auth.js';
+import "../../Styles/CreateTodo.css"
 
 export default function CreateTodo({handleTodoCreated,handleCreate}) {
 

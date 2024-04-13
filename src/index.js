@@ -8,18 +8,19 @@ import LandingPage from './Components/LandingPage';
 import RegisterPage from './Components/Register';
 import Login from './Components/Login';
 import Home from './Components/Home';
-import Todo from './Components/Todo.js';
-import CreateTeam from './Components/CreateTeam.js';
-import Team from './Components/Team.js';
-import TeamIntro from './Components/TeamIntro.js';
+import Todo from './Components/Todo/Todo.js';
+import CreateTeam from './Components/Team/CreateTeam.js';
+import Team from './Components/Team/Team.js';
+import TeamIntro from './Components/Team/TeamIntro.js';
 import {Provider} from 'react-redux'
-import CreateProject from './Components/CreateProject.js';
-import ProjectIntro from './Components/ProjectIntro.js';
-import Project from './Components/Project.js';
-import ProjectTasks from './Components/ProjectTasks.js';
-import ProjectDocs from './Components/ProjectDocs.js';
+import CreateProject from './Components/Project/CreateProject.js';
+import ProjectIntro from './Components/Project/ProjectIntro.js';
+import Project from './Components/Project/Project.js';
+import ProjectTasks from './Components/Project/ProjectTasks.js';
+import ProjectDocs from './Components/Project/ProjectDocs.js';
 import FolderShow from './Components/FolderShow.js';
 import store from './Data_Store/Store/Store.js';
+import Repo from './Components/Repo/Repo.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -41,9 +42,9 @@ const router = createBrowserRouter([
         ]},
         {path:'/project/:projectName',element:<Project/>,children:[
           {path:'/project/:projectName/docs',element:<ProjectDocs/>},
-          {path:'/project/:projectName/:folderName',element:<FolderShow/>}
+          {path:'/project/:projectName/:folderName',element:<FolderShow/>},
         ]},
-        
+        {path:'/project/:projectName/repo', element: <Repo/>}
     ]
   },
  

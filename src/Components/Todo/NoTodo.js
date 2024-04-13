@@ -1,6 +1,6 @@
 import React from 'react'
-import "../Styles/NoTodo.css"
-import cactus from "../Images/cactus.png";
+import "../../Styles/NoTodo.css"
+import cactus from "../../Images/cactus.png";
 
 export default function NoTodo() {
   return (

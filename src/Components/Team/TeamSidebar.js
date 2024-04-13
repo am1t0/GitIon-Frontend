@@ -1,19 +1,33 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import "../Styles/TeamSidebar.css"
+import {useSelector,useDispatch} from 'react-redux'
+import "../../Styles/TeamSidebar.css"
+import { setProject } from '../../Data_Store/Features/currProjectSlice';
+import { fetchRepoContent } from '../../Data_Store/Features/repoContentSlice';
 
-export default function TeamSidebar({team,projects,handleDeleteTeam}) {
+export default function TeamSidebar({handleDeleteTeam}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const projects = useSelector((store)=> store.project)
+  const currTeam = useSelector((store)=> store.currTeam);
+
   const handleOnProjectCreate=(name)=>{   
-        navigate(`/${name}/create-project`, {state: {team}})
+        navigate(`/${currTeam.name}/create-project`)
+  }
+  const handleProjectClick=(project)=>{
+      dispatch(fetchRepoContent(project)).then(()=>{
+
+        dispatch(setProject(project))
+        navigate(`/project/${project.name}`)
+
+      }).catch((error) => {
+        // Handle any errors that might occur during the fetching of projects
+        console.error('Error fetching repo:', error);
+      });
   }
 
-  console.log('Projects in teamSidebar : ',projects)
-  const handleProjectClick=(project)=>{
-    //{console.log(name)}
-        navigate(`/project/${project.name}`, {state: {project,team}})
-  }
-  return (
+   
+  return(
     <div class="flex-shrink-0 p-3 bg-white teamSidebar">
        
     <ul class="list-unstyled ps-0">
@@ -34,15 +48,17 @@ export default function TeamSidebar({team,projects,handleDeleteTeam}) {
         </button>
         <div className="collapse" id="order-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-        {projects.map((project) => (
+        { !projects.isLoading ? projects.data.map((project) => (
            <li className='clr' key={project.id} onClick={()=>{handleProjectClick(project)}}>  
             {project.name}
            </li>
-            ))}
+            )): <h1>Loading...</h1>
+          
+          }
         </ul>
         </div>
             </li>
-            <li className='clr' id='createProject' onClick={()=>{handleOnProjectCreate(team.name)}}>Create Project</li>
+            <li className='clr' id='createProject' onClick={()=>{handleOnProjectCreate(currTeam.name)}}>Create Project</li>
           </ul>
         </div>
       </li>

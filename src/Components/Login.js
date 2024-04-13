@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import '../Styles/Login.css'
@@ -9,7 +9,7 @@ const  Login = () => {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
-  const errorRef = useRef(null);
+  const [error,setError] = useState();
 
   const handleLogin = async () => {
        
@@ -25,10 +25,9 @@ const  Login = () => {
           email: emailRef.current.value
         }),
       });
-
+       console.log(response)
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
+         throw new Error('Something went wrong');
       }
 
       const responseData = await response.json();
@@ -37,13 +36,15 @@ const  Login = () => {
       // Store the access token in localStorage
       localStorage.setItem('access_token', accessToken);
   
-      navigate('/')
+      window.location.reload();
 
       
       // e.g., history.push('/dashboard');
     } catch (error) {
-      // Handle login error
-      console.error("Login failed:", error.message);
+        setError(error);
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
     }
   };
 
@@ -54,6 +55,7 @@ const  Login = () => {
       <h2>Login</h2>
       </div>
       <div className="form">
+      {error && <div className="error">{error?.message}</div>}
         <div className="inputBox">
           <input type="text" ref={usernameRef} required   placeholder='Username'/>
     

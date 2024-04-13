@@ -1,60 +1,36 @@
 import './App.css';
-import Footer from './Components/Footer';
-import Header from './Components/Header';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect,useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import Home from './Components/Home';
-import Login from './Components/Login';
-import RegisterPage from './Components/Register';
+import Footer from './Components/Common/Footer';
+import Header from './Components/Common/Header';
+import { useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import { Outlet} from 'react-router-dom';
+import Login from './Components/Login.js'
+import {useDispatch ,useSelector} from 'react-redux';
+import { fetchUser } from './Data_Store/Features/userSlice';
+import { fetchTeam } from './Data_Store/Features/teamSlice';
+import { fetchProjects } from './Data_Store/Features/projectSlice.js';
+
 
 function App() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
-      try {
-          const accessToken = localStorage.getItem('access_token');
-          console.log(accessToken);
-        if (!accessToken) {
-          console.error('Access token not found');
-          return;
-        } 
-      
-        // Make an API call to get user data
-        
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/user-data`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
-         
-       
-        if (!response.ok) {
-          console.error('Error:', response.statusText);
-          return;
-        }
-       
-        const data = await response.json();
+  useEffect(()=>{
+    dispatch(fetchUser());
+    dispatch(fetchTeam());
+  },[dispatch])
 
-
-      } catch (error) {
-        console.error('Error fetching user data:', error.message);
-      }
-    };
-    fetchUserData();
-  }, [dispatch]);
+  const {isLoading} = useSelector((store)=> store.user);
 
   return (
-   <>
-    <Header isLoggedIn={true}/>
+  !isLoading?
+   <div>
+    <Header/>
      <Outlet/>
     <Footer/>
-   </>
+   </div>
+   :<div style={{display:'flex',alignContent:'center',justifyContent:'center'}}><h1>Loading...</h1></div>
   );
 }
 

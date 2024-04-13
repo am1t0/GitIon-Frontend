@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import '../Styles/ProjectIntro.css'
+import '../../Styles/ProjectIntro.css'
 
 
-export default function ProjectIntro({ project }) {
+export default function ProjectIntro() {
 
   return (
     <div id='projectDetails'>

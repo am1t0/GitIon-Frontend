@@ -6,26 +6,34 @@ import FolderShow from './FolderShow';
 import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
 import CommitHistory from '../../../frontend2/src/Components/CommitHistory';
 import InitialPushinComands from '../../../frontend2/src/Components/InitialPushinComands';
-import Branches from '../../../frontend2/src/Components/Branches';
+import Branches from '../../../frontend2/src/Components/Branch/Branches';
 import PullRequestForm from './PullRequestForm';
+import {useSelector} from 'react-redux';
 import getAccessToken from '../Utils/auth.js';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import '../Styles/RepoFileFolder.css';
 
 
-export default function FilesAndFolders({owner,repoName,path,repo}) {
+export default function FilesAndFolders() {
+
   const [openFile,setOpenFile] = useState(null);
   const [openFolder,setFolder] = useState(null);
   const [commits,setCommits] = useState(false);
   const [branches,setBranches] = useState([]);
   const [link,setLink] = useState(false);
 
-  // LINK OF REPO 
+  const repo = useSelector((store)=>store.repo)
+  // const [contents, setContents] = useState([]);
+
+  const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject);
+  const trimmedName = name.trim();
+
+  // LINK OF REPO
   const repoLink = `https://github.com/${owner}/${repoName}.git`;
   const [copyStatus,setCopyStatus] = useState(false);
 
-  const [contents, setContents] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState('main');
+ 
 
    // COPY TEXT FUNCTION 
    const onCopyText = () =>{
@@ -33,68 +41,68 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
       setTimeout(() => setCopyStatus(false), 2000); // Reset status after 2 seconds
     }
   // fetching reposatories data 
-  useEffect(() => {
+  // useEffect(() => {
    
-    const fetchRepoContents = async () => {
-      try {
-      let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;
+  //   const fetchRepoContents = async () => {
+  //     try {
+  //     let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;
       
-      //console.log('Length of Repo is',repo)
+  //     //console.log('Length of Repo is',repo)
     
-      // https://api.github.com/repos/am1t0/Advance-backend/contents
+  //     // https://api.github.com/repos/am1t0/Advance-backend/contents
       
-      if(path!==null) url +=`/${path}`
 
-       url += `?ref=${selectedBranch}`;
+  //      url += `?ref=${selectedBranch}`;
 
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
-          },
-        });
+  //       const response = await fetch(url, {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
+  //         },
+  //       });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch repository contents');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch repository contents');
+  //       }
 
-        const data = await response.json();
+  //       const data = await response.json();
   
-        setContents(data);
-      } catch (error) {
-        console.error('Error fetching repository contents:', error.message);
-      }
-    };
+  //       setContents(data);
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.error('Error fetching repository contents:', error.message);
+  //     }
+  //   };
 
-    fetchRepoContents();
-  }, [owner, repoName,selectedBranch]);
+  //   fetchRepoContents();
+  // }, [owner, repoName,selectedBranch]);
 
-  // fetching branches data 
-  useEffect(() => {
-    const fetchRepoBranches = async () => {
+  // // fetching branches data 
+  // useEffect(() => {
+  //   const fetchRepoBranches = async () => {
 
-      try {
-        const url = `https://api.github.com/repos/${owner}/${repoName}/branches`;
+  //     try {
+  //       const url = `https://api.github.com/repos/${owner}/${repoName}/branches`;
   
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
-          },
-        });
+  //       const response = await fetch(url, {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
+  //         },
+  //       });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch repository branches');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch repository branches');
+  //       }
 
-        const data = await response.json();
-        setBranches(data);
-        //console.log(data,data.object.sha);
-      } catch (error) {
-        console.error('Error fetching repository branches:', error.message);
-      }
-    };
+  //       const data = await response.json();
+  //       setBranches(data);
+  //       //console.log(data,data.object.sha);
+  //     } catch (error) {
+  //       console.error('Error fetching repository branches:', error.message);
+  //     }
+  //   };
 
-    fetchRepoBranches();
-  }, [owner, repoName]);
+  //   fetchRepoBranches();
+  // }, [owner, repoName]);
 
 
   const handleCommitShow=()=>{
@@ -115,7 +123,7 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
        { selectedBranch!=='main' && <PullRequestForm/>}
         
        {/*-------BRANCH RELATED CONTENT HERE */}
-       <Branches contents={contents} branches={branches} handleBranchChange={handleBranchChange} selectedBranch={selectedBranch} owner={owner} repo={repoName}/>
+       <Branches contents={repo.data} branches={branches} handleBranchChange={handleBranchChange} selectedBranch={selectedBranch} owner={owner} repo={repoName}/>
       
         {/* ------COMMITS INFO HERE  */}
         <div id='commitInfo' onClick={handleCommitShow}>
@@ -159,8 +167,8 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
       <ul id='file-n-folders'>
          <h6 className='first-row'>owner : {owner}</h6>
          <div className="line"></div>
-        { contents.length!==0?
-            contents.map((item) => (
+        { repo.data.length!==0?
+            repo.data.map((item) => (
               
           <li key={item.name}>
     
@@ -186,13 +194,14 @@ export default function FilesAndFolders({owner,repoName,path,repo}) {
               <>
                {/* FOR FOLDERS  */}
 
-               <div className="file-fol" onClick={()=> setFolder(item.name)}>
+               {/* <div className="file-fol" onClick={()=> setFolder(item.name)}>
                <i class="fa-solid fa-folder"></i>
                 <p>{item.name}</p>
                 {
                 (openFolder===item.name) && <FolderShow owner={owner} repoName={repoName} path={item?.path} branch={selectedBranch}/>
                 }
-               </div>
+               </div> */}
+               <Link to={`/project/${trimmedName}/repo`}>{item.name}</Link>
                </>
             )}
           </li>

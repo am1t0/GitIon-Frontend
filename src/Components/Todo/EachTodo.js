@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import getAccessToken from '../Utils/auth';
-import "../Styles/EachTodo.css"
+import getAccessToken from '../../Utils/auth';
+import "../../Styles/EachTodo.css"
 
 export default function EachTodo({ todo, handleTodoDelete }) {
   const [arrow, setArrow] = useState(false);

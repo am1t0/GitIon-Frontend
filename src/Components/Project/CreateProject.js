@@ -1,18 +1,20 @@
 import React from 'react'
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useState,useEffect } from 'react';
-import getAccessToken from '../Utils/auth.js';
+import getAccessToken from '../../Utils/auth.js';
 import { useRef } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import '../Styles/CreateProject.css'
+import '../../Styles/CreateProject.css'
 
 export default function CreateProject() {
 
+  // PROJECT FORM DETAILS VARIABLES
   const nameRef = useRef(null);
   const projectOverViewRef = useRef();
   const projectObjectivesViewRef = useRef();
   const techStackRef = useRef();
   
+  // REPOFORM DETAILS VARAIBLES
   const RprivacyRef  = useRef();
   const RdescriptionRef  = useRef();
   const RnameRef = useRef();
@@ -20,12 +22,10 @@ export default function CreateProject() {
 
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const team = location.state?.team;
+    const currTeam = useSelector((store)=>store.currTeam);
     const [leaderToken, setLeaderToken] = useState('');
     const [project,setProject] = useState('');
 
-    const dispatch = useDispatch();
 
     const [show,setShow] = useState('project');
     const [connectOrCreate,setConnectOrCreate] = useState(null);
@@ -33,7 +33,7 @@ export default function CreateProject() {
     useEffect(() => {
       const fetchLeaderToken = async () => {
         try {
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/gitToken/${team?.owner}`,{
+          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/gitToken/${currTeam?.owner}`,{
             method:'GET',
             headers:{
               'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export default function CreateProject() {
                 projectOverview : projectOverViewRef.current.value,
                 projectObjectives : projectObjectivesViewRef.current.value.split(','),
                 techStack : techStackRef.current.value.split(','),
-                teamId: team?._id,
+                teamId: currTeam?._id,
               }),
           });
           console.log(response);

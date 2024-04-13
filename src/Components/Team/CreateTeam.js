@@ -1,7 +1,10 @@
 import React, { useRef } from 'react'
-import getAccessToken from '../Utils/auth.js';
+import getAccessToken from '../../Utils/auth.js';
 import { useLocation, useNavigate } from 'react-router-dom';
-import "../Styles/CreateTeam.css"
+import {useDispatch,useSelector} from 'react-redux'
+import { addTeam } from '../../Data_Store/Features/teamSlice.js';
+import { fetchTeam } from '../../Data_Store/Features/teamSlice.js';
+import "../../Styles/CreateTeam.css"
 
 export default function CreateTeam(props) {
     const location = useLocation();
@@ -10,41 +13,30 @@ export default function CreateTeam(props) {
 
     const nameRef = useRef();
     const descriptionRef = useRef();
+    const dispatch = useDispatch();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        
-        
-        try {
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/create-team`, {
-             method:'POST',
-             headers: {
-                'Content-Type': 'application/json',
-                 'Authorization':`Bearer ${getAccessToken()}`
-              },
-              body: JSON.stringify({
-                name: nameRef.current.value,
-                description: descriptionRef.current.value,
-              }),
-          });
-          if (!response.ok) {
-            console.error('Error:', response.statusText);
-            return;
-          }
-          const newTeam = await response.json();
-          //console.log("New Team created is ",newTeam.data)
-          await handleTeamCreated(newTeam.data);
-           
-          navigate(`/${newTeam.data.name}`, { state:{ team : newTeam.data}});  //navigates to
-          // Clear form fields
-          nameRef.current.value = '';
-          descriptionRef.current.value = '';
-        } catch (error) {
-          console.error('Error creating todo:', error.message);
-          
-        }
+      
+        // passing the param..
+        const name = nameRef.current.value;
+        const description = descriptionRef.current.value;
+        if(name && description)
+        dispatch(addTeam({ name, description })).then(() => {
+          dispatch(fetchTeam()); // Refresh team data after adding a new team
+      });
+
+        nameRef.current.value = '';
+        descriptionRef.current.value = '';
+
       };
+
+    const {adding} = useSelector((store)=>store.team.newTeamStatus);
+
+    console.log('add hor rha hai kya '+adding);
+
   return (
+    !adding &&
     <div className='content-3'>
        <div className='detail-3'>
       <div className="heading">

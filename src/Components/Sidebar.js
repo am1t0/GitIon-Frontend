@@ -1,34 +1,30 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../Styles/Sidebar.css'
+import {useSelector,useDispatch} from 'react-redux';
+import {setTeam }from '../Data_Store/Features/currTeamSlice'    // yhhhhhhhaa dhayna
+import { fetchProjects } from '../Data_Store/Features/projectSlice';
 
-export default function Sidebar({ teams, handleTeamCreated }) {
+export default function Sidebar({handleTeamCreated }) {
   const navigate = useNavigate();
-  const handleTeamClick = (team) => {
-    navigate(`/${team.name}`, { state: { team } })
-  }
+  const dispatch = useDispatch();
+  const mothere = useDispatch();
 
-  const handleLogOut  = async () => {
-      try {
-        console.log("logging out");
-         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/logout`,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-          },
-        })
-        if (!response.ok) {
-          console.error('Error:', response.statusText);
-          return;
-        }
-        const data = await response.json();
-        console.log(data);
-        navigate('/login')
-      } catch (error) {
-        console.log('Error in logging out : ',error);
-      }
+  const handleTeamClick = (team) => {
+    // DISPATCH THE ACTION TO OBTAIN THE LIST OF PROJECTS;
+    // AND NAVIGATE ONLY AFTER IT HAS COMPLETED
+    dispatch(fetchProjects(team._id)).then(() => {
+       mothere(setTeam(team));
+
+      navigate(`/${team.name}`, { state: { team } });
+    }).catch((error) => {
+      // Handle any errors that might occur during the fetching of projects
+      console.error('Error fetching projects:', error);
+    });
   }
+  
+  const teams = useSelector((store)=>store.team?.data?.data)
+
 
   return (
     <div >
@@ -66,12 +62,14 @@ export default function Sidebar({ teams, handleTeamCreated }) {
                       Teams
                     </p>
                     <div className="collapse" id="teams-collapse">
+
+                      {/* // ALL TEAMS NAME LISTED  */}
                       <ul className="forw">
                         {
-                          teams.map((team) => {
+                          teams?.map((team) => {
                             return <li
-                              onClick={() => { handleTeamClick(team) }} key={team._id}
-                              className="team">{team.name}</li>
+                              onClick={() => { handleTeamClick(team) }} key={team?._id}
+                              className="team">{team?.name}</li>
                           })
                         }
                       </ul>
@@ -94,7 +92,7 @@ export default function Sidebar({ teams, handleTeamCreated }) {
               </button>
               <div className="collapse" id="account-collapse">
                 <ul className="forw">
-                  <li onClick={handleLogOut}><a href="#" className="link-dark rounded">logout</a></li>
+                  <li><a href="#" className="link-dark rounded">logout</a></li>
                   <li><a href="#" className="link-dark rounded">New...</a></li>
                   <li><a href="#" className="link-dark rounded">Settings</a></li>
                   <li><a href="#" className="link-dark rounded">Sign out</a></li>

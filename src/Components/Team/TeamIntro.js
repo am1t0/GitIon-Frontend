@@ -1,9 +1,9 @@
 import React, { useState,useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom';
-import "../Styles/TeamIntro.css"
-import getAccessToken from '../Utils/auth.js';
+import "../../Styles/TeamIntro.css"
+import getAccessToken from '../../Utils/auth.js';
 import { useSelector } from 'react-redux';
-import membAdd from "../Sound/membAdd.wav"
+import membAdd from "../../Sound/membAdd.wav"
 
 export default function TeamIntro() {
   // getting the team object that passed while navigating this route

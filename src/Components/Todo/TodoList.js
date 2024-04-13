@@ -1,6 +1,6 @@
 import React from 'react'
 import EachTodo from './EachTodo'
-import "../Styles/TodoList.css"
+import "../../Styles/TodoList.css"
 
 export default function TodoList({todoList,handleTodoDelete}) {
   return (

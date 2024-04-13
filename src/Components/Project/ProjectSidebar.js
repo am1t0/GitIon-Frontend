@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../Styles/ProjectSidebar.css'
+import '../../Styles/ProjectSidebar.css'
 
 export default function ProjectSidebar({setContent }) {
 
