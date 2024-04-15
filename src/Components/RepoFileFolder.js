@@ -201,7 +201,7 @@ export default function FilesAndFolders() {
                 (openFolder===item.name) && <FolderShow owner={owner} repoName={repoName} path={item?.path} branch={selectedBranch}/>
                 }
                </div> */}
-               <Link to={`/project/${trimmedName}/repo`}>{item.name}</Link>
+               <Link to={`/project/${trimmedName}/content/${item?.path}`}>{item.name}</Link>
                </>
             )}
           </li>

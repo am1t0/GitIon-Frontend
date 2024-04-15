@@ -44,7 +44,7 @@ const router = createBrowserRouter([
           {path:'/project/:projectName/docs',element:<ProjectDocs/>},
           {path:'/project/:projectName/:folderName',element:<FolderShow/>},
         ]},
-        {path:'/project/:projectName/repo', element: <Repo/>}
+        {path:'/project/:projectName/content/:path', element: <Repo/>}
     ]
   },
  

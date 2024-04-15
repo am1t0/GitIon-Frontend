@@ -43,6 +43,7 @@ const userSlice = createSlice({
             state.data = action.payload;
         }) 
         builder.addCase(fetchUser.rejected, (state,action)=>{
+            state.isLoading = false;
             state.isLoggin = false;
             state.isError = true;
         })
