@@ -16,7 +16,7 @@ export default function ProjectDocs() {
       <h1>{currProject?.name}</h1>
       <h5>{currProject?.repo?.repoName}</h5>
      </div>
-      { currProject && <RepoFileFolder repoName={currProject?.repo?.repoName} owner={currProject?.repo?.owner} path={''}  repo={currProject?.repo}  branch={'main'}/>}
+      { currProject && <RepoFileFolder/>}
     </div>
   );
 }

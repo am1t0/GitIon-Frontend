@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import "../../Styles/TeamSidebar.css"
 import { setProject } from '../../Data_Store/Features/currProjectSlice';
-import { fetchRepoContent } from '../../Data_Store/Features/repoContentSlice';
+import { fetchData } from '../../Data_Store/Features/repoContentSlice';
 
 export default function TeamSidebar({handleDeleteTeam}) {
   const navigate = useNavigate();
@@ -15,9 +15,12 @@ export default function TeamSidebar({handleDeleteTeam}) {
         navigate(`/${currTeam.name}/create-project`)
   }
   const handleProjectClick=(project)=>{
-      dispatch(fetchRepoContent(project)).then(()=>{
+
+        // collecting the repo data associated with project then also  setting it as current project in Redux Store
+        dispatch(fetchData({project,})).then(()=>{
 
         dispatch(setProject(project))
+        
         navigate(`/project/${project.name}`)
 
       }).catch((error) => {

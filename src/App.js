@@ -28,7 +28,7 @@ function App() {
    <div>
     <Header/>
      <Outlet/>
-    <Footer/>
+    {/* <Footer/> */}
    </div>
    :<div style={{display:'flex',alignContent:'center',justifyContent:'center'}}><h1>Loading...</h1></div>
   );

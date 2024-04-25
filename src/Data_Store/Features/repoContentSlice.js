@@ -1,55 +1,58 @@
-import {createSlice,createAsyncThunk} from  '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchRepoContent  = createAsyncThunk('fetchRepoContent', async (Project) => {
-    const {repo: {owner,repoName}} = Project;
-    // console.log(Project);
-    // console.log('fetchingRepoContent....')
-
+export const fetchData = createAsyncThunk('fetchData', async ({project,selectedBranch},thunkAPI) => {
+    const { repo: {owner, repoName} } = project;
+    let branch = selectedBranch;
+    if(!selectedBranch) branch = 'main';
+    console.log('branch selected is ');
+    console.log(branch);
     try {
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/contents?ref=main`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('leaderToken')}`
-          },
-        });
+        const [contentResponse, branchesResponse] = await Promise.all([
+            fetch(`https://api.github.com/repos/${owner}/${repoName}/contents?ref=${branch}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('leaderToken')}`
+                },
+            }),
+            fetch(`https://api.github.com/repos/${owner}/${repoName}/branches`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('leaderToken')}`
+                },
+            })
+        ]);
 
-        if (!response.ok) {
-          return Promise.reject(response); 
+        if (!contentResponse.ok || !branchesResponse.ok) {
+            return thunkAPI.rejectWithValue({ contentResponse, branchesResponse });
         }
-       const res = await response.json();
-       
-       return res;
-        
-      } catch (error) {
-        return  error.message || "An error occurred while loading";
-      }
-})
 
-const repoContentSlice = createSlice({
-    name : 'repo',
-    initialState:{
-        isLoading: true,
-        data : null,
-        isError: false,
-    },
-    extraReducers: (builder)=>{
+        const contentData = await contentResponse.json();
+        const branchesData = await branchesResponse.json();
 
-        //------------HANDLING API Call to fetchProjects-------------//
-        builder.addCase(fetchRepoContent.pending, (state,action)=>{
-            state.isLoading = true;
-        })
-        builder.addCase(fetchRepoContent.fulfilled, (state,action)=>{
-            state.isLoading = false;
-            state.data = action.payload;
-        }) 
-        builder.addCase(fetchRepoContent.rejected, (state,action)=>{
-            console.log("Error : "+action.payload);
-            state.isError = true;
-        })
-        
-    },
-    reducers:{
+        return { repoContent: contentData, branches: branchesData };
 
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.message || "An error occurred while loading");
     }
 })
 
-export default  repoContentSlice.reducer;
+const repoContentSlice = createSlice({
+    name: 'repo',
+    initialState: {
+        isLoading: true,
+        data: null,
+        isError: false,
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchData.pending, (state, action) => {
+            state.isLoading = true;
+        })
+        builder.addCase(fetchData.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.data = action.payload;
+        })
+        builder.addCase(fetchData.rejected, (state, action) => {
+            state.isLoading = true;
+            state.isError = true;
+        })
+    },
+})
+export default repoContentSlice.reducer;

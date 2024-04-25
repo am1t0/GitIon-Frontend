@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import FileShow from '../../../frontend2/src/Components/FileShow';
 import FolderShow from './FolderShow';
@@ -10,101 +10,58 @@ import Branches from '../../../frontend2/src/Components/Branch/Branches';
 import PullRequestForm from './PullRequestForm';
 import {useSelector} from 'react-redux';
 import getAccessToken from '../Utils/auth.js';
+import { useDispatch } from 'react-redux';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import '../Styles/RepoFileFolder.css';
+import {changeBranch, setCurr } from '../Data_Store/Features/moreInfoSlice.js';
+import { fetchData } from '../Data_Store/Features/repoContentSlice.js';
+import  {fetchFileContent, fetchFolderContent} from '../Data_Store/Features/currFileFolderSlice.js'
+import { toggleContent } from '../Data_Store/Features/moreInfoSlice.js';
 
 
 export default function FilesAndFolders() {
-
-  const [openFile,setOpenFile] = useState(null);
-  const [openFolder,setFolder] = useState(null);
+  
   const [commits,setCommits] = useState(false);
-  const [branches,setBranches] = useState([]);
   const [link,setLink] = useState(false);
+  const navigate = useNavigate();
 
-  const repo = useSelector((store)=>store.repo)
-  // const [contents, setContents] = useState([]);
+  const dispatch = useDispatch();
+
+  // ALL CONTENTS OF REPO ASSOCIATED WITH PROJECT
+  const {data: {repoContent}} = useSelector((store)=>store.repo);
+
+  const {selectedBranch} = useSelector((store)=> store.moreInfo);
+
+  // const selectedBranch = 'main';
 
   const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject);
+  const project = useSelector((store)=>store.currProject);
   const trimmedName = name.trim();
 
   // LINK OF REPO
   const repoLink = `https://github.com/${owner}/${repoName}.git`;
   const [copyStatus,setCopyStatus] = useState(false);
 
-  const [selectedBranch, setSelectedBranch] = useState('main');
- 
-
    // COPY TEXT FUNCTION 
    const onCopyText = () =>{
       setCopyStatus(true);
       setTimeout(() => setCopyStatus(false), 2000); // Reset status after 2 seconds
     }
-  // fetching reposatories data 
-  // useEffect(() => {
-   
-  //   const fetchRepoContents = async () => {
-  //     try {
-  //     let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;
-      
-  //     //console.log('Length of Repo is',repo)
-    
-  //     // https://api.github.com/repos/am1t0/Advance-backend/contents
-      
 
-  //      url += `?ref=${selectedBranch}`;
+  const handleItemClick=(item)=>{
+     
+       dispatch(setCurr(item));
+       if(item.type==='file') dispatch(fetchFileContent(item))
 
-  //       const response = await fetch(url, {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
-  //         },
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch repository contents');
-  //       }
-
-  //       const data = await response.json();
-  
-  //       setContents(data);
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error('Error fetching repository contents:', error.message);
-  //     }
-  //   };
-
-  //   fetchRepoContents();
-  // }, [owner, repoName,selectedBranch]);
-
-  // // fetching branches data 
-  // useEffect(() => {
-  //   const fetchRepoBranches = async () => {
-
-  //     try {
-  //       const url = `https://api.github.com/repos/${owner}/${repoName}/branches`;
-  
-  //       const response = await fetch(url, {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem('leaderToken')}`,
-  //         },
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error('Failed to fetch repository branches');
-  //       }
-
-  //       const data = await response.json();
-  //       setBranches(data);
-  //       //console.log(data,data.object.sha);
-  //     } catch (error) {
-  //       console.error('Error fetching repository branches:', error.message);
-  //     }
-  //   };
-
-  //   fetchRepoBranches();
-  // }, [owner, repoName]);
-
-
+       else{
+        dispatch(toggleContent(item.name));
+         dispatch(fetchFolderContent({owner,repoName,path: item.path,selectedBranch}));
+       }
+        
+       
+       // ISKO AB TU ASA LINK DAAL SKTA HAI NAME KE SATH  //
+       navigate(`/project/${trimmedName}/content/${item?.path}`);
+  }
   const handleCommitShow=()=>{
     if(commits) 
        setCommits(false);
@@ -114,18 +71,19 @@ export default function FilesAndFolders() {
   }
 
   const handleBranchChange = (event) => {
-    setSelectedBranch(event.target.value);
+    dispatch(changeBranch(event.target.value));
+    dispatch(fetchData({project,selectedBranch: event.target.value}));
   };
-  return (
+  return ( repoContent &&
     <div> 
         <div className="bar"></div>
       <div id='top'>
        { selectedBranch!=='main' && <PullRequestForm/>}
         
        {/*-------BRANCH RELATED CONTENT HERE */}
-       <Branches contents={repo.data} branches={branches} handleBranchChange={handleBranchChange} selectedBranch={selectedBranch} owner={owner} repo={repoName}/>
+       <Branches handleBranchChange={handleBranchChange} selectedBranch={selectedBranch}/>
       
-        {/* ------COMMITS INFO HERE  */}
+        {/* ------COMMITS INFO HERE  SUDHARNA HAI PROPS KO----- */}
         <div id='commitInfo' onClick={handleCommitShow}>
         <i class="fa-solid fa-timeline"></i>
         <h6>commits</h6>
@@ -167,8 +125,8 @@ export default function FilesAndFolders() {
       <ul id='file-n-folders'>
          <h6 className='first-row'>owner : {owner}</h6>
          <div className="line"></div>
-        { repo.data.length!==0?
-            repo.data.map((item) => (
+        { repoContent?.length!==0?
+            repoContent?.map((item) => (
               
           <li key={item.name}>
     
@@ -177,32 +135,17 @@ export default function FilesAndFolders() {
 
             <div className='file-fol'>
 
-             <i class="fa-regular fa-file"></i>
+             <i className="fa-regular fa-file"></i>
 
-              <p onClick={()=> {
-              if(openFile===item.name)
-              setOpenFile(null)
-              else
-              setOpenFile(item.name)
-              }}>
+              <p onClick={()=> {handleItemClick(item)}}>
                 {item.name}
                </p>
-
-              {openFile===item.name && <FileShow isOpen={item.name === openFile} content = {item}/>}
               </div>
             ) : (
-              <>
-               {/* FOR FOLDERS  */}
-
-               {/* <div className="file-fol" onClick={()=> setFolder(item.name)}>
-               <i class="fa-solid fa-folder"></i>
-                <p>{item.name}</p>
-                {
-                (openFolder===item.name) && <FolderShow owner={owner} repoName={repoName} path={item?.path} branch={selectedBranch}/>
-                }
-               </div> */}
-               <Link to={`/project/${trimmedName}/content/${item?.path}`}>{item.name}</Link>
-               </>
+              <div className='file-fol'> 
+                 <i class="fa-solid fa-folder"></i>
+                <p onClick={()=> handleItemClick(item)}>{item.name}</p>
+              </div>
             )}
           </li>
         ))

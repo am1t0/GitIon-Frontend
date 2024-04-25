@@ -2,18 +2,21 @@ import React,{useState,useEffect} from 'react'
 import FileShow from '../../../frontend2/src/Components/FileShow';
 import { useDispatch, useSelector } from 'react-redux';
 import '../Styles/Folder.css'
-import { setContents, setCurr, toggleContent} from '../Data_Store/Features/moreInfoSlice';
+import { setContents} from '../Data_Store/Features/moreInfoSlice';
 import '../Styles/FolderShow.css'
-import { fetchFileContent, fetchFolderContent } from '../Data_Store/Features/currFileFolderSlice';
 
-export default function FolderShow({path}) {
+export default function FolderCopy({path}) {
 
-  const {selectedBranch,content,currContent} = useSelector((store)=>store.moreInfo)
+  const {selectedBranch} = useSelector((store)=>store.moreInfo)
   const {repo: {owner,repoName}}= useSelector((store)=>store.currProject);
   const [contents, setContents] = useState([]);
   const dispatch = useDispatch();
+  const {folderArr} = useSelector((store)=>store.moreInfo);
+  const {currContent} = useSelector((store)=> store.moreInfo)
 
   useEffect(() => {
+     console.log('In FOLDER COPY BHAI');
+     console.log(path);
     const fetchRepoContents = async () => {
       try {
       let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;
@@ -43,20 +46,8 @@ export default function FolderShow({path}) {
   }, [owner, repoName,selectedBranch]);
 
   const handleItemClick=(item)=>{
-
-     dispatch(setCurr(item));
-    if(content.includes(item.name)){
-      dispatch(toggleContent(item.name));
-      return;
-      }
-
-    if(item.type==='file') dispatch(fetchFileContent(item));
-
-    else{
-    dispatch(toggleContent(item.name));
-    dispatch(fetchFolderContent({owner, repoName,path: item.path,selectedBranch}));
-    }
-  }    
+       dispatch(setContents({name:item.name,content: item}));
+  }
   return (
     <div className='file-explorer'>
       <ul>
@@ -64,9 +55,7 @@ export default function FolderShow({path}) {
           <li key={item.name}>
             {item.type === 'file' ? (
               <div className='file-n-folder'>
-               <p 
-               onClick={()=> {handleItemClick(item)}}  
-               style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}}>
+               <p onClick={()=> {handleItemClick(item)}} style={{background:(currContent===item.name)&&'rgb(61, 61, 61)'}}>
                <i className="fa-regular fa-file"></i> 
                 {item.name}
                </p>
@@ -75,15 +64,15 @@ export default function FolderShow({path}) {
               <div>
                <div className="file-n-folder" 
                 onClick={()=> {handleItemClick(item)}}
-                >
-                <p  
-                style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}}>
+                style={{background:(currContent===item.name)&&'rgb(61, 61, 61)'}
+                }>
+                <p>
                 <i class="fa-solid fa-folder"></i>
                   {item.name}
                 </p>
                </div>
                 {
-                 content.includes(item?.name) && <FolderShow  path={item?.path}/>
+                (folderArr.includes(item.name)) && <FolderCopy  path={item?.path}/>
                 }
                 </div>
             )}

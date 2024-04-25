@@ -21,7 +21,7 @@ import ProjectDocs from './Components/Project/ProjectDocs.js';
 import FolderShow from './Components/FolderShow.js';
 import store from './Data_Store/Store/Store.js';
 import Repo from './Components/Repo/Repo.js';
-
+import FileFolderContent from './Components/FileFolderContent.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -33,24 +33,24 @@ const router = createBrowserRouter([
         { path: '/Todos', element: <Todo /> },
         {path:'/create-team',element: <CreateTeam/>}
       ]},
-        // {path:'/', element: <LandingPage />},
-        {path:'/register',element: <RegisterPage/>},
-        {path:"/login",element:<Login /> },
-        {path:'/:teamName',element:<Team/> ,children:[
-          {path:'/:teamName',element:<TeamIntro/>},
-          {path:'/:teamName/create-project',element:<CreateProject/>},
-        ]},
-        {path:'/project/:projectName',element:<Project/>,children:[
-          {path:'/project/:projectName/docs',element:<ProjectDocs/>},
-          {path:'/project/:projectName/:folderName',element:<FolderShow/>},
-        ]},
-        {path:'/project/:projectName/content/:path', element: <Repo/>}
+      // {path:'/', element: <LandingPage />},
+      {path:'/register',element: <RegisterPage/>},
+      {path:"/login",element:<Login /> },
+      {path:'/:teamName',element:<Team/> ,children:[
+        {path:'/:teamName',element:<TeamIntro/>},
+        {path:'/:teamName/create-project',element:<CreateProject/>},
+      ]},
+      {path:'/project/:projectName',element:<Project/>,children:[
+        {path:'/project/:projectName/docs',element:<ProjectDocs/>},
+        {path:'/project/:projectName/:folderName',element:<FolderShow/>},
+      ]},
+      {path:'/project/:projectName/content/:path', element: <Repo/>}
     ]
   },
- 
+  
 ])
 root.render(
-    <Provider store={store}>
+  <Provider store={store}>
       <RouterProvider router={router}>
     <App />
     </RouterProvider>

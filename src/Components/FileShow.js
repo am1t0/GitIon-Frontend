@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import '../Styles/Folder.css'
+import { useSelector } from 'react-redux';
 
 const FileShow = ({ content,isOpen }) => {
   const [fileContent, setFileContent] = useState('');
-
+  const {data} = useSelector((store)=> store.currFileFolder)
   useEffect(() => {
-    const urlWithoutToken = content.download_url.split('?')[0];
-
+    console.log('IDHAR FILE ME DATA TO KUCH IS PRAKAR HAI')
+    console.log(data);
     const fetchData = async () => {
       try {
-        const response = await fetch(urlWithoutToken);
+        const response = await fetch(content.download_url);
         if (!response.ok) {
           throw new Error(`??????????????Failed to fetch file content: ${response.status} ${response.statusText}`);
         }
@@ -35,7 +36,7 @@ const FileShow = ({ content,isOpen }) => {
     <div style={{display:(isOpen)?'block':'none'}}>
       {
       fileContent ? (
-        <pre style={{position:'absolute',top:"214px",left:"712px",border:"2px solid",width:'48%',minHeight:'400px',padding:"20px 20px 20px 20px"}}>{fileContent}</pre>):''
+        <pre style={{position:'absolute',left:"712px",border:"2px solid",width:'48%',minHeight:'400px',padding:"20px 20px 20px 20px"}}>{fileContent}</pre>):''
       }
     </div>
   );

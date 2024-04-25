@@ -4,7 +4,6 @@ const CommitHistory = ({ owner, repo, branch }) => {
   const [commits, setCommits] = useState([]);
 
   useEffect(() => {
-    const accessToken = process.env.REACT_APP_ACCESS_TOKEN ;
     const fetchCommits = async () => {
       console.log('aayaa commits me ')
       try {
@@ -23,6 +22,7 @@ const CommitHistory = ({ owner, repo, branch }) => {
 
         const data = await response.json();
         setCommits(data);
+        console.log(data);
       } catch (error) {
         // console.error('Error fetching commits:', error.message);
       }
@@ -44,11 +44,11 @@ const CommitHistory = ({ owner, repo, branch }) => {
   return (
     <div style={{background:'white',borderRadius:'10px', padding:'10px'}}>
       <h2>Commit History for {branch} branch</h2>
-      <ul>
+      <ul style={{background:'black'}}>
         {commits.map((commit) => (
           <li key={commit.sha}>
             <p>{commit.commit.message}</p>
-            <p>{commit.commit.committer.name} committed {calculateMonthsPassed(commit.commit.author.date)} Months Ago</p>
+            <p>{commit.commit.committer.login} committed {calculateMonthsPassed(commit.commit.author.date)} Months Ago</p>
             {/* <p>Sha: {commit.sha}</p> */}
             {/* <p>Months Ago: {calculateMonthsPassed(commit.commit.author.date)}</p> */}
             <a
