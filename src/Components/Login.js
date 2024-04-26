@@ -2,10 +2,9 @@ import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import '../Styles/Login.css'
+import { Link } from 'react-router-dom';
 
 const  Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const emailRef = useRef(null);
@@ -52,7 +51,11 @@ const  Login = () => {
     <div className="account">
     <div className="content">
       <div className='regLog'>
-      <h2>Login</h2>
+      <h2>Login to your account</h2>
+         <div id="notAccount">
+            <h5>Don't have an account? </h5>
+            <Link to='/register'><h5>Sign up</h5></Link>
+         </div>
       </div>
       <div className="form">
       {error && <div className="error">{error?.message}</div>}
@@ -83,7 +86,7 @@ const  Login = () => {
         </div> */}
       </div>
     </div>
-    <div className="other">
+    {/* <div className="other">
 
        <div className="image">
       <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/PracticeSetsLaunchBlogHeader.width-1200.format-webp.webp" alt="" />
@@ -91,7 +94,7 @@ const  Login = () => {
       <div className="para">
        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam id libero incidunt repellendus aperiam voluptatum minima fugit harum beatae? Voluptatibus! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque obcaecati ratione explicabo nobis dolorem maiores rem ipsa veritatis perspiciatis. Aliquid incidunt cum quaerat quae aspernatur aperiam voluptatem beatae excepturi? Earum rem consequatur eaque id harum quibusdam cum optio atque error?</p> 
        </div>
-    </div>
+    </div> */}
   </div>
 );
 

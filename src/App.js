@@ -9,28 +9,37 @@ import {useDispatch ,useSelector} from 'react-redux';
 import { fetchUser } from './Data_Store/Features/userSlice';
 import { fetchTeam } from './Data_Store/Features/teamSlice';
 import { fetchProjects } from './Data_Store/Features/projectSlice.js';
+import Sidebar from './Components/Sidebar.js';
 
 
 function App() {
 
-   const dispatch = useDispatch();
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   
+   const {isLoading,isError} = useSelector((store)=> store.user);
 
   useEffect(()=>{
-    dispatch(fetchUser());
+    dispatch(fetchUser())
     dispatch(fetchTeam());
   },[dispatch])
 
-  const {isLoading} = useSelector((store)=> store.user);
+  // when  the user is not logged in and tries to access any other page except login then redirect them to login
+  useEffect(() => {
+    if (!isLoading && isError) {
+      navigate('/login'); 
+    }
+  }, [isLoading, isError, navigate]);
 
   return (
   !isLoading?
+    
    <div>
     <Header/>
-     <Outlet/>
-    {/* <Footer/> */}
+    <Outlet/>
    </div>
-   :<div style={{display:'flex',alignContent:'center',justifyContent:'center'}}><h1>Loading...</h1></div>
+
+   :<h1>Loading...</h1>
   );
 }
 

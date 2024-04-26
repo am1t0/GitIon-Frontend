@@ -43,18 +43,18 @@ export default function FolderShow({path}) {
   }, [owner, repoName,selectedBranch]);
 
   const handleItemClick=(item)=>{
-
-     dispatch(setCurr(item));
-    if(content.includes(item.name)){
-      dispatch(toggleContent(item.name));
-      return;
-      }
-
+    
+    // set current clicked file or folder
+    dispatch(setCurr(item));
+   
     if(item.type==='file') dispatch(fetchFileContent(item));
 
-    else{
-    dispatch(toggleContent(item.name));
-    dispatch(fetchFolderContent({owner, repoName,path: item.path,selectedBranch}));
+    else{ 
+        dispatch(toggleContent(item.name));
+
+        // if already opened then don't fetch data
+        if(!content.includes(item));
+           dispatch(fetchFolderContent({owner, repoName,path: item.path,selectedBranch}));
     }
   }    
   return (

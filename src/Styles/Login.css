@@ -1,27 +1,42 @@
 .regLog h2{
   font-weight:bolder;
 }
+#notAccount{
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+}
+#notAccount h6{
+    /* margin: 0; */
+}
 .account{
     /* border: 2px solid red; */
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    background-color:#0D1117;
+    color: white;
     height: 100vh;
 }
 .content{
-    border-radius: 7px;
-    margin-top: 40px;
+    /* border: 2px solid; */
+    /* border-radius: 7px; */
+    margin-top: 30px;
     padding-top: 20px;
     width: 35%;
-    height: 80%;
+    /* height: 80%; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 0px 7px rgba(93, 93, 93, 0.4);
+    border-width: 0.0625rem;
+    border-color: #30363d;
+    border-style: solid;
 }
 .form{
-    background: rgb(34,193,195);
-    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(43,55,209,1) 0%, rgba(34,193,195,1) 100%, rgba(245,45,45,1) 100%);
+    /* background: rgb(34,193,195); */
+    /* background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(43,55,209,1) 0%, rgba(34,193,195,1) 100%, rgba(245,45,45,1) 100%); */
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
     display: flex;

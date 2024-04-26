@@ -7,18 +7,10 @@ import Login from './Login';
 
 const Home = () => {
 
-  const {isLoggin} = useSelector((store)=>store.user);
-
   return (
-   <div >   
-     {
-      isLoggin 
-      ? <div style={{display:'flex'}}>
-       <Sidebar />
-       <Outlet/>
-       </div>
-      : <Login/> 
-     }
+   <div >  
+     <Sidebar/>
+     <Outlet/>
    </div>
   );
 };

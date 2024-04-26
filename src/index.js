@@ -33,7 +33,6 @@ const router = createBrowserRouter([
         { path: '/Todos', element: <Todo /> },
         {path:'/create-team',element: <CreateTeam/>}
       ]},
-      // {path:'/', element: <LandingPage />},
       {path:'/register',element: <RegisterPage/>},
       {path:"/login",element:<Login /> },
       {path:'/:teamName',element:<Team/> ,children:[

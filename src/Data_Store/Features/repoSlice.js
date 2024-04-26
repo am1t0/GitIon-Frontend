@@ -43,7 +43,6 @@ const repoSlice = createSlice({
             state.data = action.payload;
         }) 
         builder.addCase(fetchRepo.rejected, (state,action)=>{
-            console.log("Error : "+action.payload);
             state.isError = true;
         })
         
