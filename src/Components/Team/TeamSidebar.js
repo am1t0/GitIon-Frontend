@@ -11,6 +11,9 @@ export default function TeamSidebar({handleDeleteTeam}) {
   const projects = useSelector((store)=> store.project)
   const currTeam = useSelector((store)=> store.currTeam);
 
+  console.log('teamSidebar');
+  console.log(projects);
+  console.log(currTeam);
   const handleOnProjectCreate=(name)=>{   
         navigate(`/${currTeam.name}/create-project`)
   }

@@ -9,7 +9,6 @@ export default function Sidebar({handleTeamCreated }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const mothere = useDispatch();
-
   const handleTeamClick = (team) => {
     // DISPATCH THE ACTION TO OBTAIN THE LIST OF PROJECTS;
     // AND NAVIGATE ONLY AFTER IT HAS COMPLETED

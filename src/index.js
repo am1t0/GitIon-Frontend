@@ -35,6 +35,7 @@ const router = createBrowserRouter([
       ]},
       {path:'/register',element: <RegisterPage/>},
       {path:"/login",element:<Login /> },
+      
       {path:'/:teamName',element:<Team/> ,children:[
         {path:'/:teamName',element:<TeamIntro/>},
         {path:'/:teamName/create-project',element:<CreateProject/>},
