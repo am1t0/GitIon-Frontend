@@ -78,7 +78,7 @@ export default function FolderShow({path}) {
                 >
                 <p  
                 style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}}>
-                <i class="fa-solid fa-folder"></i>
+                <i className="fa-solid fa-folder"></i>
                   {item.name}
                 </p>
                </div>

@@ -85,7 +85,7 @@ export default function FilesAndFolders() {
       
         {/* ------COMMITS INFO HERE  SUDHARNA HAI PROPS KO----- */}
         <div id='commitInfo' onClick={handleCommitShow}>
-        <i class="fa-solid fa-timeline"></i>
+        <i className="fa-solid fa-timeline"></i>
         <h6>commits</h6>
        {
         // WE HAVE TO SHOW THIS COMMITHISTORY IN A NEW PAGE ONCE REDUX IS IMPLEMENTED 
@@ -96,7 +96,7 @@ export default function FilesAndFolders() {
         {/* REPO LINK BUTTON  */}
        <div className="codeBtn">
         <div className="code">
-        <i class="fa-solid fa-code"></i>
+        <i className="fa-solid fa-code"></i>
         <button onClick={()=>{setLink(!link)}}>code</button>
       
         </div>
@@ -143,7 +143,7 @@ export default function FilesAndFolders() {
               </div>
             ) : (
               <div className='file-fol'> 
-                 <i class="fa-solid fa-folder"></i>
+                 <i className="fa-solid fa-folder"></i>
                 <p onClick={()=> handleItemClick(item)}>{item.name}</p>
               </div>
             )}

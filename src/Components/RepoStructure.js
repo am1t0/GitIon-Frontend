@@ -42,7 +42,7 @@ export default function RepoStructure() {
 
           <div className='repoItem' key={item.name}>
             <li id='listItem'  onClick={()=>{handleOnClick(item)}} style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}} >
-            {item?.type==='file'?  <i className="fa-regular fa-file"></i> :<i class="fa-solid fa-folder"></i>}
+            {item?.type==='file'?  <i className="fa-regular fa-file"></i> :<i className="fa-solid fa-folder"></i>}
             {item.name}
             </li>
             {(item.type!=='file' && content.includes(item.name)) && <FolderShow path={item?.path} />}

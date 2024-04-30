@@ -1,16 +1,14 @@
 import React, { useState,useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import "../../Styles/TeamIntro.css"
 import getAccessToken from '../../Utils/auth.js';
 import { useSelector } from 'react-redux';
 import membAdd from "../../Sound/membAdd.wav"
 
 export default function TeamIntro() {
-  // getting the team object that passed while navigating this route
-  const location = useLocation();
-  const team = location.state?.team;
 
   // getting the user from store
+   const team = useSelector((store)=>store.currTeam.data);
 
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
@@ -151,7 +149,7 @@ export default function TeamIntro() {
               <div >
               <input type="search" placeholder='Search team members' required/>
               <div className="logo">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i className="fa-solid fa-magnifying-glass"></i>
               </div>
               </div>
               { 
@@ -174,11 +172,11 @@ export default function TeamIntro() {
               <ul>
                 {
                   member.map((member)=>(
-                    <>
+                    <div key={member._id}>
                     <div id="eachMemb">
 
                      <li>
-                     <div className="arrow" onClick={() => {setArrow(arrow===member.email?null:member.email) }}  style={{ rotate: (arrow===member.email) ? '0deg' : '-90deg'}} ><svg viewBox="-122.9 121.1 105.9 61.9" class="icon-arrow-down-mini" width="10" height="10"><path d="M-63.2,180.3l43.5-43.5c1.7-1.7,2.7-4,2.7-6.5s-1-4.8-2.7-6.5c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.7l-37.2,37.2l-37.2-37.2
+                     <div className="arrow" onClick={() => {setArrow(arrow===member.email?null:member.email) }}  style={{ rotate: (arrow===member.email) ? '0deg' : '-90deg'}} ><svg viewBox="-122.9 121.1 105.9 61.9" className="icon-arrow-down-mini" width="10" height="10"><path d="M-63.2,180.3l43.5-43.5c1.7-1.7,2.7-4,2.7-6.5s-1-4.8-2.7-6.5c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.7l-37.2,37.2l-37.2-37.2
  c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.6c-1.9,1.8-2.8,4.2-2.8,6.6c0,2.3,0.9,4.6,2.6,6.5l0,0c11.4,11.5,41,41.2,43,43.3l0.2,0.2
  C-73.5,183.9-66.8,183.9-63.2,180.3z"></path></svg></div>
                       <p>{member.fullname}</p> 
@@ -191,7 +189,7 @@ export default function TeamIntro() {
                        
                     </div>
                     {arrow===member.email && <h6>ISKO SHI DETAIL KE SATH SHOW KRNA HAI</h6>}
-                    </>
+                    </div>
                   ))
                   }
               </ul>

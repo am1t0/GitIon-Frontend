@@ -4,22 +4,15 @@ import '../Styles/Sidebar.css'
 import {useSelector,useDispatch} from 'react-redux';
 import {setTeam }from '../Data_Store/Features/currTeamSlice'    // yhhhhhhhaa dhayna
 import { fetchProjects } from '../Data_Store/Features/projectSlice';
+import getAccessToken from '../Utils/auth';
 
 export default function Sidebar({handleTeamCreated }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const mothere = useDispatch();
-  const handleTeamClick = (team) => {
-    // DISPATCH THE ACTION TO OBTAIN THE LIST OF PROJECTS;
-    // AND NAVIGATE ONLY AFTER IT HAS COMPLETED
-    dispatch(fetchProjects(team._id)).then(() => {
-       mothere(setTeam(team));
 
-      navigate(`/${team.name}`, { state: { team } });
-    }).catch((error) => {
-      // Handle any errors that might occur during the fetching of projects
-      console.error('Error fetching projects:', error);
-    });
+  const handleTeamClick = (team) => {
+      navigate(`/${team._id}/${team.name}`);
   }
   
   const teams = useSelector((store)=>store.team?.data?.data)
@@ -29,7 +22,7 @@ export default function Sidebar({handleTeamCreated }) {
     <div >
         <div className="flex-shrink-0 p-3 sidebar">
             <div className="logo">
-             <i class="fa-brands fa-github"></i>
+             <i className="fa-brands fa-github"></i>
              <span style={{fontWeight:'bolder'}}>Gittion</span>
             </div>
             <li className="border-top my-3 list-unstyled"></li>

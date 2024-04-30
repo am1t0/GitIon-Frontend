@@ -7,8 +7,8 @@ import ProjectTasks from './ProjectTasks';
 import ProjectDocs from './ProjectDocs';
 
 export default function Project() {
-    const currProject = useSelector((store)=>store.currProject);
-    const [content,setContent] = useState('Details')
+    
+    const [content,setContent] = useState('Documents')
   
 
     return (
@@ -23,7 +23,7 @@ export default function Project() {
           return <ProjectTasks/>;
 
         case 'Documents':
-          return currProject?._id && <ProjectDocs/>
+          return <ProjectDocs/>
 
         default:
           return null;

@@ -10,7 +10,7 @@ import personal from '../Images/personal.png'
        })
   return (
     <div className='landingPage'>
-       <div className="content-1">
+       {/* <div className="content-1">
          <div className="image-1">
             <img src={team} alt="" />
          </div>
@@ -28,7 +28,7 @@ import personal from '../Images/personal.png'
           <div className="image-1">
             <img src={personal} alt="" />
           </div>
-       </div>
+       </div> */}
     </div>
   );
 };

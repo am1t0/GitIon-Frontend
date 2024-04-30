@@ -22,7 +22,7 @@ export default function CreateProject() {
 
 
     const navigate = useNavigate();
-    const currTeam = useSelector((store)=>store.currTeam);
+    const currTeam = useSelector((store)=>store.currTeam.data);
     const [leaderToken, setLeaderToken] = useState('');
     const [project,setProject] = useState('');
 

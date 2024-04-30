@@ -36,13 +36,11 @@ const router = createBrowserRouter([
       {path:'/register',element: <RegisterPage/>},
       {path:"/login",element:<Login /> },
       
-      {path:'/:teamName',element:<Team/> ,children:[
-        {path:'/:teamName',element:<TeamIntro/>},
-        {path:'/:teamName/create-project',element:<CreateProject/>},
-      ]},
-      {path:'/project/:projectName',element:<Project/>,children:[
-        {path:'/project/:projectName/docs',element:<ProjectDocs/>},
-        {path:'/project/:projectName/:folderName',element:<FolderShow/>},
+      {path:'/:teamId/:teamName',element:<Team/>},
+
+      {path:'/project/:projectName/:projectId',element:<Project/>,children:[
+        {path:'/project/:projectName/:projectId/docs',element:<ProjectDocs/>},
+        {path:'/project/:projectName/:projectId/:folderName',element:<FolderShow/>},
       ]},
       {path:'/project/:projectName/content/:path', element: <Repo/>}
     ]

@@ -67,7 +67,7 @@ export default function FolderCopy({path}) {
                 style={{background:(currContent===item.name)&&'rgb(61, 61, 61)'}
                 }>
                 <p>
-                <i class="fa-solid fa-folder"></i>
+                <i className="fa-solid fa-folder"></i>
                   {item.name}
                 </p>
                </div>

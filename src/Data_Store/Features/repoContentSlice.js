@@ -4,8 +4,7 @@ export const fetchData = createAsyncThunk('fetchData', async ({project,selectedB
     const { repo: {owner, repoName} } = project;
     let branch = selectedBranch;
     if(!selectedBranch) branch = 'main';
-    console.log('branch selected is ');
-    console.log(branch);
+
     try {
         const [contentResponse, branchesResponse] = await Promise.all([
             fetch(`https://api.github.com/repos/${owner}/${repoName}/contents?ref=${branch}`, {

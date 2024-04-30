@@ -6,10 +6,9 @@ import { addTeam } from '../../Data_Store/Features/teamSlice.js';
 import { fetchTeam } from '../../Data_Store/Features/teamSlice.js';
 import "../../Styles/CreateTeam.css"
 
-export default function CreateTeam(props) {
+export default function CreateTeam({setShow}) {
     const location = useLocation();
     const navigate = useNavigate();
-    const handleTeamCreated = location.state?.handleTeamCreated || (()=>{});
 
     const nameRef = useRef();
     const descriptionRef = useRef();
@@ -33,11 +32,11 @@ export default function CreateTeam(props) {
 
     const {adding} = useSelector((store)=>store.team.newTeamStatus);
 
-    console.log('add hor rha hai kya '+adding);
 
   return (
     !adding &&
     <div className='content-3'>
+      <button className='btn btn-primary' onClick={()=> setShow(true)}>Back</button>
        <div className='detail-3'>
       <div className="heading">
     <h2>Create Team</h2>

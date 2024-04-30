@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const currProjectSlice = createSlice({
-    name: 'currTeam',
+    name: 'currProject',
     initialState: null,
     reducers: {
         setProject: (state, action) => {
