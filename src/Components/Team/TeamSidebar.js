@@ -5,6 +5,7 @@ import "../../Styles/TeamSidebar.css"
 import { setProject } from '../../Data_Store/Features/currProjectSlice';
 import { fetchData } from '../../Data_Store/Features/repoContentSlice';
 import { fetchProjects } from '../../Data_Store/Features/projectSlice';
+import getAccessToken from '../../Utils/auth';
 
 export default function TeamSidebar({setShow}) {
   const navigate = useNavigate();
@@ -13,18 +14,12 @@ export default function TeamSidebar({setShow}) {
   const projects = useSelector((store)=> store.project);
 
   const handleProjectClick=(project)=>{
-
-        // collecting the repo data associated with project then also  setting it as current project in Redux Store
-        dispatch(fetchData({project,selectedBranch:'main'})).then(()=>{
-
-        dispatch(setProject(project))
         
+        const {repo} = project;
+        localStorage.setItem("owner",repo.owner);
+        localStorage.setItem("repoName",repo.repoName);
+        localStorage.setItem("selectedBranch",'main');
         navigate(`/project/${project.name}/${project._id}`)
-
-      }).catch((error) => {
-        // Handle any errors that might occur during the fetching of projects
-        console.error('Error fetching repo:', error);
-      });
   }
 
    

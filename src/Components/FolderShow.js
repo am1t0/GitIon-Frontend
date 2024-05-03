@@ -8,8 +8,10 @@ import { fetchFileContent, fetchFolderContent } from '../Data_Store/Features/cur
 
 export default function FolderShow({path}) {
 
-  const {selectedBranch,content,currContent} = useSelector((store)=>store.moreInfo)
-  const {repo: {owner,repoName}}= useSelector((store)=>store.currProject);
+  const {content,currContent} = useSelector((store)=>store.moreInfo)
+  const selectedBranch = localStorage.getItem('selectedBranch');
+  const owner = localStorage.getItem('owner');
+  const repoName = localStorage.getItem('repoName');
   const [contents, setContents] = useState([]);
   const dispatch = useDispatch();
 

@@ -17,6 +17,7 @@ import {changeBranch, setCurr } from '../Data_Store/Features/moreInfoSlice.js';
 import { fetchData } from '../Data_Store/Features/repoContentSlice.js';
 import  {fetchFileContent, fetchFolderContent} from '../Data_Store/Features/currFileFolderSlice.js'
 import { toggleContent } from '../Data_Store/Features/moreInfoSlice.js';
+import { fetchBranches } from '../Data_Store/Features/branchSlice.js';
 
 
 export default function FilesAndFolders() {
@@ -24,18 +25,20 @@ export default function FilesAndFolders() {
   const [commits,setCommits] = useState(false);
   const [link,setLink] = useState(false);
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
+  // Current Project details 
+  const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject.data);
+ 
   // ALL CONTENTS OF REPO ASSOCIATED WITH PROJECT
-  const {data: {repoContent}} = useSelector((store)=>store.repo);
+  const  repoContent = useSelector((state) => state.repo.data);
+  
+  const selectedBranch = localStorage.getItem('selectedBranch');
 
-  const {selectedBranch} = useSelector((store)=> store.moreInfo);
-
-  // const selectedBranch = 'main';
-
-  const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject);
-  const project = useSelector((store)=>store.currProject);
+    useEffect(()=>{
+      dispatch(fetchBranches({project:{repo:{owner,repoName}}}));
+  },[])
+  
   const trimmedName = name.trim();
 
   // LINK OF REPO
@@ -49,18 +52,22 @@ export default function FilesAndFolders() {
     }
 
   const handleItemClick=(item)=>{
-     
+    
+  const selectedBranch = localStorage.getItem('selectedBranch');
+
        dispatch(setCurr(item));
-       if(item.type==='file') dispatch(fetchFileContent(item))
+
+       if(item.type==='file') dispatch(fetchFileContent(item)).then(()=>{
+               navigate(`/project/${trimmedName}/content/${item?.path}`);
+       })
 
        else{
         dispatch(toggleContent(item.name));
-         dispatch(fetchFolderContent({owner,repoName,path: item.path,selectedBranch}));
+         dispatch(fetchFolderContent({owner,repoName,path: item.path,selectedBranch})).then(()=>{
+               navigate(`/project/${trimmedName}/content/${item?.path}`);
+         })
        }
         
-       
-       // ISKO AB TU ASA LINK DAAL SKTA HAI NAME KE SATH  //
-       navigate(`/project/${trimmedName}/content/${item?.path}`);
   }
   const handleCommitShow=()=>{
     if(commits) 
@@ -71,16 +78,16 @@ export default function FilesAndFolders() {
   }
 
   const handleBranchChange = (event) => {
-    dispatch(changeBranch(event.target.value));
-    dispatch(fetchData({project,selectedBranch: event.target.value}));
+    localStorage.setItem('selectedBranch', event.target.value);
+    dispatch(fetchData({project:{repo:{owner,repoName}},selectedBranch: event.target.value}));
   };
-  return ( repoContent &&
+  return ( repoContent ?
     <div> 
         <div className="bar"></div>
       <div id='top'>
        { selectedBranch!=='main' && <PullRequestForm/>}
         
-       {/*-------BRANCH RELATED CONTENT HERE */}
+       {/* -------BRANCH RELATED CONTENT HERE */}
        <Branches handleBranchChange={handleBranchChange} selectedBranch={selectedBranch}/>
       
         {/* ------COMMITS INFO HERE  SUDHARNA HAI PROPS KO----- */}
@@ -125,7 +132,7 @@ export default function FilesAndFolders() {
       <ul id='file-n-folders'>
          <h6 className='first-row'>owner : {owner}</h6>
          <div className="line"></div>
-        { repoContent?.length!==0?
+        { 
             repoContent?.map((item) => (
               
           <li key={item.name}>
@@ -149,12 +156,11 @@ export default function FilesAndFolders() {
             )}
           </li>
         ))
-      : <InitialPushinComands owner={owner} repoName={repoName}/>      // if the repo content is empty it has no files and folders
       }
       </ul>
       <div id="readMe">
       <h1>README DALNA HAI ?</h1>
     </div>
-    </div>
+    </div>: <InitialPushinComands owner={owner} repoName={repoName}/>      // if the repo content is empty it has no files and folders
   );
 };

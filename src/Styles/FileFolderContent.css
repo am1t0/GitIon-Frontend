@@ -1,5 +1,57 @@
 #fileFolderContent{
-    border: 3px solid red;
-    background: yellow;
     width: 70%;
+    /* border: 1px solid #6e6e6e; */
+    border-radius: 7px;
+}
+#fileFolderContent pre{
+     color: white;
+}
+/* CSS for the table */
+.foldersTable {
+    width: 100%;
+    border: 1px solid #545454;
+    border-collapse: separate;
+    border-spacing: 0px;
+    border-radius: 6px;
+    table-layout: fixed;
+    overflow: unset;
+}
+
+/* CSS for table headers */
+.foldersHeading {
+    background-color: #3b3b3b;
+}
+
+/* CSS for table header cells */
+.foldersHeading p {
+    padding: 10px; /* Adjust padding as needed */
+    font-weight: bold;
+}
+.rowClass {
+    cursor: pointer;
+}
+
+.rowClass th{
+    height: 40px;
+}
+.rowClass:hover {
+    background-color: rgb(35, 35, 35);
+}
+/* CSS for table data cells */
+.rowClass td {
+    padding: 10px; 
+    border-bottom: 1px solid #545454;
+}
+.rowClass:last-child td {
+    border-bottom: none; 
+}
+.rowClass td p{
+    margin: 0;
+}
+.last-col{
+    width: 16%;
+}
+
+#headRow th{
+    padding-left: 10px;
 }

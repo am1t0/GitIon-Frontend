@@ -6,7 +6,6 @@ import "../../Styles/Header.css"
 export default function Header() {
 
   const {isError,isLoggin} = useSelector((store)=> store.user);
-  console.log(isError,isLoggin)
 
   return (
     <header className="p-3 text-white header">

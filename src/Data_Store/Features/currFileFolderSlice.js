@@ -1,34 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchFileContent = createAsyncThunk('fetchFileContent', async (file)=>{
+export const fetchFileContent = createAsyncThunk('fetchFileContent', async (item) => {
     try {
-        const response = await fetch(file.download_url);
+        const response = await fetch(item.download_url);
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch file content: ${response.status} ${response.statusText}`);
+            throw new Error(`Failed to fetch file content: ${response.status} ${response.statusText}`);
         }
 
-        const fetchedContent = await response.text();
-
-        // Check if the content is encoded in base64
-        if (file.encoding === 'base64') {
-          const decodedContent = atob(fetchedContent);
-          return decodedContent;
-
+        let fetchedContent;
+        if (item.encode === 'base64') {
+            // If the content is encoded in base64, decode it
+            const arrayBuffer = await response.arrayBuffer();
+            const bytes = new Uint8Array(arrayBuffer);
+            fetchedContent = btoa(String.fromCharCode.apply(null, bytes));
         } else {
-          return  fetchedContent;
+            fetchedContent = await response.text();
         }
 
-      } catch (error) {
+        return fetchedContent;
+    } catch (error) {
         console.error('Error fetching file content:', error);
-      }
-})
+        throw error; // Re-throw the error to handle it in the component
+    }
+});
 
 export const fetchFolderContent = createAsyncThunk('fetchFolderContent', async ({owner,repoName,path,selectedBranch})=>{
     try {
         let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;
-        
+
         if (path !== null) {
           url += `/${path}`;
         }

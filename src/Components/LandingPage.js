@@ -5,9 +5,7 @@ import personal from '../Images/personal.png'
 
  
  const LandingPage = () => {
-       useEffect(()=>{
-        console.log('Hello')
-       })
+
   return (
     <div className='landingPage'>
        {/* <div className="content-1">

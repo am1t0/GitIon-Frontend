@@ -15,8 +15,7 @@ export default function FolderCopy({path}) {
   const {currContent} = useSelector((store)=> store.moreInfo)
 
   useEffect(() => {
-     console.log('In FOLDER COPY BHAI');
-     console.log(path);
+
     const fetchRepoContents = async () => {
       try {
       let url = `https://api.github.com/repos/${owner}/${repoName}/contents`;

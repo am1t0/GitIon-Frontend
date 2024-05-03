@@ -9,6 +9,7 @@ export default function TeamIntro() {
 
   // getting the user from store
    const team = useSelector((store)=>store.currTeam.data);
+   const {isLoading,members} = useSelector((store)=> store.member);
 
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
@@ -24,7 +25,7 @@ export default function TeamIntro() {
     const getAdmin = () => {
       let adminMember = null;
 
-      member.forEach(member => {
+      members?.forEach(member => {
         if (team?.owner === member._id) {
           adminMember = member;
         }
@@ -35,37 +36,37 @@ export default function TeamIntro() {
 
     // Execute the getAdmin function and set the result to the admin state
     setAdmin(getAdmin());
-  }, [member, team?.owner]); 
+  }, [members]); 
 
-  useEffect(() => {
-    // Fetch member details when the component mounts
-    fetchMemberDetails();
-  }, [team]);
+  // useEffect(() => {
+  //   // Fetch member details when the component mounts
+  //   fetchMemberDetails();
+  // }, [team]);
 
-  const fetchMemberDetails= async () =>{
-     try {
+  // const fetchMemberDetails= async () =>{
+  //    try {
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/members/${team._id}`, {
-        method: 'GET',  // Adjust the method and endpoint based on your API
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`
-        },
-      });;
+  //     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/members/${team?._id}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${getAccessToken()}`
+  //       },
+  //     });;
 
-      if (!response.ok) {
-        console.error('Error:', response.statusText);
-        return;
-      }
-      const memberObj = await response.json();
-      const memberData = await memberObj.data;
-      setMember(memberData);
+  //     if (!response.ok) {
+  //       console.error('Error:', response.statusText);
+  //       return;
+  //     }
+  //     const memberObj = await response.json();
+  //     const memberData = await memberObj.data;
+  //     setMember(memberData);
       
       
-     } catch (error) {
-      console.error('Error in showing members of teams:', error.message);
-     }
-  }
+  //    } catch (error) {
+  //     console.error('Error in showing members of teams:', error.message);
+  //    }
+  // }
 
   const handleAddMember= async () =>{
     try{
@@ -135,6 +136,7 @@ export default function TeamIntro() {
   }
 
   return (
+    team ?
     <div  className="team-intro">
         <div id="intro-memb">
           <div id="intro">
@@ -163,15 +165,18 @@ export default function TeamIntro() {
               </div>
               }
             </div>
+
             <div id="teamMemb">
-              {member.length === 0 && (
-          <p>No team members found.</p>
-        )}
-              <div id="members">
+              { !member && (
+            <p>No team members found.</p>
+            )}
+              
+              {!isLoading  ? <div id="members">
+              
               <li id='admin'><h6>{admin?.fullname}</h6> <h6>{admin?.email}</h6> <button className='btn btn-success'>admin</button></li>
               <ul>
                 {
-                  member.map((member)=>(
+                  members.map((member)=>(
                     <div key={member._id}>
                     <div id="eachMemb">
 
@@ -193,7 +198,7 @@ export default function TeamIntro() {
                   ))
                   }
               </ul>
-              </div>
+              </div> : <center><h3 style={{color:'red'}}>Loading...</h3></center> }
             </div>
           </div>
         </div>
@@ -212,6 +217,6 @@ export default function TeamIntro() {
             </div>
           </div>
         </div> */}
-    </div>
+    </div> : <h1>Loading...</h1>
   )
 }

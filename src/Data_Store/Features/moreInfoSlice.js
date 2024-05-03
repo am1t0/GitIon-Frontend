@@ -26,8 +26,8 @@ export const fetchContent  = createAsyncThunk('fetchRepo', async ({owner,repoNam
 const moreInfoSlice = createSlice({
     name: 'moreInfo',
     initialState: {
-        selectedBranch:'main',
         content:[],
+        fromRepo:false,
         currContent:null,
     },
     extraReducers: (builder) => {
@@ -55,9 +55,15 @@ const moreInfoSlice = createSlice({
           },
           setCurr:(state,action)=>{
             state.currContent = action.payload;
+          },
+          changeBranch:(state,action)=>{
+              state.selectedBranch = action.payload;
+          },
+          setFrom:(state,action)=>{
+              state.fromRepo = true;
           }
     }
 });
 
-export const { changeBranch,toggleContent,setCurr} = moreInfoSlice.actions;
+export const { changeBranch,toggleContent,setCurr,setFrom} = moreInfoSlice.actions;
 export default moreInfoSlice.reducer;

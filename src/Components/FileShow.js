@@ -35,8 +35,8 @@ const FileShow = ({ content,isOpen }) => {
   return (
     <div style={{display:(isOpen)?'block':'none'}}>
       {
-      fileContent ? (
-        <pre style={{position:'absolute',left:"712px",border:"2px solid",width:'48%',minHeight:'400px',padding:"20px 20px 20px 20px"}}>{fileContent}</pre>):''
+      fileContent  && (
+        <h4>{fileContent}</h4>)
       }
     </div>
   );

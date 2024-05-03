@@ -5,17 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import FileShow from './FileShow';
 import '../Styles/repoStructure.css';
 import { fetchFileContent, fetchFolderContent } from '../Data_Store/Features/currFileFolderSlice';
-import { setCurr, toggleContent } from '../Data_Store/Features/moreInfoSlice';
+import { setCurr, setFrom, toggleContent } from '../Data_Store/Features/moreInfoSlice';
 
 export default function RepoStructure() {
     const dispatch = useDispatch();
-    const {data: {repoContent}} =  useSelector((store)=>store.repo)
-    const {repo: {owner,repoName}}= useSelector((store)=>store.currProject);
-    const {selectedBranch,content} = useSelector((store)=>store.moreInfo)
+    const repoContent=  useSelector((store)=>store.repo?.data)
+    const selectedBranch = localStorage.getItem('selectedBranch');
+    const owner = localStorage.getItem('owner');
+    const  repoName = localStorage.getItem("repoName");
+    const {content} = useSelector((store)=>store.moreInfo)
     const {currContent} = useSelector((store)=>store.moreInfo);
 
     const handleOnClick=(item)=>{
-       
+      dispatch(setFrom(true)); 
       dispatch(setCurr(item));
       if(content.includes(item.name)){
         dispatch(toggleContent(item.name));
@@ -31,12 +33,10 @@ export default function RepoStructure() {
       dispatch(fetchFolderContent({owner,repoName,path:item.path,selectedBranch}));
       }
     }
-    
-  console.log('this is currFileFolder is:')  
-  console.log(currContent)
 
   return (
     <div id='structure'>
+        <h4>branch : {selectedBranch}</h4>
       {
          repoContent?.map((item)=>(
 

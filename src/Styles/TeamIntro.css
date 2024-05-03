@@ -3,7 +3,7 @@
     display: flex;
     width: 80%;
     justify-content: center;
-    background-color: black;
+    background-color: #0D1117;
     color: white;
 }
 
@@ -12,21 +12,23 @@
     border-radius: 9px;
     margin: 5px 0px 0px 5px;
     width: 71%;
-    background: rgb(34,193,195);
-background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, rgba(222,236,54,1) 0%, rgba(23,4,44,1) 0%);
+    background-color: #0D1117;
+    border-width: 0.0625rem;
+    border-color: #414851;
+    border-style: solid;
 }
 
 #intro{
     /* border: 2px solid  green; */
     display: flex;
     flex-direction: column;
-    background-color: #333333;
+    background-color: #0D1117;
     border-radius: 5px;
 }
 
 #intro h3{
     text-align: center;
-    color: #ffc107;
+    /* color: #ffc107; */
     margin-top: 10px;
 }
 
@@ -96,7 +98,7 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
 #team-Imp{
     border: 2px solid;
     width: 45%;
-    background: #ffc107;
+    /* background: #ffc107; */
     margin-top: 13px;
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
@@ -111,8 +113,6 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
 
 #members{
     /* border: 1px solid; */
-    border-radius: 10px;
-    box-shadow: 0px 0px 2px white;
     padding: 1px 0px 1px 0px;
     margin-top: 19px;
     display: flex;
@@ -161,17 +161,20 @@ background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(58,45,245,1) 0%, r
 #admin{
     height: 50px;
     margin: 17px 30px;
-    background: #ffc107;
+    /* background: #ffc107; */
     border-radius: 8px;
     width: 71%;
     display: flex;
     align-items: center;
     justify-content: space-around;
+    border-width: 0.0625rem;
+    border-color: #414851;
+    border-style: solid;
 }
 #admin h6{
    margin: 0px;
    padding: 0px;
-   color: black;
+   /* color: black; */
 }
 
 /* Animation of the arrow */

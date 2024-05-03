@@ -7,11 +7,9 @@ import currTeamReducer from '../Features/currTeamSlice';
 import currProjectReducer from '../Features/currProjectSlice';
 import moreInfoReducer from '../Features/moreInfoSlice';
 import currFileFolderReducer from '../Features/currFileFolderSlice'
-import { enableMapSet } from 'immer';
+import branchesReducer from '../Features/branchSlice'
+import memberReducer from '../Features/memberSlice'
 
-// Call enableMapSet() before your application starts
-
-enableMapSet();
 
 const store = configureStore({
     reducer:{
@@ -24,6 +22,8 @@ const store = configureStore({
        repo: repoReducer,
        moreInfo: moreInfoReducer,
        currFileFolder: currFileFolderReducer,
+       branches: branchesReducer,
+       member: memberReducer,
     }
 })
 
