@@ -1,12 +1,68 @@
 #fileFolderContent{
-    width: 70%;
+    width: 76%;
     /* border: 1px solid #6e6e6e; */
     border-radius: 7px;
 }
 #fileFolderContent pre{
      color: white;
 }
-/* CSS for the table */
+.upper-cnt{
+    border: 2px solid;
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
+.addFile{
+    /* border: 2px solid; */
+    position: relative;
+    top: 50px;
+    right: 30px;
+}
+.addFile button{
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    border:1px solid rgb(95, 95, 95);
+    width: 95px;
+    border-radius: 6px;
+}
+.addFile button h6{
+    margin-bottom: 2px;
+}
+.addFile button i{
+    transition: all .3s ease;
+}
+
+ .nor-rotate{
+    transform: rotate(-180deg);
+ } 
+.options{
+    background-color: rgb(41, 41, 41);
+    border:1px solid rgb(81, 81, 81);
+    border-radius: 5px;
+    padding: 8px;
+    transition: all .3s ease-in-out;
+}
+.options div{
+    display: flex;
+    align-items: center;
+    /* border:1px solid rgb(81, 81, 81); */
+    border-radius: 5px;
+    margin: 8px 0px;
+    padding: 2px 7px;
+    transition: all .2s ease-in-out;
+}
+.options :hover{
+   cursor: pointer;
+   background: black;
+}
+.options div p{
+    margin: 1px 4px 3px 11px;
+}
 .foldersTable {
     width: 100%;
     border: 1px solid #545454;
@@ -17,14 +73,12 @@
     overflow: unset;
 }
 
-/* CSS for table headers */
 .foldersHeading {
     background-color: #3b3b3b;
 }
 
-/* CSS for table header cells */
 .foldersHeading p {
-    padding: 10px; /* Adjust padding as needed */
+    padding: 10px; 
     font-weight: bold;
 }
 .rowClass {
@@ -37,7 +91,7 @@
 .rowClass:hover {
     background-color: rgb(35, 35, 35);
 }
-/* CSS for table data cells */
+
 .rowClass td {
     padding: 10px; 
     border-bottom: 1px solid #545454;

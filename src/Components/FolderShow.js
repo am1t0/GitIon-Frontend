@@ -68,7 +68,7 @@ export default function FolderShow({path}) {
               <div className='file-n-folder'>
                <p 
                onClick={()=> {handleItemClick(item)}}  
-               style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}}>
+               style={{background:(currContent.name===item.name) && 'brown'}}>
                <i className="fa-regular fa-file"></i> 
                 {item.name}
                </p>
@@ -79,7 +79,7 @@ export default function FolderShow({path}) {
                 onClick={()=> {handleItemClick(item)}}
                 >
                 <p  
-                style={{background:(item.type==='file' ? currContent===item:currContent===item.name) && 'brown'}}>
+                style={{background:(currContent===item.name) && 'brown'}}>
                 <i className="fa-solid fa-folder"></i>
                   {item.name}
                 </p>

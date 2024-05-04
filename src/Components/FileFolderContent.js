@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../Styles/FileFolderContent.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurr, toggleContent } from '../Data_Store/Features/moreInfoSlice';
@@ -10,6 +10,8 @@ export default function FileFolderContent() {
   const owner = localStorage.getItem('owner');
   const repoName = localStorage.getItem('repoName');
   const {fromRepo} = useSelector((store)=> store.moreInfo);
+  const [show,setShow] = useState(false);
+  const [isRotated, setIsRotated] = useState(false);
   const dispatch = useDispatch();
 
 
@@ -24,10 +26,31 @@ export default function FileFolderContent() {
     }
      
   }
-  
+  const handleFileAddSelection=(event)=>{
+     console.log(event.target.value, ' option selected');
+  }
+  const handleFileUploadShow=()=>{
+       setShow(!show);
+       setIsRotated(!isRotated);
+  }
+
+
   return (
+   <div id='fileFolderContent'>
+    <div className="upper-cnt">
+       <h4>Path : breadcrum</h4>
+       <div className="addFile">
+           <button onClick={handleFileUploadShow}><h6>Add file </h6> <i className={`fa-solid fa-arrow-down ${isRotated ? 'rev-rotate' : 'nor-rotate'}`}></i></button>
+           <div className="options" style={{opacity:(show)?'1':'0'}}>
+              <div><i class="fa-solid fa-arrow-up-from-bracket"></i><p>upload file</p></div>
+              <div><i class="fa-solid fa-plus"></i> <p>create new file</p></div>
+            </div>
+       </div>
+    </div>
+    {
     !isLoading ?
-    <div id='fileFolderContent'>
+  
+    <div className='lower-cnt'>
       {file && <pre>{file}</pre>}
 
       {folder && folder.length > 0 && (
@@ -50,7 +73,8 @@ export default function FileFolderContent() {
         </tbody>
     </table>
 )}
-
     </div> : (fromRepo)? <h1 style={{width:'70%'}}>loading...</h1> : <h3>Select a file/folder to display</h3>
+}
+    </div>
   )
 }

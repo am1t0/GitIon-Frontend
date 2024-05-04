@@ -28,7 +28,7 @@ const moreInfoSlice = createSlice({
     initialState: {
         content:[],
         fromRepo:false,
-        currContent:null,
+        currContent:{name:'nothing'},
     },
     extraReducers: (builder) => {
         builder.addCase(fetchContent.pending, (state, action) => {

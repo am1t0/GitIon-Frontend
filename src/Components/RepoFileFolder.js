@@ -151,7 +151,8 @@ export default function FilesAndFolders() {
             ) : (
               <div className='file-fol'> 
                  <i className="fa-solid fa-folder"></i>
-                <p onClick={()=> handleItemClick(item)}>{item.name}</p>
+                <p onClick={()=> handleItemClick(item)}>
+                  {item.name}</p>
               </div>
             )}
           </li>
