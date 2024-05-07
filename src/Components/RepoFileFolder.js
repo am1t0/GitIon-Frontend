@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import FileShow from '../../../frontend2/src/Components/FileShow';
 import FolderShow from './FolderShow';
 import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
-import CommitHistory from '../../../frontend2/src/Components/CommitHistory';
+import CommitHistory from '../../../frontend2/src/Components/Repo/CommitHistory';
 import InitialPushinComands from '../../../frontend2/src/Components/InitialPushinComands';
 import Branches from '../../../frontend2/src/Components/Branch/Branches';
 import PullRequestForm from './PullRequestForm';

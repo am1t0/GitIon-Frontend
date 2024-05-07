@@ -22,6 +22,7 @@ import FolderShow from './Components/FolderShow.js';
 import store from './Data_Store/Store/Store.js';
 import Repo from './Components/Repo/Repo.js';
 import FileFolderContent from './Components/FileFolderContent.js';
+import Profile from './Components/Profile.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     path:'/',element: <App/> , children:[
       {path:'/',element:<Home/> , children:[
         { path: '/', element: <LandingPage /> },
+        {path:'/profile/:userame',element:<Profile/>},
         { path: '/Todos', element: <Todo /> },
         {path:'/create-team',element: <CreateTeam/>}
       ]},

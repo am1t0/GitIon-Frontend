@@ -1,6 +1,8 @@
 #fileFolderContent{
     width: 76%;
     /* border: 1px solid #6e6e6e; */
+    max-height: 700px;
+    overflow: scroll;
     border-radius: 7px;
 }
 #fileFolderContent pre{
@@ -62,6 +64,9 @@
 }
 .options div p{
     margin: 1px 4px 3px 11px;
+}
+.lover-cnt{
+    overflow: scroll;
 }
 .foldersTable {
     width: 100%;

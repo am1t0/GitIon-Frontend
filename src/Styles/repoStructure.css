@@ -1,7 +1,7 @@
 #structure{
     width: 22%;
     padding: 10px 8px;
-    height: 700px;
+    max-height: 900px;
     overflow-y: scroll;
     border:1px solid rgb(46 46 46);
 }
@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-bottom: 18px
 }
 .addf-bnch{
     display: flex;
