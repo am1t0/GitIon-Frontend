@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     path:'/',element: <App/> , children:[
       {path:'/',element:<Home/> , children:[
         { path: '/', element: <LandingPage /> },
-        {path:'/profile/:userame',element:<Profile/>},
+        {path:'/profile/:username',element:<Profile/>},
         { path: '/Todos', element: <Todo /> },
         {path:'/create-team',element: <CreateTeam/>}
       ]},

@@ -25,14 +25,68 @@ width: 40%;
     border-radius: 10px;
     background-image: linear-gradient(to right, rgb(14, 85, 224), rgb(195, 108, 236));
 }
-.img{
+.img {
     position: relative;
-    top: 98px;
-    height: 140px;
-    width: 140px;
-    border-radius: 200px;
-    background: white;
+    top: 100px;
+    width: 140px; 
+    height: 140px; 
+    border-radius: 70px;
+    background-color: #333; 
+    overflow: hidden;
 }
+
+.no-image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+}
+
+.img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hoverProfile {
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%; /* Cover the entire width of the section */
+    height: 100%; /* Cover the entire height of the section */
+    background-color: rgba(0, 0, 0, 0.7); /* Example background color */
+    color: white;
+    padding: 10px;
+    box-sizing: border-box; /* Include padding in width and height */
+    text-align: center; /* Center text horizontally */
+    line-height: 140px; 
+    transition: all .3s ease-in-out;
+    font-size: 13px;
+}
+
+#profile-upload {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    /* left: -9999px; */
+}
+
+.img:hover .hoverProfile {
+    opacity: 1;
+}
+
+#img-load{
+    position: relative;
+    top: 50px;
+    left: 53px;
+}
+
 
 .coreDetail{
     /* border: 2px solid; */
@@ -63,11 +117,13 @@ width: 40%;
 .lt{
     border:1px solid rgb(61, 61, 61);
     border-radius: 6px;
+    margin: 0;
     width: 18%;
     text-align: center;
     font-size: 14px;
 }
 .rt{
+   margin: 0;
    width: 60%;
    font-size: 14px;
 }
