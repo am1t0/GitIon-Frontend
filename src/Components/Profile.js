@@ -42,7 +42,6 @@ export default function Profile() {
 
         if (response.ok) {
             console.log('File uploaded successfully');
-            // window.location.reload();
             dispatch(fetchUser()).then(()=>{
               setLoading(false);
 
@@ -94,6 +93,10 @@ export default function Profile() {
       }
       <div className="left-frm">
         <div className="prf-img">
+          <div id="bg">
+             {/* <img src={user?.profile} alt="fkljdjfdl" /> */}
+             {/* <i class="fa-solid fa-camera"></i> */}
+          </div>
           <section className={user?.profile ? "img with-image" : "img without-image"}>
             {user?.profile ? (
               !loading ?<img src={user?.profile} alt="" /> :<div class="spinner-border" id='img-load' role="status">
@@ -118,7 +121,6 @@ export default function Profile() {
 
         <div className="coreDetail">
           <section>
-            {/* <p id='part'>Contacts</p> */}
             <ul id='c-info'>
               <li><p className='lt'>Phone</p> <p className='rt'>+91 {user?.phone}</p></li>
               <li><p className='lt'>Address</p><p className='rt'>{user?.address}</p></li>
@@ -132,8 +134,15 @@ export default function Profile() {
         </div>
 
       </div>
+         <div className="dv"></div>
       <div className="right-frm">
         <div className="detl">
+          <section className="block">
+            <p id='part'>Work</p>
+            <h6>Google developer , SWE-III </h6>
+             <p>12th Bellingham Street, California , USA</p>
+            <p></p>
+          </section>
           <section className="block">
             <p id='part'>College</p>
             <h6>{user?.collegName}</h6>

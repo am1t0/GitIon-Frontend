@@ -11,15 +11,15 @@ import { fetchTeam } from './Data_Store/Features/teamSlice';
 import { fetchProjects } from './Data_Store/Features/projectSlice.js';
 import Sidebar from './Components/Sidebar.js';
 
-
 function App() {
-
-   const navigate = useNavigate();
-   const dispatch = useDispatch();
-   
-   const {isLoading,isError} = useSelector((store)=> store.user);
-
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const {isLoading,isError} = useSelector((store)=> store.user);
+  
   useEffect(()=>{
+
     dispatch(fetchUser())
     dispatch(fetchTeam());
   },[dispatch])
