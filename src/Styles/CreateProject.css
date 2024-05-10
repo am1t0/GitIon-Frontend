@@ -4,7 +4,12 @@
     display: flex;
     /* background-color: black; */
 }
-
+input{
+    background-color: black;
+}
+label{
+    color: white;
+}
 .project-n-repo{
     /* border: 2px solid blue; */
     width: 50%;

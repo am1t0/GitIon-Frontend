@@ -23,7 +23,6 @@ export default function CreateProject() {
 
     const navigate = useNavigate();
     const currTeam = useSelector((store)=>store.currTeam.data);
-    const [leaderToken, setLeaderToken] = useState('');
     const [project,setProject] = useState('');
 
 
@@ -31,27 +30,27 @@ export default function CreateProject() {
     const [connectOrCreate,setConnectOrCreate] = useState(null);
 
     useEffect(() => {
-      const fetchLeaderToken = async () => {
-        try {
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/gitToken/${currTeam?.owner}`,{
-            method:'GET',
-            headers:{
-              'Content-Type': 'application/json',
-              'Authorization':`Bearer ${getAccessToken()}`
-            }
-          });
-          if (!response.ok) throw new Error(await response.text());
+      // const fetchLeaderToken = async () => {
+      //   try {
+      //     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/gitToken/${currTeam?.owner}`,{
+      //       method:'GET',
+      //       headers:{
+      //         'Content-Type': 'application/json',
+      //         'Authorization':`Bearer ${getAccessToken()}`
+      //       }
+      //     });
+      //     if (!response.ok) throw new Error(await response.text());
 
-          const data = await response.json();
+      //     const data = await response.json();
 
-          setLeaderToken(data.data.gitToken);
+      //     setLeaderToken(data.data.gitToken);
       
-        } catch (error) {
-          console.error('Error fetching leader token:', error);
-        }
-      };
+      //   } catch (error) {
+      //     console.error('Error fetching leader token:', error);
+      //   }
+      // };
   
-      fetchLeaderToken();
+      // fetchLeaderToken();
     }, []); 
 
     const handleProjectCreate = async (event) => {
@@ -91,12 +90,13 @@ export default function CreateProject() {
       };
 
 const handleCreateRepository = async () => {
+    
         try {
           const response = await fetch('https://api.github.com/user/repos', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${leaderToken}`,
+              'Authorization': `Bearer ${localStorage.getItem('leaderToken')}`,
             },
             body: JSON.stringify({
               name: RnameRef.current.value,
@@ -163,7 +163,7 @@ const handleConnectRepository = async () => {
   
 }      
   return (
-    <div className="outerBox">
+    <div className="outerBox" style={{background:'black'}}>
     <div className='project-n-repo'>
       
       {/* form for project creation  */}
@@ -278,9 +278,9 @@ const handleConnectRepository = async () => {
       </form>
     </div>}
     </div>
-    <div className="other">
+    {/* <div className="other">
        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius nihil maiores ut nam laboriosam aut commodi sunt, sed veniam animi quos distinctio. Minima suscipit nihil, perspiciatis cumque esse odit adipisci fuga obcaecati nisi eius, recusandae, consectetur officia optio beatae porro necessitatibus iste. Quia magnam, aliquid quaerat in inventore laudantium expedita perferendis alias ut veritatis aperiam voluptas rem adipisci optio. Cumque accusantium ipsum voluptates minima explicabo, necessitatibus eius quae ab quo quaerat, nesciunt ratione sed porro iusto repellendus, consectetur inventore id impedit esse tenetur. Unde repellat dolores corrupti quaerat! Natus vel fugiat debitis id officia in omnis et explicabo qui eos?</p>
-    </div>
+    </div> */}
     </div>
   )
 }
