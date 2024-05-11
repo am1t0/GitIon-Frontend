@@ -7,26 +7,52 @@
     /* border: 2px solid; */
     padding: 30px;
   }
+  .edit-form-container {
+  
+ }
+ 
+ .edit-form {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 200px; */
+  /* height: 100%; */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background to overlay on the entire screen */
+  z-index: 9999; /* Ensures it appears above all other content */
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+    background-color: rgb(48, 46, 46);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+ }
+ 
   .options-list {
     position: absolute;
     top: 100%;
     left: 0;
     z-index: 1;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    background: rgb(35, 35, 35);
+    /* border: 1px solid #7d7d7d; */
+    border-radius: 5px;
     padding: 0;
     margin: 0;
     list-style: none;
   }
   
   .options-list li {
-    padding: 8px 12px;
+    padding: 8px 8px;
+    /* border: 2px solid; */
+    text-align: start;
+    border-radius: 5px;
+    font-size: 13px;
     cursor: pointer;
   }
   
   .options-list li:hover {
-    background: #f0f0f0;
+    background: #323232;
   }
   
   .tasktable {
@@ -43,13 +69,13 @@
   td,th {
     /* padding: 8px 20px; */
     height: 50px;
-    padding: 4px 3px;
-    text-align: left;
+    /* padding: 4px 3px; */
+    padding-left: 10px;
+    /* text-align: left; */
     border-bottom: 1px solid #343434;
     border-right: 1px solid #343434;
     font-size: 14px;
     color: rgb(218, 218, 218);
-    min-width: 120px;
     white-space: nowrap;
     /* text-align: center; */
   }
@@ -113,6 +139,7 @@ th:first-child, td:first-child {
 #nwTask td{
     padding: 0;
 }   
+
 #open{ 
     opacity: 0;
     cursor: pointer;
@@ -146,9 +173,8 @@ tr:hover #open{
 /* INPUTS OF THE LAST ROW */
 
 td input,select{
-    padding: 0;
     margin: 0;
-    width: 100%;
+    width:  170px;
     height: 40px;
     background: #080b0e;
     outline: none;
@@ -159,10 +185,25 @@ td input,select{
     /* margin: 0px 2px; */
     /* border: 2px solid; */
 }
-
 #crtBtn button{
     background: rgb(38, 129, 249);
     padding: 3px 5px;
     border-radius: 3px;
     border: none;
+}
+
+td.name input{
+  min-width: 170px;
+}
+td.state select{
+  min-width: 60px;
+}
+td.assignee input{
+  min-width: 200px;
+}
+td.due input{
+  width: 113px;
+}
+td.priority select{
+  width: 110px;
 }
