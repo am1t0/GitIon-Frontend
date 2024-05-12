@@ -7,6 +7,7 @@ import ProjectTasks from './ProjectTasks';
 import ProjectDocs from './ProjectDocs';
 import { fetchCurrProject } from '../../Data_Store/Features/currProjectSlice';
 import { fetchData } from '../../Data_Store/Features/repoContentSlice';
+import { fetchMemberDetails } from '../../Data_Store/Features/memberSlice';
 
 export default function Project() {
     
@@ -24,7 +25,8 @@ export default function Project() {
     // const repoName = localStorage.getItem("repoName");
 
     useEffect(()=>{
-      dispatch(fetchCurrProject(projectId))
+      dispatch(fetchCurrProject(projectId));
+      
     },[projectId])
 
     useEffect(()=>{

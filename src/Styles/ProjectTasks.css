@@ -61,14 +61,17 @@
     /* overflow-x: scroll; */
     /* width: 800px; */
   }
-  
+  .ass{
+    height: 50px;
+    /* width: 280px; */
+  }
   table {
     border-collapse: collapse;
     width: 100%;
   }
   td,th {
     /* padding: 8px 20px; */
-    height: 50px;
+    height: 60px;
     /* padding: 4px 3px; */
     padding-left: 10px;
     /* text-align: left; */
@@ -76,6 +79,7 @@
     border-right: 1px solid #343434;
     font-size: 14px;
     color: rgb(218, 218, 218);
+    overflow: visible;
     white-space: nowrap;
     /* text-align: center; */
   }
@@ -191,7 +195,10 @@ td input,select{
     border-radius: 3px;
     border: none;
 }
-
+td.name{
+   /* border: 2px solid; */
+   text-align: justify;
+}
 td.name input{
   min-width: 170px;
 }

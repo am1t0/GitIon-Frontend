@@ -1,27 +1,43 @@
 import React, { useEffect, useRef, useState } from 'react';
 import "../../Styles/ProjectTasks.css";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import getAccessToken from '../../Utils/auth';
 import { json } from 'react-router-dom';
 import NewUpdTask from './NewUpdTask';
+import { fetchMemberDetails } from '../../Data_Store/Features/memberSlice';
 
 export default function ProjectTasks() {
   const [tasks, setTasks] = useState();
   const { data } = useSelector((store) => store.currProject);
   const project = data;
-  const my = useRef();
 
 
+  const dispatch = useDispatch();
   const [selectedTask, setSelectedTask] = useState(null);
   const [editedTaskData, setEditedTaskData] = useState(null);
 
+  function getUserColor(user) {
+    // Convert user's unique identifier (e.g., ID, username, or email) to a numeric hash
+    let hash = 0;
+    for (let i = 0; i < user.length; i++) {
+      hash = user.charCodeAt(i) + ((hash << 5) - hash);
+    }
 
+    // Convert hash to a hexadecimal color code
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      color += ("00"+value.toString(16)).substr(-2);
+    }
+
+    return color;
+  }
 
   const handleEditTask = (task) => {
     setEditedTaskData(task);
   };
   const handleDeleteTask = async (taskId) => {
-    setTasks(tasks.filter((task) => task._id !== taskId));
+   
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/task-delete/${project.owner}/${taskId}`, {
         method: 'DELETE',
@@ -32,13 +48,14 @@ export default function ProjectTasks() {
       });
 
       console.log('respnse', response);
+      setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
       console.error('Error creating task:', error);
     }
   }
 
   useEffect(() => {
-
+    dispatch(fetchMemberDetails(project?.team));
     const fetchTasks = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/getTasks/${project?._id}`, {
@@ -55,7 +72,10 @@ export default function ProjectTasks() {
         const res = await response.json();
 
         // populating the tasks state
+        console.log(res);
         setTasks(res.data);
+        console.log('Tasks are : ')
+        console.log(tasks);
 
       } catch (error) {
         return error.message || "An error occurred while loading";
@@ -84,7 +104,6 @@ export default function ProjectTasks() {
               <tr>
                 <td id="taskM">
                   <div id='hoverOp'>
-                    <i class="fa-solid fa-plus"></i>
                     <i class="fa-solid fa-list-ul" onClick={(e) => {
                       e.stopPropagation(); // Prevent the parent tr's onMouseLeave event from firing
                       setSelectedTask(selectedTask !== task._id ? task._id : null);
@@ -111,16 +130,16 @@ export default function ProjectTasks() {
                 </td>
 
                 <td className='state'><p>{task.status}</p></td>
-                <td className='assignee'>{task.assignee}</td>
+                <td className='assignee'>{task.assignee?.fullname}</td>
                 <td className='due'>{task.due}</td>
                 <td className='priority'><p>{task.priority} Le ke AA</p></td>
                 <td className='descrip'>{task.description}</td>
-              </tr>)
-                 : <NewUpdTask setTasks={setTasks} target={"update"} tasks={tasks} taskToUpdate={editedTaskData} setEditedTaskData={setEditedTaskData}/>  
+                    </tr>)
+                 : <NewUpdTask setTasks={setTasks} target={"update"} tasks={tasks} taskToUpdate={editedTaskData} setEditedTaskData={setEditedTaskData} getUserColor={getUserColor}/>  
                 //  component for updating task
             ))
             }
-           <NewUpdTask setTasks={setTasks} tasks={tasks} target={"create"}/>  
+           <NewUpdTask setTasks={setTasks} tasks={tasks} target={"create"} getUserColor={getUserColor}/>  
            {/* component for creating task */}
           </tbody>
         </table>

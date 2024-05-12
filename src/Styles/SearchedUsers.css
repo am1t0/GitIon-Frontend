@@ -1,0 +1,34 @@
+#searchList{
+    /* border: 1px solid rgb(83, 83, 83); */
+    width: 100%;
+    border-radius: 4px;
+    position: relative;
+    background: rgb(69, 69, 69);
+    z-index: 1;
+    padding: 4px;
+}
+#matchedMemb{
+    /* border: 1px solid; */
+    display: flex;
+    gap: 8px;
+    margin: 3px 1px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+#matchedMemb:hover{
+    background: rgb(57, 57, 57);
+}
+
+#matchedMemb li{
+/* color: black; */
+}
+
+.circle{
+    border-radius: 40px;
+    height: 25px;
+    width: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(255, 255, 255);
+}
