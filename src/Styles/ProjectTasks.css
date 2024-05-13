@@ -1,16 +1,159 @@
 #tasks{
     background-color: #080b0e;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
     overflow-x: auto;
-    /* border: 2px solid; */
-    padding: 30px;
+    border: 2px solid;
+    padding: 3px 10px 100px 100px;
+    font-size: 14px;
+    /* margin-left: 30px; */
   }
-  .edit-form-container {
-  
+ tr{
+  cursor: pointer;
  }
- 
+ #hd{
+  /* border: 2px solid; */
+  padding-left: 5px;
+  font-weight: 600;
+  color: rgb(218, 218, 218);
+ }
+ #hd i{
+  margin: 0px 8px;
+  color: rgb(145, 145, 145);
+ }
+  /* GENERAL BLOCKS STYLE  */
+  td,th{
+    border: 1px solid rgb(72, 71, 71);
+    font-size: 14px;
+    padding: 7px 0px;
+  }
+
+  /* TASK MANIPULATION style */
+#taskM{
+  /* border: 2px solid; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80px;
+  display: flex;
+  gap: 3px;
+}
+#taskM p{
+  margin: 0;
+  padding-left: 5px;
+  font-weight: 600;
+  color: rgb(126, 126, 126);
+  /* font-size: 12px; */
+   /* padding */
+  /* border: 2px solid red; */
+}
+
+/* EDIT AND DELETE OPTIONS  STYLE */
+#hovOp{
+  display: none;
+  position: relative;
+  padding-right: 10px;
+  /* border: 2px solid; */
+}
+#hovOp i{
+
+   cursor: pointer;
+  /* border: 2px solid; */
+  background: rebeccapurple;
+  border-radius: 5px;
+  padding: 4px;
+   /* color: red; */
+}
+#hovOp i:hover{
+   background: rgb(81, 32, 130);
+}
+#hovOp i:active{
+  background: rgb(49, 13, 84);
+}
+tr:hover #hovOp{
+   display: block;
+}
+
+.options-list{
+  position: absolute;
+  top: 25px;
+  right: -19px;
+  z-index: 1;
+  width: 140px;
+  background: rgb(35, 35, 35);
+  border-radius: 5px;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 0px;
+}
+.options-list li{
+  display: flex;
+  align-items: center;
+  height: 28px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 16px 5px;
+  /* border: 2px solid; */
+}
+.options-list li:hover{
+  background: black;
+}
+.options-list li i{
+    /* border: 2px solid; */
+    /* background: rgb(92, 92, 92) !important; */
+    margin: 0px 5px;
+    background: none !important;
+    padding: 0;
+}
+#taskName{
+  /* border: 2px solid; */
+  display: flex;
+  width: 300px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#taskName p{
+  /* border: 1px solid red; */
+   font-weight: 500;
+   color: rgb(205, 205, 205);
+   width: 280px;
+   overflow: hidden;
+   white-space: nowrap;
+   margin: 0;
+}
+#taskName p i{
+  cursor: pointer;
+  padding: 2px 5px;
+  color: green;
+}
+
+#open{
+  font-size: 12px;
+  font-weight: 500;
+  background-color: rgba(39, 133, 12, 0.847);
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 8px;
+  border: none;
+  display: none;
+}
+#open:hover{
+  background-color: rgba(30, 109, 9, 0.847);
+}
+#open:active{
+ background-color: rgba(16, 74, 1, 0.847);;
+}
+
+tr:hover #open{
+  display: block;
+}
+
  .edit-form {
   position: relative;
   top: 0;
@@ -29,188 +172,86 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
  }
  
-  .options-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1;
-    background: rgb(35, 35, 35);
-    /* border: 1px solid #7d7d7d; */
-    border-radius: 5px;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+ #status{
+   width: 150px;
+   padding-left: 5px;
   }
-  
-  .options-list li {
-    padding: 8px 8px;
-    /* border: 2px solid; */
-    text-align: start;
-    border-radius: 5px;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  
-  .options-list li:hover {
-    background: #323232;
-  }
-  
-  .tasktable {
-    margin-top: 30px;
-    width: 98%;
-    /* overflow-x: scroll; */
-    /* width: 800px; */
-  }
-  .ass{
-    height: 50px;
-    /* width: 280px; */
-  }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  td,th {
-    /* padding: 8px 20px; */
-    height: 60px;
-    /* padding: 4px 3px; */
-    padding-left: 10px;
-    /* text-align: left; */
-    border-bottom: 1px solid #343434;
-    border-right: 1px solid #343434;
-    font-size: 14px;
-    color: rgb(218, 218, 218);
-    overflow: visible;
-    white-space: nowrap;
-    /* text-align: center; */
-  }
+  #status p{
+   /* outline: 1px solid; */
+   border-radius: 15px;
+   display: flex;
+   padding: 2px 3px 2px 9px;
+   align-items: center;
+   margin: 0;
+ }
+ .not-State{
+  background: #504d4d;
+  width: 85%;
+ }
+ .p-State{
+  background: green;
+  width: 63%;
+ }
+ .prog-State{
+  background: rgb(70, 62, 228);
+  width: 85%;
+ }
+ .dot{
+  margin-right: 5px;
+  border-radius: 99px;
+  height: 6px;
+  width: 6px;
+  background-color: white;
+ }
 
-  #taskM{
-     display: flex;
-     /* border: 2px solid; */
-  }
-  #taskM div{
-    position: relative;
-    right: 30px;
-    opacity: 0;
-    /* margin: 0px 2px; */
-  }
-  #hoverOp i:hover{
-     color: white;
-  }
-  #taskM p{
-     position: relative;
-     right: 20px;
-  }
-  tr:hover #hoverOp{
-    opacity: 1;
-  }
-
-  th :not(:last-child){
-    border-right: none;
-  }
-  
-  th {
-    background-color: #3e3e3e;
-    font-size: 14px;
-    font-weight: 600;
-    color: grey;
-    padding-left: 4px;
-  }
-  
-  /* Remove left border of the first column */
-th:first-child, td:first-child {
-    border-left: none;
-  }
-  
-  /* Remove right border of the last column */
-  th:last-child, td:last-child {
-    border-right: none;
-  }
-
-   th i{
-        color: rgb(152, 152, 152);
-        margin-right: 9px;
-   }
-   td i{
-    color: rgb(152, 152, 152);
-    margin: 0px 5px;
-   }
-
-   tr:hover{
-    cursor: pointer;
-    background: rgb(20, 20, 20);
-   }
-#nwTask td{
-    padding: 0;
-}   
-
-#open{ 
-    opacity: 0;
-    cursor: pointer;
-    background: rgb(53, 43, 246);
-    padding: 3px 4px;
-    margin: 0px 3px;
-    border-radius: 6px;
-    font-size: 13px;
-}   
-tr:hover #open{
-    opacity: 1;
+#assignee{
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  /* border: 2px solid red; */
+}
+#assignee p{
+  color: rgba(255, 255, 255, 0.81);
+  margin: 0px 5px;
 }
 
- #status p{
-    /* DEPENDS ON THE TYPE OF THE STATUS */
-     margin: 0;
-     padding: 1px;
-     /* border: 2px solid; */
-     background-color: green;
-     border-radius: 10px;
-     text-align: center;
-   }
+#due{
+  margin: 0;
+  padding-left: 12px;
+  color: rgba(255, 255, 255, 0.81);
+
+}
+#priority{
+  width: 120px;
+  padding-left: 12px;
+}
 #priority p{
-    /* border: 2px solid; */
-    margin: 1px 4px;
-    border-radius: 4px;
-    text-align: center;
-    background-color: red;
+  margin: 0;
+  text-align: center;
+  border-radius: 2px;
+  /* font-size: 13px; */
+}
+.Low{
+ width: 40px;
+ background-color: #0bad0b;
+}
+.High{
+ width: 40px;
+ background: rgb(226, 47, 47);
+}
+.Medium{
+  width: 70px;
+  background: rgb(180, 180, 45);
 }
 
-/* INPUTS OF THE LAST ROW */
-
-td input,select{
-    margin: 0;
-    width:  170px;
-    height: 40px;
-    background: #080b0e;
-    outline: none;
-    border: none;
-    padding-left: 10px;
-    color: rgb(107, 107, 107);
-    /* text-align: center; */
-    /* margin: 0px 2px; */
-    /* border: 2px solid; */
-}
-#crtBtn button{
-    background: rgb(38, 129, 249);
-    padding: 3px 5px;
-    border-radius: 3px;
-    border: none;
-}
-td.name{
-   /* border: 2px solid; */
-   text-align: justify;
-}
-td.name input{
-  min-width: 170px;
-}
-td.state select{
-  min-width: 60px;
-}
-td.assignee input{
-  min-width: 200px;
-}
-td.due input{
-  width: 113px;
-}
-td.priority select{
-  width: 110px;
-}
+ /* // desriptio n? */
+ #descp{
+  width: 300px;
+  color: rgba(208, 208, 208, 0.81);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  font-weight: 400;
+  padding-left: 6px;
+ }

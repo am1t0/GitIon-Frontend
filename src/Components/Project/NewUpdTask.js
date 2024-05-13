@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import getAccessToken from '../../Utils/auth';
 import SearchedUsers from '../SearchedUsers';
+import '../../Styles/NewUpdTask.css'
 
 export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setEditedTaskData, getUserColor }) {
   const { data } = useSelector((store) => store.currProject);
@@ -133,19 +134,20 @@ export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setE
 
   return (
     <tr id='nwTask'>
-      <td id='crtBtn'><button onClick={flag ? handleTaskCreate : handleUpdateTask}>{target}</button></td>
-      <td className='name'><input type="text" placeholder='Task name' defaultValue={taskToUpdate?.name} ref={nameRef} required /></td>
-      <td className='state'>
-        <select ref={statusRef}>
-          <option value="Not started">Not started</option>
+      <td><button  id='crtUpBtn' onClick={flag ? handleTaskCreate : handleUpdateTask}>{target}</button></td>
+      <td><input type="text" id='taskNameInp' autoComplete='off' placeholder='Task name' defaultValue={taskToUpdate?.name} ref={nameRef} required /></td>
+      <td>
+        <select ref={statusRef}  id='stateInp'>
+          <option value="Not started" selected >Not started</option>
           <option value="Pending">Pending</option>
           <option value="In progress">In progress</option>
         </select>
       </td>
 
-      <td className='assignee'>
-        <div className="ass">
-          <input type="search"
+      <td >
+        <div>
+          <input type="search" id='assigneeInp'
+            autoComplete='off'
             style={{ background: '' }}
             value={inputValue}
             onChange={(e) => { handleChange(e.target.value) }}
@@ -160,15 +162,31 @@ export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setE
           />
         </div>
       </td>
-      <td className='due'><input type="date" placeholder='task name' defaultValue={taskToUpdate?.due} ref={dueRef} /></td>
-      <td className='priority'>
-        <select ref={priorityRef}>
-          <option value="Low">Low</option>
+      <td >
+        <input 
+          type='date' 
+          id='dueInp'  
+          defaultValue={taskToUpdate?.due} 
+          ref={dueRef} 
+          autoComplete='off'
+          />
+      </td>
+      <td >
+        <select ref={priorityRef} id='priorityInp'>
+          <option value="Low" selected>Low</option>
           <option value="High">High</option>
           <option value="Medium">Medium</option>
         </select>
       </td>
-      <td className='descrip'><input type="text" defaultValue={taskToUpdate?.description} placeholder='Description' ref={descriptionRef} /></td>
+      <td >
+        <input 
+        id='descripInp' 
+        type="text" 
+        defaultValue={taskToUpdate?.description} 
+        placeholder='Description' ref={descriptionRef} 
+        autoComplete='off'
+        />
+        </td>
     </tr>
   )
 }
