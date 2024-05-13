@@ -41,6 +41,9 @@ const router = createBrowserRouter([
       {path:'/:teamId/:teamName',element:<Team/>},
 
       {path:'/project/:projectName/:projectId',element:<Project/>,children:[
+         {path:'/project/:projectName/:projectId/tasks',element:<ProjectTasks/>},
+         {path:'/project/:projectName/:projectId/details',element:<ProjectIntro/>},
+         {path:'/project/:projectName/:projectId/docs',element:<ProjectDocs/>},
         {path:'/project/:projectName/:projectId/:folderName',element:<FolderShow/>},
       ]},
       {path:'/project/:projectName/content/:path', element: <Repo/>}

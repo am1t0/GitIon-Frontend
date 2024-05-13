@@ -21,9 +21,7 @@ export default function Project() {
     const owner = localStorage.getItem('owner');
     const repoName = localStorage.getItem('repoName');
     const repo = {owner,repoName};
-    // const owner = localStorage.getItem("owner");
-    // const repoName = localStorage.getItem("repoName");
-
+    
     useEffect(()=>{
       dispatch(fetchCurrProject(projectId));
       
@@ -38,7 +36,7 @@ export default function Project() {
     return ( repodata && 
     <div style={{display:'flex'}}>
       <ProjectSidebar setContent={setContent}/>
-      {(() => {
+      {/* {(() => {
       switch (content) {
         case 'Details':
           return <ProjectIntro/>;
@@ -52,7 +50,8 @@ export default function Project() {
         default:
           return null;
       }
-    })()}
+    })()} */}
+      <Outlet/>
     </div>
   )
 }

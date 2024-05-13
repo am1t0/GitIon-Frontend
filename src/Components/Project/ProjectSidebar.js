@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../../Styles/ProjectSidebar.css'
+import { useSelector } from 'react-redux'
 
 export default function ProjectSidebar({setContent }) {
+  const {data} = useSelector((store)=> store.currProject);
 
   return (
     <>
@@ -14,19 +16,13 @@ export default function ProjectSidebar({setContent }) {
         <li className="border-top my-3 list-unstyled"></li>
         <ul className="list-unstyled ps-0">
         <li className="mb-1">
-              <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="true" onClick={()=>setContent("Details")}>
-                <h6>Details</h6>
-              </button>
+              <Link to={`/project/${data?.name}/${data?._id}/details`}>Details</Link>
             </li>
             <li className="mb-1">
-              <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="true" onClick={()=>setContent("Task Sheet")}>
-                <h6>Task Sheet</h6>
-              </button>
+               <Link to={`/project/${data?.name}/${data?._id}/tasks`}>Tasks</Link>
             </li>
             <li className="mb-1">
-              <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="collapse" aria-expanded="true" onClick={()=>setContent("Documents")}>
-                <h6>Documents</h6>
-              </button>
+            <Link to={`/project/${data?.name}/${data?._id}/docs`}>Document</Link>
             </li>
           <li className="border-top my-3"></li>
           <li className="mb-1">

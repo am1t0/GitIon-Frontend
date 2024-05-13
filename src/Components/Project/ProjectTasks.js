@@ -2,15 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import "../../Styles/ProjectTasks.css";
 import { useDispatch, useSelector } from 'react-redux';
 import getAccessToken from '../../Utils/auth';
-import { json } from 'react-router-dom';
+import { json, useParams } from 'react-router-dom';
 import NewUpdTask from './NewUpdTask';
 import { fetchMemberDetails } from '../../Data_Store/Features/memberSlice';
+import { fetchCurrProject } from '../../Data_Store/Features/currProjectSlice';
 
 export default function ProjectTasks() {
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState([]);
   const { data } = useSelector((store) => store.currProject);
   const project = data;
 
+  const {projectId} = useParams();
+  
 
   const dispatch = useDispatch();
   const [selectedTask, setSelectedTask] = useState(null);
@@ -93,10 +96,14 @@ const formattedDate = `${month} ${day}, ${year}`;
     return id;
   }
   useEffect(() => {
-    dispatch(fetchMemberDetails(project?.team));
+
+    dispatch(fetchCurrProject(projectId))
+
+    // dispatch(fetchMemberDetails(project?.team));
+
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/getTasks/${project?._id}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/getTasks/${projectId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -112,16 +119,16 @@ const formattedDate = `${month} ${day}, ${year}`;
         // populating the tasks state
         console.log(res);
         setTasks(res.data);
-        console.log('Tasks are : ')
-        console.log(tasks);
 
       } catch (error) {
         return error.message || "An error occurred while loading";
       }
     }
     fetchTasks();
+
   }, [])
   return (
+    data && 
     <div id='tasks'>
       <section className='tasktable'>
         <table>
