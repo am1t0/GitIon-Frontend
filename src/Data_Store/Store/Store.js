@@ -9,6 +9,7 @@ import moreInfoReducer from '../Features/moreInfoSlice';
 import currFileFolderReducer from '../Features/currFileFolderSlice'
 import branchesReducer from '../Features/branchSlice'
 import memberReducer from '../Features/memberSlice'
+import tasksReducer from '../Features/projectTasksSlice'
 
 
 const store = configureStore({
@@ -24,6 +25,7 @@ const store = configureStore({
        currFileFolder: currFileFolderReducer,
        branches: branchesReducer,
        member: memberReducer,
+    //    tasks: tasksReducer
     }
 })
 

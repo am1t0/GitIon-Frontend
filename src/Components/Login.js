@@ -25,7 +25,6 @@ const  Login = () => {
           email: emailRef.current.value
         }),
       });
-       console.log(response)
       if (!response.ok) {
          throw new Error('Something went wrong');
       }
@@ -38,7 +37,8 @@ const  Login = () => {
       localStorage.setItem('access_token', accessToken);
   
       
-       navigate('/');
+       window.location.reload();
+       navigate('/')
       
       // e.g., history.push('/dashboard');
     } catch (error) {

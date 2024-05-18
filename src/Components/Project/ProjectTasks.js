@@ -6,9 +6,12 @@ import { json, useParams } from 'react-router-dom';
 import NewUpdTask from './NewUpdTask';
 import { fetchMemberDetails } from '../../Data_Store/Features/memberSlice';
 import { fetchCurrProject } from '../../Data_Store/Features/currProjectSlice';
+import Task from './Task';
 
 export default function ProjectTasks() {
-  const [tasks, setTasks] = useState([]);
+  const [taskShow,setTaskShow] = useState(null); // show any individual task  
+  const [tasks, setTasks] = useState([]);    // conain array of taks fetched
+  const [openTask,setOpenTask] = useState();
   const { data } = useSelector((store) => store.currProject);
   const project = data;
 
@@ -19,6 +22,12 @@ export default function ProjectTasks() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [editedTaskData, setEditedTaskData] = useState(null);
 
+  const handleOpenTask=(taskId)=>{
+       if(openTask!==taskId)
+         setOpenTask(taskId);
+       else
+         setOpenTask(null);  
+  }
   const formateDate=(date)=>{
 
 // Create a new date object from the given date string
@@ -97,10 +106,6 @@ const formattedDate = `${month} ${day}, ${year}`;
   }
   useEffect(() => {
 
-    dispatch(fetchCurrProject(projectId))
-
-    // dispatch(fetchMemberDetails(project?.team));
-
     const fetchTasks = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/getTasks/${projectId}`, {
@@ -117,7 +122,7 @@ const formattedDate = `${month} ${day}, ${year}`;
         const res = await response.json();
 
         // populating the tasks state
-        console.log(res);
+        console.log(res.data);
         setTasks(res.data);
 
       } catch (error) {
@@ -128,7 +133,6 @@ const formattedDate = `${month} ${day}, ${year}`;
 
   }, [])
   return (
-    data && 
     <div id='tasks'>
       <section className='tasktable'>
         <table>
@@ -147,6 +151,7 @@ const formattedDate = `${month} ${day}, ${year}`;
             {tasks && tasks.map((task, index) => (
               editedTaskData !== task ? (
                 <tr>
+                  {/* TASK OPENING IF USER CLICKS ON ANY TASK  */}
                   {/* PUTTING <DIV> IN EACH <TD> AS STYLING IT IS TRICKY*/}
                   <td>
                     <div id='taskM'>
@@ -176,9 +181,13 @@ const formattedDate = `${month} ${day}, ${year}`;
                         <i class="fa-regular fa-file"></i>
                         {task.name}
                       </p>
-                      <button id='open'>
-                        OPEN
+                      <button className='opCl' id={`${openTask===task._id && 'close'}`} onClick={()=>handleOpenTask(task._id)}>
+
+                        {/* //SHOWING OPTIONS ACCORDING TO CURRENT STATE OF TASKS OPEN OR NOT */}
+                       {openTask===task._id?"CLOSE":"OPEN"}
+
                       </button>
+                    <Task task={task} isSlide={openTask===task._id}/>
                     </div>
                   </td>
 

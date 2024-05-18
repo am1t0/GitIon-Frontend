@@ -1,6 +1,7 @@
 *{
   color: white;
   /* background-color: #080b0e; */
+  overflow-x: hidden;
   margin: 0px;
   padding: 0px;
 }

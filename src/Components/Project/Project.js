@@ -8,6 +8,7 @@ import ProjectDocs from './ProjectDocs';
 import { fetchCurrProject } from '../../Data_Store/Features/currProjectSlice';
 import { fetchData } from '../../Data_Store/Features/repoContentSlice';
 import { fetchMemberDetails } from '../../Data_Store/Features/memberSlice';
+import { fetchTasks } from '../../Data_Store/Features/projectTasksSlice';
 
 export default function Project() {
     
@@ -24,7 +25,6 @@ export default function Project() {
     
     useEffect(()=>{
       dispatch(fetchCurrProject(projectId));
-      
     },[projectId])
 
     useEffect(()=>{
@@ -36,21 +36,6 @@ export default function Project() {
     return ( repodata && 
     <div style={{display:'flex'}}>
       <ProjectSidebar setContent={setContent}/>
-      {/* {(() => {
-      switch (content) {
-        case 'Details':
-          return <ProjectIntro/>;
-
-        case 'Task Sheet':
-          return <ProjectTasks/>;
-
-        case 'Documents':
-          return <ProjectDocs/>
-
-        default:
-          return null;
-      }
-    })()} */}
       <Outlet/>
     </div>
   )

@@ -2,13 +2,19 @@
     background-color: #080b0e;
     /* width: 100%; */
     display: flex;
-    justify-content: center;
-    overflow-x: auto;
-    border: 2px solid;
+    flex-direction: column;
+    /* justify-content: center; */
+    border: 2px solid red;
     padding: 3px 10px 100px 100px;
     font-size: 14px;
     /* margin-left: 30px; */
   }
+  .tasktable{
+    overflow-x: scroll;
+    padding: 10px 2px;
+  
+  }
+
  tr{
   cursor: pointer;
  }
@@ -122,8 +128,8 @@ tr:hover #hovOp{
   /* border: 1px solid red; */
    font-weight: 500;
    color: rgb(205, 205, 205);
-   width: 280px;
-   overflow: hidden;
+   /* width: 280px; */
+   /* overflow: hidden; */
    white-space: nowrap;
    margin: 0;
 }
@@ -133,7 +139,7 @@ tr:hover #hovOp{
   color: green;
 }
 
-#open{
+.opCl{
   font-size: 12px;
   font-weight: 500;
   background-color: rgba(39, 133, 12, 0.847);
@@ -143,14 +149,21 @@ tr:hover #hovOp{
   border: none;
   display: none;
 }
-#open:hover{
+
+#close{
+  background-color: rgb(153, 100, 51);
+  display: block;
+}
+
+.opCl:hover{
+  display: block;
   background-color: rgba(30, 109, 9, 0.847);
 }
 #open:active{
  background-color: rgba(16, 74, 1, 0.847);;
 }
 
-tr:hover #open{
+tr:hover .opCl{
   display: block;
 }
 

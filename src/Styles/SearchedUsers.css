@@ -1,17 +1,19 @@
 #searchList{
     /* border: 1px solid rgb(83, 83, 83); */
-    width: 100%;
     border-radius: 4px;
-    position: relative;
+    width: 20%;
+    position: absolute;
     background: rgb(69, 69, 69);
     z-index: 1;
-    padding: 4px;
+    right: 400px;
+    padding: 3px 20px 3px 14px;
 }
 #matchedMemb{
     /* border: 1px solid; */
     display: flex;
     gap: 8px;
-    margin: 3px 1px;
+    outline: 1px solid rgb(100, 99, 99);
+    margin: 6px 1px;
     padding: 4px 8px;
     border-radius: 4px;
 }
@@ -20,7 +22,7 @@
 }
 
 #matchedMemb li{
-/* color: black; */
+
 }
 
 .circle{
