@@ -9,49 +9,84 @@ import { fetchCurrProject } from '../../Data_Store/Features/currProjectSlice';
 import Task from './Task';
 
 export default function ProjectTasks() {
-  const [taskShow,setTaskShow] = useState(null); // show any individual task  
+  const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);    // conain array of taks fetched
-  const [openTask,setOpenTask] = useState();
+  const [openTask, setOpenTask] = useState();  // opening the whold data about task on basis of it's id
+  const [loading,setLoading] = useState(false);
   const { data } = useSelector((store) => store.currProject);
   const project = data;
+  const themeImgRef = useRef();
 
-  const {projectId} = useParams();
   
-
-  const dispatch = useDispatch();
-  const [selectedTask, setSelectedTask] = useState(null);
+  const { projectId } = useParams();    // extracting the current project's id from url 
+  const [selectedTask, setSelectedTask] = useState(null);  //showing options for selected task only
   const [editedTaskData, setEditedTaskData] = useState(null);
 
-  const handleOpenTask=(taskId)=>{
-       if(openTask!==taskId)
-         setOpenTask(taskId);
-       else
-         setOpenTask(null);  
+  const handleThemeChange = async()=>{
+    
+    setLoading(true);
+    // getting the file from the ref
+    const selectedFile = themeImgRef.current.files[0];
+
+    // if file is not there 
+  if (!selectedFile) {
+      console.error('No file selected');
+      return;
   }
-  const formateDate=(date)=>{
 
-// Create a new date object from the given date string
-const dateObj = new Date(date);
+  const formData = new FormData();
+  formData.append('theme', selectedFile);
+  try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/theme-upload/${projectId}`, {
+          method: 'POST',                                        
+          headers:{
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+          body: formData,
+      });
 
-// Array of month names
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-// Get the month, day, and year components from the date object
-const month = monthNames[dateObj.getMonth()];
-const day = dateObj.getDate();
-const year = dateObj.getFullYear();
-
-// Format the date as "month name dd, yyyy"
-const formattedDate = `${month} ${day}, ${year}`;
-
-  return formattedDate; // Output: "May 8, 2024"
-
-  }
-  const nameLogo =(name)=>{
-    return  name[0].toUpperCase()+name.split(' ')[1][0].toUpperCase();
-}
-  const statusClass = (status) => {
+      if (response.ok) {
+          console.log('File uploaded successfully');
+          dispatch(fetchCurrProject(projectId));
+      }
   
+      setLoading(false);
+  
+  } catch (error) {
+      console.error('Error uploading file:', error);
+  }
+};
+
+  const handleOpenTask = (taskId) => {
+    if (openTask !== taskId)
+      setOpenTask(taskId);
+    else
+      setOpenTask(null);
+  }
+  const formateDate = (date) => {
+
+    // Create a new date object from the given date string
+    const dateObj = new Date(date);
+
+    // Array of month names
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    // Get the month, day, and year components from the date object
+    const month = monthNames[dateObj.getMonth()];
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    // Format the date as "month name dd, yyyy"
+    const formattedDate = `${month} ${day}, ${year}`;
+
+    return formattedDate; // Output: "May 8, 2024"
+
+  }
+  const nameLogo = (name) => {
+    return name[0].toUpperCase() + name.split(' ')[1][0].toUpperCase();
+  }
+  const statusClass = (status) => {
+
     switch (status) {
       case 'Not started':
         return 'not-State';
@@ -105,7 +140,6 @@ const formattedDate = `${month} ${day}, ${year}`;
     return id;
   }
   useEffect(() => {
-
     const fetchTasks = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/getTasks/${projectId}`, {
@@ -122,7 +156,6 @@ const formattedDate = `${month} ${day}, ${year}`;
         const res = await response.json();
 
         // populating the tasks state
-        console.log(res.data);
         setTasks(res.data);
 
       } catch (error) {
@@ -134,7 +167,43 @@ const formattedDate = `${month} ${day}, ${year}`;
   }, [])
   return (
     <div id='tasks'>
+      {/* user will put img they want for background */}
+      <div id="themeImg">
+         { !loading ?
+            <>
+           <img src={project?.theme} alt="" />
+           <section className="changeThm">
+             <input type="file" name='theme' ref={themeImgRef} onChange={handleThemeChange}/>
+             <p>Change theme</p>
+           </section>
+           </>
+           :  <div class="spinner-border" role="status" id='thm-load'>
+           <span class="sr-only">Loading...</span>
+         </div>
+         } 
+      </div>
       <section className='tasktable'>
+        <div className="manp">
+          {/* just the task and logo  */}
+          <section className='taskCube'>
+            <h3><i class="fa-solid fa-cubes"></i></h3>
+            <h3>Tasks</h3>
+          </section>
+
+          {/* various options to view tasks and manipulate */}
+          <aside className='viewOp'>
+
+             <div className="icns">
+            <i class="fa-solid fa-filter"></i>       {/* filering the tasks on various basis */}
+            <i class="fa-solid fa-arrow-up-short-wide"></i>
+             </div>
+
+             <div className="srch">
+             <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="search" placeholder='Search tasks...'/>
+             </div>
+          </aside>
+        </div>
         <table>
           <thead>
             <tr>
@@ -159,21 +228,21 @@ const formattedDate = `${month} ${day}, ${year}`;
                         {TaskId(project, index)}
                       </p>
                       {/* OPTIONS SHOULD APPEAR TO ADMIN AND ON HOVER ONLY  */}
-                      <div id='hovOp'>
+                      <div id='hovOp'  >
                         <i class="fa-solid fa-list-ul" onClick={(e) => {
                           e.preventDefault();
                           setSelectedTask(selectedTask !== task._id ? task._id : null);
                         }}>
                         </i>
-                        {/* MANIPULATING TASK OPTIONS  */}
-                        {selectedTask === task._id && (
-                          <ul className="options-list">
-                            <li onClick={() => handleEditTask(task)}><i class="fa-solid fa-pen" ></i><p>Edit</p></li>
-                            <li onClick={() => handleDeleteTask(task._id)}><i class="fa-solid fa-trash"></i><p>Delete</p></li>
-                          </ul>
-                        )}
                       </div>
+                      {/* MANIPULATING TASK OPTIONS  */}
                     </div>
+                    {selectedTask === task._id && (
+                      <ul className="options-list">
+                        <li onClick={() => handleEditTask(task)}><i class="fa-solid fa-pen" ></i><p>Edit</p></li>
+                        <li onClick={() => handleDeleteTask(task._id)}><i class="fa-solid fa-trash"></i><p>Delete</p></li>
+                      </ul>
+                    )}
                   </td>
                   <td>
                     <div id="taskName">
@@ -181,13 +250,13 @@ const formattedDate = `${month} ${day}, ${year}`;
                         <i class="fa-regular fa-file"></i>
                         {task.name}
                       </p>
-                      <button className='opCl' id={`${openTask===task._id && 'close'}`} onClick={()=>handleOpenTask(task._id)}>
+                      <button className='opCl' id={`${openTask === task._id && 'close'}`} onClick={() => handleOpenTask(task._id)}>
 
                         {/* //SHOWING OPTIONS ACCORDING TO CURRENT STATE OF TASKS OPEN OR NOT */}
-                       {openTask===task._id?"CLOSE":"OPEN"}
+                        {openTask === task._id ? "CLOSE" : "OPEN"}
 
                       </button>
-                    <Task task={task} isSlide={openTask===task._id}/>
+                      <Task task={task} isSlide={openTask === task._id} />
                     </div>
                   </td>
 
@@ -198,10 +267,10 @@ const formattedDate = `${month} ${day}, ${year}`;
                   </td>
                   <td>
                     <div id='assignee'>
-                  <div className="circle" style={{background:getUserColor(task.assignee.username)}}>
-                         {nameLogo(task.assignee.fullname)}
-                   </div>
-                    <p>{task.assignee?.fullname}</p>
+                      <div className="circle" style={{ background: getUserColor(task.assignee.username) }}>
+                        {nameLogo(task.assignee.fullname)}
+                      </div>
+                      <p>{task.assignee?.fullname}</p>
                     </div>
                   </td>
                   <td>
@@ -209,7 +278,7 @@ const formattedDate = `${month} ${day}, ${year}`;
                   </td>
                   <td>
                     <div id='priority'>
-                    <p className={task.priority}>{task.priority}</p>
+                      <p className={task.priority}>{task.priority}</p>
                     </div>
                   </td>
                   <td>
