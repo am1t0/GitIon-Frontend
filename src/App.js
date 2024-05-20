@@ -19,7 +19,6 @@ function App() {
   const {isLoading,isError} = useSelector((store)=> store.user);
   
   useEffect(()=>{
-
     dispatch(fetchUser())
     dispatch(fetchTeam());
   },[dispatch])

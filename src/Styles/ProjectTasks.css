@@ -8,6 +8,37 @@
     font-size: 14px;
     /* margin-left: 30px; */
   }
+  #notFill{
+   position: absolute;
+   z-index: 111;
+   margin-left: 1px;
+   width: 82%;
+   border-radius: 0px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   /* text-align: center; */
+  }
+  #notFill h6{
+    color: black;
+    margin: 0;
+  }
+#cnl{
+  display: flex;
+  align-items: center;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all .1s ease;
+}
+ #cnl i{
+    color: black;
+    padding: 3px;
+ }
+
+#cnl:hover{
+  background: grey;
+}
+
   #themeImg {
     /* border: 2px solid; */
     margin-left:1px;

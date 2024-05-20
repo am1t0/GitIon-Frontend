@@ -4,7 +4,7 @@ import getAccessToken from '../../Utils/auth';
 import SearchedUsers from '../SearchedUsers';
 import '../../Styles/NewUpdTask.css'
 
-export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setEditedTaskData, getUserColor }) {
+export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setEditedTaskData, getUserColor,setNotFilled }) {
   const { data } = useSelector((store) => store.currProject);
   const { members } = useSelector((store) => store.member);
   const [inputValue, setInputValue] = useState(null);
@@ -28,7 +28,8 @@ export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setE
     const due = dueRef.current.value;
     const priority = priorityRef.current.value;
     const description = descriptionRef.current.value;
-
+    
+    
     // making the task object 
     const taskData = {
       name,
@@ -38,7 +39,15 @@ export default function NewUpdTask({ setTasks, tasks, target, taskToUpdate, setE
       priority,
       description
     };
-
+    
+    
+        //checking if any of the parameters is empty
+        for (const [key, value] of Object.entries(taskData)) {
+          if (!value) {
+            setNotFilled(key);
+            return;
+          }
+        }
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/create-task/${project?._id}`, {
         method: 'POST',

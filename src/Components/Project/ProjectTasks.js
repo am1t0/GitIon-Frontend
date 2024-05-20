@@ -12,50 +12,51 @@ export default function ProjectTasks() {
   const dispatch = useDispatch();
   const [tasks, setTasks] = useState([]);    // conain array of taks fetched
   const [openTask, setOpenTask] = useState();  // opening the whold data about task on basis of it's id
-  const [loading,setLoading] = useState(false);
+  const [notFilled, setNotFilled] = useState(null); // during creation of task if not provided value in any of the inputs
+  const [loading, setLoading] = useState(false);
   const { data } = useSelector((store) => store.currProject);
   const project = data;
   const themeImgRef = useRef();
 
-  
+
   const { projectId } = useParams();    // extracting the current project's id from url 
   const [selectedTask, setSelectedTask] = useState(null);  //showing options for selected task only
   const [editedTaskData, setEditedTaskData] = useState(null);
 
-  const handleThemeChange = async()=>{
-    
+  const handleThemeChange = async () => {
+
     setLoading(true);
     // getting the file from the ref
     const selectedFile = themeImgRef.current.files[0];
 
     // if file is not there 
-  if (!selectedFile) {
+    if (!selectedFile) {
       console.error('No file selected');
       return;
-  }
+    }
 
-  const formData = new FormData();
-  formData.append('theme', selectedFile);
-  try {
+    const formData = new FormData();
+    formData.append('theme', selectedFile);
+    try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/theme-upload/${projectId}`, {
-          method: 'POST',                                        
-          headers:{
-            'Authorization': `Bearer ${getAccessToken()}`
-          },
-          body: formData,
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: formData,
       });
 
       if (response.ok) {
-          console.log('File uploaded successfully');
-          dispatch(fetchCurrProject(projectId));
+        console.log('File uploaded successfully');
+        dispatch(fetchCurrProject(projectId));
       }
-  
+
       setLoading(false);
-  
-  } catch (error) {
+
+    } catch (error) {
       console.error('Error uploading file:', error);
-  }
-};
+    }
+  };
 
   const handleOpenTask = (taskId) => {
     if (openTask !== taskId)
@@ -139,6 +140,9 @@ export default function ProjectTasks() {
     const id = (project.name[0] + project.name[1]).toUpperCase() + '-' + (num + 1);
     return id;
   }
+  const handleRemAlert=()=>{
+    setNotFilled(null);
+  }
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -167,20 +171,27 @@ export default function ProjectTasks() {
   }, [])
   return (
     <div id='tasks'>
+
+      {
+     notFilled &&    <div class="alert alert-danger"  id='notFill' role="alert" onClick={handleRemAlert}>
+          <h6>{notFilled} is empty</h6>
+          <h6 id='cnl'><i class="fa-solid fa-xmark"></i></h6>
+        </div>
+      }
       {/* user will put img they want for background */}
       <div id="themeImg">
-         { !loading ?
-            <>
-           <img src={project?.theme} alt="" />
-           <section className="changeThm">
-             <input type="file" name='theme' ref={themeImgRef} onChange={handleThemeChange}/>
-             <p>Change theme</p>
-           </section>
-           </>
-           :  <div class="spinner-border" role="status" id='thm-load'>
-           <span class="sr-only">Loading...</span>
-         </div>
-         } 
+        {!loading ?
+          <>
+            <img src={project?.theme} alt="" />
+            <section className="changeThm">
+              <input type="file" name='theme' ref={themeImgRef} onChange={handleThemeChange} />
+              <p>Change theme</p>
+            </section>
+          </>
+          : <div class="spinner-border" role="status" id='thm-load'>
+            <span class="sr-only">Loading...</span>
+          </div>
+        }
       </div>
       <section className='tasktable'>
         <div className="manp">
@@ -193,15 +204,15 @@ export default function ProjectTasks() {
           {/* various options to view tasks and manipulate */}
           <aside className='viewOp'>
 
-             <div className="icns">
-            <i class="fa-solid fa-filter"></i>       {/* filering the tasks on various basis */}
-            <i class="fa-solid fa-arrow-up-short-wide"></i>
-             </div>
+            <div className="icns">
+              <i class="fa-solid fa-filter"></i>       {/* filering the tasks on various basis */}
+              <i class="fa-solid fa-arrow-up-short-wide"></i>
+            </div>
 
-             <div className="srch">
-             <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="search" placeholder='Search tasks...'/>
-             </div>
+            <div className="srch">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="search" placeholder='Search tasks...' />
+            </div>
           </aside>
         </div>
         <table>
@@ -289,7 +300,7 @@ export default function ProjectTasks() {
                 : <NewUpdTask setTasks={setTasks} target={"update"} tasks={tasks} taskToUpdate={editedTaskData} setEditedTaskData={setEditedTaskData} getUserColor={getUserColor} />
             ))
             }
-            <NewUpdTask setTasks={setTasks} tasks={tasks} target={"create"} getUserColor={getUserColor} />
+            <NewUpdTask setTasks={setTasks} tasks={tasks} target={"create"} getUserColor={getUserColor} setNotFilled={setNotFilled} />
             {/*  COMPONENT FOR CREATING TASK*/}
           </tbody>
         </table>
