@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CreateTasks() {
+export default function CreateTasks({taskRef,dateRef}) {
   return (
     <section className='creation'>
          {/* creation component bar  */}
@@ -10,6 +10,7 @@ export default function CreateTasks() {
          type="text" 
          placeholder='Enter your task...' 
          id='td'
+         ref={taskRef}
          />
 
          {/* for inputing time  */}
@@ -17,6 +18,7 @@ export default function CreateTasks() {
           type="time" 
           name="due" 
           id='du'
+          ref={dateRef}
           />
 
           {/* button for creation of todo  */}

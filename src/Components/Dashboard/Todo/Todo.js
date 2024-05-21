@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import getAccessToken from '../../../Utils/auth';
 import '../../../Styles/Todo.css'
 import CreateTasks from './CreateTasks';
 import TodoList from './TodoList';
 
 export default function Todo() {
+  const taskRef = useRef();
+  const dateRef = useRef();
+
     const [create, setCreate] = useState(false);
     const handleCreate = () => {
       console.log('create clicked')
@@ -59,8 +62,8 @@ export default function Todo() {
 
      <section id='todoContainer'>
 
-     <CreateTasks/>
-      <TodoList/>
+      <CreateTasks taskRef={taskRef} dateRef={dateRef}/>
+      <TodoList todos ={todos}/>
       
       </section>
     </aside>

@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
+import '../../../Styles/EachTodo.css';
 
-export default function EachTodo() {
+export default function EachTodo({ todo }) {
   return (
-    <div id='eachTodo'>
+    <div id='eachTodo' className='todo-container'>
        <input type="checkbox" name="dnud" id="dnud" />
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis, aliquam!</p>
-        
+       <p className='todo-title'>{todo.title}</p> 
+       <p className='todo-date'>{todo.date}</p>
+       <i className="fa-solid fa-ellipsis"></i>
     </div>
-  )
+  );
 }
