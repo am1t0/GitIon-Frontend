@@ -23,6 +23,7 @@ import store from './Data_Store/Store/Store.js';
 import Repo from './Components/Repo/Repo.js';
 import FileFolderContent from './Components/FileFolderContent.js';
 import Profile from './Components/Profile.js';
+import Dashboard from './Components/Dashboard/Dashboard.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
       {path:'/',element:<Home/> , children:[
         { path: '/', element: <LandingPage /> },
         {path:'/profile/:username',element:<Profile/>},
-        { path: '/Todos', element: <Todo /> },
+        { path: '/dashboard', element: <Dashboard /> },
         {path:'/create-team',element: <CreateTeam/>}
       ]},
       {path:'/register',element: <RegisterPage/>},

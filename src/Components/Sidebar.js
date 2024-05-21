@@ -50,9 +50,9 @@ export default function Sidebar({handleTeamCreated }) {
             </Link>
           </li>
           <li>
-            <Link to="/todos" className='link'>           {/* navigating to the todos of user  */}
+            <Link to="/dashboard" className='link'>           {/* navigating to the todos of user  */}
             <i class="fa-regular fa-circle-dot"></i>
-            <p>todos</p>
+            <p>dashboard</p>
             </Link>
           </li>
           <li>

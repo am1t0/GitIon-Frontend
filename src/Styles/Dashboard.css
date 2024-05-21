@@ -1,0 +1,19 @@
+.dashboard{
+    outline: 1px solid;
+    display: flex;
+    width: 100%;
+    background: #080b0e;
+    padding: 20px 0px;
+}
+#userTasks{
+ outline: 1px solid red;
+ width: 55%;
+}
+#userRemBills{
+    outline: 1px solid blue;
+    width: 45%;
+}
+.Topic{
+    margin: 10px 20px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

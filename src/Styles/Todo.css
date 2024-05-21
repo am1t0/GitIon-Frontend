@@ -1,41 +1,48 @@
-.todoContainer{
- /* border:2px solid red; */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background: rgb(34,193,195);
-background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(222,236,54,1) 0%, rgba(58,45,245,1) 0%, rgba(34,193,195,1) 100%);
-}
-.content-2{
-    width:50%;
-    margin-top: 10px;
-    /* margin-bottom: 10px; */
-    /* border: 2px solid green; */
-    box-shadow: 0px 0px 7px rgba(93, 93, 93, 0.4);
-    border-radius: 7px;
-    background-color: white;
-    /* background: rgb(34,193,195);
-    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(222,236,54,1) 0%, rgba(58,45,245,1) 0%, rgba(34,193,195,1) 100%); */
-}
-.head{
-    /* border: 2px solid blue; */
-    text-align: center;
-    padding:2px;
-    background-color: white;
-    /* background: rgb(34,193,195);
-    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(222,236,54,1) 0%, rgba(58,45,245,1) 0%, rgba(34,193,195,1) 100%); */
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-}
-.head h2{
-  font-weight: bolder;
-}
-.createBtn{
-    /* border: 2px solid yellow; */
-    text-align: center;
-    padding: 7px 0px 7px 0px;
-}
 
-h4{
-    text-align: center;
+#todoContainer{
+    border: 1px solid green;
+    height: 400px;
+    margin: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* width: 90%; */
+}
+.creation{
+    /* border: 1px solid; */
+    width: 85%;
+    padding-top: 10px;
+}
+.creation input{
+
+}
+#td{
+  border: 1px solid rgb(82, 82, 82);
+  height: 33px;
+  border-radius: 8px;
+}
+#du{
+    border: 1px solid rgb(82, 82, 82);
+    height: 33px;
+    padding-right: 8px;
+    margin-left: 10px;
+    border-radius: 7px;
+    color: white;
+    /* background-color: white; */
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+     filter: invert(100%) brightness(100%) contrast(100%);
+}
+ 
+#crt{
+    border: none;
+    background-color: rgb(143, 0, 209);
+    height: 30px;
+    width: 60px;
+    border-radius: 70px;
+    margin-left: 30px;
+    padding: 0px 0px 2px 0px;
+}
+#crt:hover{
+    background-color: rgb(107, 1, 156);
 }
