@@ -1,7 +1,9 @@
-#eachTodo {
+#eachTodo{
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    /* border: 1px solid; */
     /* Adjust other styles as needed */
   }
   #eachTodo:hover{
@@ -20,23 +22,42 @@
   
   .todo-title{
     border: 1px solid  blue;
+    flex-basis: 60%;
+    /* background: rgb(229, 4, 254); */
     border-radius: 6px;
     padding: 5px 0px;
-    margin: 5px 1px  4px 20px;
+    color: rgb(210, 208, 208);
+    margin: 5px 12px  10px 20px;
     padding-left: 10px;
     flex: 1;
   }
   
   .todo-date {
-    flex-basis: 15%; /* Set the base width for flex items */
+    color: rgb(210, 208, 208);
+    font-size: 14px;
+    /* flex-basis: 16%; Set the base width for flex items */
+    width: 70px;
     text-align: center;
-    margin-left: 20px;
-    margin-bottom: 0;
+    margin: 0px 30px 0px 30px;
+    padding: 3px;
     outline: 1px solid rgb(82, 82, 82);
     border-radius: 10px;
   }
   
-  #eachTodo i{
-    flex-basis: 27%;
-    text-align: center;
-  }
+  /* here desgining the icons through which manipulation of todo happen */
+.manpTd{
+  /* border: 1px solid; */
+  width: 100px;
+}
+.manpTd i{
+  margin: 0 8px;
+  color: grey;
+  cursor: pointer;
+}
+
+#del:hover{
+ color: red;
+}
+#upd:hover{
+  color: green;
+}

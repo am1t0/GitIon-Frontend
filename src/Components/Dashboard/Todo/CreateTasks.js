@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CreateTasks({taskRef,dateRef}) {
+export default function CreateTasks({taskRef,timeRef,handleCreate}) {
   return (
     <section className='creation'>
          {/* creation component bar  */}
@@ -18,11 +18,16 @@ export default function CreateTasks({taskRef,dateRef}) {
           type="time" 
           name="due" 
           id='du'
-          ref={dateRef}
+          ref={timeRef}
           />
 
           {/* button for creation of todo  */}
-         <button type="button" id='crt'>create</button>
+         <button 
+         onClick={handleCreate}
+         type="button" 
+         id='crt'>
+          create
+        </button>
        </section>
    
   )

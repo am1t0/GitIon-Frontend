@@ -3,10 +3,10 @@
     display: flex;
     width: 100%;
     background: #080b0e;
-    padding: 20px 0px;
+    padding: 0px 30px;
 }
 #userTasks{
- outline: 1px solid red;
+ /* outline: 1px solid red; */
  width: 55%;
 }
 #userRemBills{

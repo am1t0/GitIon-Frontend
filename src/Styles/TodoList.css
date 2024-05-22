@@ -1,7 +1,8 @@
 .todoList{
   /* border: 2px solid; */
   margin-top: 10px;
-  width: 90%;
+  width: 96%;
+
   padding: 10px;
 }
 .labels{
@@ -19,7 +20,7 @@
 }
 .todos{
   /* border: 2px solid; */
-  height: 40vh;
+  height: 60vh;
   overflow-y: auto;
 }
 #tk{
@@ -28,9 +29,9 @@
 }
 #d{
   position: relative;
-  left: 93px;
+  right: 110px;
 }
 #ed{
   position: relative;
-  right: 5px;
+  right: 13px;
 }
