@@ -1,0 +1,109 @@
+.plan-card {
+  width: 300px;
+  height:300px;
+  flex-shrink: 0; /* Prevent shrinking */
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: #292929;
+  transition: all 0.3s ease-in-out;
+  }
+  
+  
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 5px;
+    background: #636363;
+    border-radius: 4px 4px 0px 0px;
+    /* border-bottom: 1px solid #ddd; */
+  }
+  
+  .plan-tag {
+    background: #818181;
+    font-size: 13px;
+    color: #fff;
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+  
+  .plan-duration {
+    font-size: 13px;
+    color: #e0e0e0;
+  }
+  
+  .plan-image{
+    /* border: 1px solid; */
+    border-radius: 8px;
+    margin: 10px 10px;
+    background: rgb(96, 3, 150);
+    text-align: center;
+  }
+  .plan-image img {
+    width: 200px;
+    height: auto;
+    /* background: black; */
+  }
+  
+  .plan-progress {
+    display: flex;
+    justify-content: center;
+    padding: 3px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .loading-bar {
+    width: 85%;
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .loading-bar .progress {
+    width: 60%; /* Adjust this width to represent the actual progress */
+    height: 5px;
+    background: #28a745;
+    transition: width 0.7s ease-in-out;
+  }
+  .percentage{
+   /* // percenteage show krna hai */
+  }
+  .plan-content {
+    padding:6px 15px;
+    /* outline: 1px solid; */
+  }
+  
+  .plan-title {
+    color: #c9c9c9;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .plan-description {
+    font-size: 14px;
+    color: #b4b4b4;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+.plan-milestones{
+  outline: 1px solid;
+  padding-left: 10px;
+  display: none;
+  
+}
+.milestone{
+  /* border: z1px solid rgb(255, 255, 255); */
+  display: flex;
+  align-items: start;
+  margin: 8px 0px;
+}
+input[id='milestone']{
+ height: 14px;
+ margin-top: 6px;
+}
+.milestone p{
+  margin-left: 10px;
+  margin-bottom: 0;
+}

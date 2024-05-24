@@ -1,19 +1,30 @@
 .dashboard{
-    outline: 1px solid;
+    /* outline: 1px solid; */
     display: flex;
+    flex-direction: column;
+    /* overflow-x: scroll !important; */
     width: 100%;
-    background: #080b0e;
+    background: #000000;
+    /* height: 160vh; */
     padding: 0px 30px;
 }
-#userTasks{
- /* outline: 1px solid red; */
- width: 55%;
+#userTasksBills{
+ outline: 1px solid red;
+ width: 100%;
+ display: flex;
 }
 #userRemBills{
     outline: 1px solid blue;
     width: 45%;
 }
+
+/* styling of each topic in dashborad */
 .Topic{
-    margin: 10px 20px;
+    /* outline: 1px solid rgb(49, 49, 49); */
+    border-radius: 2px;
+    padding-left: 14px;
+    margin: 26px 20px 10px 20px;
+    background: rgb(59, 2, 59);
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+

@@ -1,0 +1,8 @@
+.longPlansList{
+  display: flex;
+  overflow-x: scroll;
+  /* align-items: center; */
+  width: 75rem;
+  height: 30rem;
+  gap: 100px;
+}

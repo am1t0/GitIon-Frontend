@@ -1,7 +1,7 @@
 import React from 'react'
 import EachTodo from './EachTodo'
 
-export default function TodoList({todos,handleDelete}) {
+export default function TodoList({todos,handleDelete,handleCompletion}) {
   
   return (
        <section className="todoList">
@@ -15,7 +15,7 @@ export default function TodoList({todos,handleDelete}) {
           <div className="todos">
             {
               todos?.map((todo)=>{
-                return  <EachTodo todo={todo} handleDelete={handleDelete}/>
+                return  <EachTodo todo={todo} handleDelete={handleDelete} handleCompletion={handleCompletion}/>
               })
             }
           </div>

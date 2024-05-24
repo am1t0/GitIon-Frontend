@@ -1,132 +1,169 @@
-import React, { useEffect, useRef, useState } from 'react'
-import getAccessToken from '../../../Utils/auth';
-import '../../../Styles/Todo.css'
-import CreateTasks from './CreateTasks';
-import TodoList from './TodoList';
+import React, { useState, useEffect, useRef } from 'react';
+import CreateTasks from './CreateTasks'; // Assume this component handles creating tasks
+import TodoList from './TodoList'; // Assume this component handles displaying tasks
+import getAccessToken from '../../../Utils/auth.js'
 
-export default function Todo() {
+const Todo = () => {
+  const [todos, setTodos] = useState([]);
+  const [action, setAction] = useState('');
+  const [actionId, setActionId] = useState('');
+  const [triggerFetch, setTriggerFetch] = useState(false);
   const taskRef = useRef();
   const timeRef = useRef();
-  const [action,setAction] = useState();
 
-    const [todos, setTodos] = useState([]);
-    useEffect(() => {
-      const fetchTodos = async () => {
-        try {
-          const accessToken = getAccessToken();
-          if (!accessToken) {
-            console.error('Access token not found');
-            return;
-          }
-  
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/get-todos`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-            },
-          });
-  
-  
-          if (!response.ok) {
-            console.error('Error:', response.statusText);
-            return;
-          }
-  
-          const data = await response.json();
-  
-          setTodos(data.data);
-  
-        } catch (error) {
-          console.error('Error fetching user data:', error.message);
-        }
-      };
-      fetchTodos();
-    }, []);
+  useEffect(() => {
 
-    // fn for creating the todo in db
-    const handleTodoCreate = async () => {
-      let newTodo = {
-        title: taskRef.current.value,
-        time:timeRef.current.value
-      }
+    const fetchTodos = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/create-todo`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${getAccessToken()}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(newTodo)
-        });
-    
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        const accessToken = getAccessToken();
+        if (!accessToken) {
+          console.error('Access token not found');
+          return;
         }
-    
-        const result = await response.json();
-        const todoCreated = result.data;
-        handleTodoCreated(todoCreated);
 
-        taskRef.current.value = null;
-        timeRef.current.value = null;
-
-
-        setAction('Created!');
-
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
-    };
-    
-    // for adding the new todo to the state
-    const handleTodoCreated = (newTodo) => {
-      setTodos((prevTodos) => [...prevTodos, newTodo]);
-    }
-    // for deleting the todo in db
-    const handleTodoDelete = async (todoId) => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/${todoId}`, {
-          method: 'DELETE',
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/get-todos`, {
+          method: 'GET',
           headers: {
-            'Authorization': `Bearer ${getAccessToken()}`,
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
           },
         });
-    
+
         if (!response.ok) {
-          console.log(response);
-          throw new Error('Network response was not ok');
+          console.error('Error:', response.statusText);
+          return;
         }
-    
-        // Check if the response body exists and has content
-        const result = response.status !== 204 ? await response.json() : null;
-    
-        handleTodoDeleted(todoId);
+
+        const data = await response.json();
+        setTodos(data.data);
       } catch (error) {
-        console.log('error', error);
+        console.error('Error fetching user data:', error.message);
       }
     };
-    
 
-    // for filtering out the todo from state
-    const handleTodoDeleted = (todoId) => {
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId))
+    fetchTodos();
+  }, [triggerFetch]); // Add triggerFetch as a dependency
+
+  const handleCompletionTodo = async (todoId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/${todoId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to mark todo as done');
+      }
+
+      const updatedTodo = await response.json();
+      setTodos(todos.map(todo => todo._id === todoId ? updatedTodo : todo));
+      setAction(updatedTodo.isDone ? 'Todo completed!' : 'Todo marked as incomplete!');
+      setActionId(updatedTodo.isDone ?'visCreate':'undone');
+      makeActionInvisible(1500);
+      setTriggerFetch(prev => !prev); // Trigger useEffect to run again
+    } catch (error) {
+      console.error('Error completing todo:', error);
     }
+  };
+
+  const handleTodoCreate = async () => {
+    let newTodo = {
+      title: taskRef.current.value,
+      time: timeRef.current.value,
+    };
+
+    if (!newTodo?.title) {
+      setAction('Title Required');
+      setActionId('req');
+      makeActionInvisible(4000);
+      return;
+    } else if (!newTodo?.time) {
+      setAction('Time Required');
+      setActionId('req');
+      makeActionInvisible(4000);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/create-todo`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTodo),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      const todoCreated = result.data;
+      handleTodoCreated(todoCreated);
+
+      taskRef.current.value = null;
+      timeRef.current.value = null;
+      setAction('Todo created successfully!');
+      setActionId('visCreate');
+      makeActionInvisible(2000);
+      setTriggerFetch(prev => !prev); // Trigger useEffect to run again
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+    }
+  };
+
+  const handleTodoCreated = (newTodo) => {
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
+  const handleTodoDelete = async (todoId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/todos/${todoId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getAccessToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        console.log(response);
+        throw new Error('Network response was not ok');
+      }
+
+      handleTodoDeleted(todoId);
+      setAction('Todo deleted successfully!');
+      setActionId('visDel');
+      makeActionInvisible(2000);
+      setTriggerFetch(prev => !prev); // Trigger useEffect to run again
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const handleTodoDeleted = (todoId) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== todoId));
+  };
+
+  const makeActionInvisible = (timeout) => {
+    setTimeout(() => {
+      setActionId('inv');
+    }, timeout);
+  };
+
   return (
-    <aside>
-
-    <h1 className='Topic'>Today</h1>
-
-     <section id='todoContainer'>
-
-      <CreateTasks taskRef={taskRef} timeRef={timeRef} handleCreate={handleTodoCreate}/>
-      
-      {/* message of creations/updating/deleting  */}
-       <h6 style={{}}>{action}</h6>
-
-      <TodoList todos ={todos} handleDelete={handleTodoDelete}/>
-      
+    <aside id='todo'>
+      <h1 className='Topic'>Today</h1>
+      <section id='todoContainer'>
+        <CreateTasks taskRef={taskRef} timeRef={timeRef} handleCreate={handleTodoCreate} />
+        <h6 id={actionId} className='action' style={{ action }}>{action}</h6>
+        <TodoList todos={todos} handleDelete={handleTodoDelete} handleCompletion={handleCompletionTodo} />
       </section>
     </aside>
-  )
-}
+  );
+};
+
+export default Todo;

@@ -11,6 +11,7 @@ export default function CreateTasks({taskRef,timeRef,handleCreate}) {
          placeholder='Enter your task...' 
          id='td'
          ref={taskRef}
+         autoComplete='off'
          />
 
          {/* for inputing time  */}
@@ -19,6 +20,7 @@ export default function CreateTasks({taskRef,timeRef,handleCreate}) {
           name="due" 
           id='du'
           ref={timeRef}
+          autoComplete='off'
           />
 
           {/* button for creation of todo  */}
