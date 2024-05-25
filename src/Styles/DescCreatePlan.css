@@ -1,0 +1,9 @@
+.descCrt{
+    display: flex;
+    border: 1px solid;
+    align-items: center;
+    gap: 10px;
+}
+.descCrt p{
+    margin: 0;
+}

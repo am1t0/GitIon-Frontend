@@ -153,7 +153,6 @@ const Todo = () => {
       setActionId('inv');
     }, timeout);
   };
-
   return (
     <aside id='todo'>
       <h1 className='Topic'>Today</h1>

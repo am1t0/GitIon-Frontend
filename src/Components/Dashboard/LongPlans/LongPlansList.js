@@ -1,6 +1,7 @@
 import React from 'react'
 import EachPlan from './EachPlan'
 import '../../../Styles/LongPlansList.css'
+import DescCreatePlan from './DescCreatePlan';
 
 export default function LongPlansList({Lplan}) {
 
@@ -150,9 +151,17 @@ export default function LongPlansList({Lplan}) {
 
   return (
      <section className='longPlansList'>
+      
+       {/* intro and options to create a new plan  */}
+        <DescCreatePlan/>
+
+
+        {/* for showing list of all long plans  */}
+        <div className="planlist">
        {plans.map((plan)=>{
          return  <EachPlan plan={plan}/>
        })}
+        </div>
      </section>
   )
 }
