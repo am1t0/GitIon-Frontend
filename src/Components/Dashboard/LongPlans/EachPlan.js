@@ -2,32 +2,31 @@ import React, { useState } from 'react'
 import '../../../Styles/EachPlan.css'
 import team from '../../../Images/LandingTeam.png'
 
-export default function EachPlan({plan}) {
+export default function EachPlan({plan,setPlan}) {
   const [content,setContent] = useState(null);
-  const [mnpClass,setMnpClass] = useState(null);
+  const [mnpClass,setMnpClass] = useState('mnp');
   const [mnppOp,setMnpOp] = useState(null); // for showing the modifying options for each plan
   
   // setting the id of plan of which modifying options is clicked
   const handleMnpShow=(title)=>{
     if(!mnppOp) {
       setMnpOp(title);
-      setMnpClass('shw');
+      setMnpClass('mnp-2');
     }
     else{ 
       setMnpOp(null);
-      setMnpClass(null)
+      setMnpClass('mnp')
     }
   }
-  return (
+  return (    
     <div class="plan-card">
-     
     <div class="plan-header">   {/* head of the card  */}
     <div>
       <span class="plan-tag">{plan.tag}</span>
-      <span class='view'>view</span>
+      <span className='view' onClick={()=>{setPlan(plan)}}>view</span>
     </div>
       <div>
-      <i class="fa-solid fa-ellipsis" id='mnp' onClick={()=>handleMnpShow(plan.title)}></i>   {/* three dots for options to modify plans  */}
+      <i class="fa-solid fa-ellipsis" id={`${mnpClass}`}  onClick={()=>handleMnpShow(plan.title)}></i>   {/* three dots for options to modify plans  */}
       { mnppOp===plan.title &&
       <ul id="mnpOp">       {/* providing options of modifying plan onClicking three dots icon */}
           <li>
@@ -63,16 +62,6 @@ export default function EachPlan({plan}) {
      
       <p class="plan-description">{plan.description}</p>
 
-      <div className="plan-milestones">
-      {
-        plan.milestones.map((milestone)=>{
-            return <div className='milestone'>
-             <input type="checkbox" id='milestone'/>
-             <p>{milestone}</p>
-              </div>
-        })
-      }
-      </div>
     </section>
   </div>
   

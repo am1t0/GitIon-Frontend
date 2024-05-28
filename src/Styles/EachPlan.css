@@ -4,8 +4,8 @@
   flex-shrink: 0; /* Prevent shrinking */
   /* border: 1px solid #ddd; */
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(240, 240, 240, 0.1);
-  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(44, 44, 44, 0.1);
+  background: #fcfcfc;
   transition: all 0.3s ease-in-out;
   }
   
@@ -50,8 +50,19 @@
      border-radius: 2px;
      transition: all .2s ease-in-out;
     }
-
+ 
   #mnp:hover{
+    color: #000;
+  }
+  #mnp:active{
+    background-color: rgb(153, 153, 153);
+  }
+  #mnp-2{
+    padding: 3px 5px;
+    display: inline;
+    margin-right: 15px;
+    cursor: pointer;
+    border-radius: 2px;
     color: #000;
     background-color: rgb(153, 153, 153);
   }
@@ -67,6 +78,7 @@
     top: 10px;
     right: -50px;
   }
+
   #mnpOp li:hover{
     background: rgb(93, 22, 164);
   }
@@ -76,6 +88,8 @@
   }
   #mnpOp span{
     font-size: 14px;
+    cursor: pointer;
+    color: rgb(209, 209, 209);
   }
   .plan-card:hover #mnp{
     display: inline;
@@ -139,26 +153,3 @@
     margin-bottom: 8px;
     text-align: center;
   }
-
-.plan-milestones{
-  outline: 1px solid;
-  padding-left: 10px;
-  height: 160px;
-  overflow-y: auto;
-  display: none;
-  
-}
-.milestone{
-  /* border: z1px solid rgb(255, 255, 255); */
-  display: flex;
-  align-items: start;
-  margin: 8px 0px;
-}
-input[id='milestone']{
- height: 14px;
- margin-top: 6px;
-}
-.milestone p{
-  margin-left: 10px;
-  margin-bottom: 0;
-}

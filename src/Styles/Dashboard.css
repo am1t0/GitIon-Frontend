@@ -8,23 +8,43 @@
     /* height: 160vh; */
     padding: 0px 30px;
 }
-#userTasksBills{
- /* outline: 1px solid red; */
- width: 100%;
- display: flex;
-}
-#userRemBills{
-    outline: 1px solid blue;
-    width: 45%;
-}
 
 /* styling of each topic in dashborad */
 .Topic{
-    /* outline: 1px solid rgb(49, 49, 49); */
-    border-radius: 2px;
-    padding-left: 14px;
-    margin: 26px 20px 10px 20px;
-    background: rgb(59, 2, 59);
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /* outline: 1px solid; */
+  display: flex;
+  align-items: center;
+  background: rgb(240, 173, 96);
+  margin: 20px 0px 0px 10px;
+  padding: 4px 20px;
+  border-radius: 2px;
+}
+.Topic h2{
+    margin: 0;
 }
 
+.addnew{
+    /* border: 1px solid; */
+    width: 52px;
+    border-radius: 3px;
+    margin: 30px 0px 0px 30px;
+    padding: 1px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: blueviolet;
+}
+.addnew:hover{
+    cursor: pointer;
+    background: rebeccapurple;
+}
+.addnew i{
+    color: rgb(209, 209, 209);
+    font-size: 13px;
+    /* height: 10px; */
+}
+.addnew p{
+    color: rgb(227, 226, 226);
+    margin: 0;
+    font-family: baloo;
+}

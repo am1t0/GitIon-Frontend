@@ -155,7 +155,9 @@ const Todo = () => {
   };
   return (
     <aside id='todo'>
-      <h1 className='Topic'>Today</h1>
+      <div className="Topic">
+           <h2>Todo List</h2>
+        </div>
       <section id='todoContainer'>
         <CreateTasks taskRef={taskRef} timeRef={timeRef} handleCreate={handleTodoCreate} />
         <h6 id={actionId} className='action' style={{ action }}>{action}</h6>
