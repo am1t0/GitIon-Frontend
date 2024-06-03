@@ -28,7 +28,10 @@ export default function FilesAndFolders() {
   const dispatch = useDispatch();
 
   // Current Project details 
-  const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject.data);
+  const owner = localStorage.getItem('owner');
+  const repoName = localStorage.getItem('repoName');
+  const {projectName} = useParams();
+  // const {repo: {owner,repoName},name}= useSelector((store)=>store.currProject.data);
  
   // ALL CONTENTS OF REPO ASSOCIATED WITH PROJECT
   const  repoContent = useSelector((state) => state.repo.data);
@@ -39,7 +42,7 @@ export default function FilesAndFolders() {
       dispatch(fetchBranches({project:{repo:{owner,repoName}}}));
   },[])
   
-  const trimmedName = name.trim();
+  const trimmedName = projectName.trim();
 
   // LINK OF REPO
   const repoLink = `https://github.com/${owner}/${repoName}.git`;
@@ -83,9 +86,8 @@ export default function FilesAndFolders() {
   };
   return ( repoContent ?
     <div> 
-        <div className="bar"></div>
+      <hr/>
       <div id='top'>
-       { selectedBranch!=='main' && <PullRequestForm/>}
         
        {/* -------BRANCH RELATED CONTENT HERE */}
        <Branches handleBranchChange={handleBranchChange} selectedBranch={selectedBranch}/>

@@ -5,19 +5,33 @@ import InitialPushinComands from '../InitialPushinComands';
 import PullRequestForm from '../PullRequestForm';
 import RepoFileFolder from '../RepoFileFolder';
 import '../../Styles/ProjectDocs.css'
+import { Link, useParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 export default function ProjectDocs() {
 
-  const currProject = useSelector((store)=>store.currProject.data);
-
+  // const currProject = useSelector((store)=>store.currProject.data);
+  const {projectName} = useParams();
+  const {projectId} = useParams();
+  const repoName = localStorage.getItem('repoName');
 
   return (
     <div id='projectDocs'> 
      <div className="projectHead">
-      <h1>{currProject?.name}</h1>
-      <h5>{currProject?.repo?.repoName}</h5>
+      <h1>{projectName}</h1>
+      <h5>{repoName}</h5>
      </div>
-      { currProject && <RepoFileFolder/>}
+     <div className="repoCodePullReq">
+           <button className='repoTopBtn'>
+           <i class="fa-solid fa-code"></i>
+             <p> <Link to={`/project/${projectName}/${projectId}/docs`}>Code</Link> </p>
+           </button>
+           <button className='repoTopBtn'>
+           <i class="fa-solid fa-code-pull-request"></i>
+             <p><Link to={`/project/${projectName}/${projectId}/docs/pulls`}>Pull requests</Link></p>
+           </button>
+      </div>
+      <Outlet/>
     </div>
   );
 }

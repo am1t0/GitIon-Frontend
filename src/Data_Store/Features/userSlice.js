@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import getAccessToken from '../../Utils/auth';
 
-export const fetchUser  = createAsyncThunk('fetchUser', async () => {
-   console.log('call aayi kaya')  
+export const fetchUser  = createAsyncThunk('fetchUser', async () => { 
   try {
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/user-data`, {
           method: 'GET',  

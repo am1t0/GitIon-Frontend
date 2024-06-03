@@ -1,3 +1,11 @@
+.profileLoad{
+    height: 92vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080b0e;
+}
 .frame{
     background: #080b0e;
     /* border: 2px solid; */

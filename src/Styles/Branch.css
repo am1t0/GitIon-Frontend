@@ -31,15 +31,13 @@
     color: #fff;
   }
 #branchInp{
-    /* border: 2px solid green; */
-    border:1px solid rgb(56, 55, 55);
-    width: 80%;
-    border-radius: 9px;
+    border:1px solid rgb(63, 62, 62);
+    /* width: rem; */
+    margin-right: 12px;
+    border-radius: 7px;
 }
 #branchInp input{
-    border: none;
-    width: 83%;
-    /* height: 35px; */
+    width: 13rem;
     padding-left: 8px;
     color: white;
     outline: none;
@@ -50,10 +48,10 @@
 #branchInp button{
     border: none;
       width: 31px;
-      height: 36px; 
+      height: 33px; 
       color: white;
       background-color: rgb(6, 120, 30);
-      border-radius: 0px 9px 9px 0px;   
+      border-radius: 0px 7px 7px 0px;   
 }
 #createBranch{
     margin: 5px 0px 0px 9px;

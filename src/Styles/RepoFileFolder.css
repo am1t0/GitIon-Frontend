@@ -2,6 +2,15 @@
     margin: 0px;
     padding: 0px;
 }
+/* code and pull request div and button  */
+.repoCodePullReq{
+    /* border: 1px solid; */
+    padding-top: 15px;
+    width: 13rem;
+    display: flex;
+    justify-content: space-between;
+}
+
 #top{
     display: flex;
     /* border: 1px solid; */

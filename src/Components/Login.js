@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import '../Styles/Login.css'
 import { Link } from 'react-router-dom';
 
@@ -36,8 +35,6 @@ const  Login = () => {
       // Store the access token in localStorage
       localStorage.setItem('access_token', accessToken);
   
-      
-       window.location.reload();
        navigate('/')
       
       // e.g., history.push('/dashboard');

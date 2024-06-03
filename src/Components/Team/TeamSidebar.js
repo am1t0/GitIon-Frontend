@@ -11,7 +11,15 @@ export default function TeamSidebar({setShow}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // getting team id and name from routed link
+  const {teamId,teamName} = useParams();
+
+  // projects data from projects slice
   const projects = useSelector((store)=> store.project);
+
+  // user from user slice
+  const {data} = useSelector((store)=> store.user);
+  const user = data;
 
   const handleProjectClick=(project)=>{
         
@@ -24,77 +32,77 @@ export default function TeamSidebar({setShow}) {
 
    
   return(
-    <div className="flex-shrink-0 p-3 bg-white teamSidebar">
-       
-    <ul className="list-unstyled ps-0">
-      <div className="border-bottom my-3" style={{display:'flex'}}>
-    <h5 className='mx-3'>Gittion</h5>
-     {/* DELETING THE TEAM  */}
-     {/* <h6 onClick={()=>{handleDeleteTeam(team._id)}} style={{color:'red',cursor:'pointer'}}>X</h6> */}
-      </div>
-      <li className="mb-1">
-        <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          <h6 className='clr'>Projects</h6>
+    <div className="sidebar">
+    <div className="logo">
+      <i className="fab fa-github"></i>
+      <span>Gittion</span>
+    </div>
+    <ul className="list-unstyled my-4">
+    <li>
+        <button className="custom btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#user-collapse" aria-expanded="false">
+          <div id="user">
+          <i class="fa-solid fa-circle-user"></i>
+          <h6>User</h6>
+          </div>
         </button>
-        <div className="collapse" id="dashboard-collapse">
-          <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li className="mb-1">
-        <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#order-collapse" aria-expanded="false">
-          <li className='clr'>Your Projects</li>
-        </button>
-        <div className="collapse" id="order-collapse">
-        <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-        { !projects.isLoading ? projects.data?.map((project) => (
-           <li className='clr' key={project._id} onClick={()=>{handleProjectClick(project)}}>  
-            {project.name}
-           </li>
-            )): <h1>Loading...</h1>
-          
-          }
-        </ul>
-        </div>
+        <div className="collapse" id="user-collapse">
+          <ul className="list-unstyled pos">
+            <li>
+              <Link to={`/profile/${user?.fullname}`} className='link'>       {/* navigating to the profile of user  */}
+              <i class="fa-solid fa-user"></i>
+                <p>profile</p>
+              </Link>
             </li>
-       <li className='clr' id='createProject' onClick={()=> setShow(false)}>Create Project</li>
+            <li>
+              <Link to="/" className='link'>
+              <i class="fa-solid fa-gear"></i>
+              <p>setting</p>
+              </Link>
+            </li>
+            <li>
+              <Link to="/dashboard" className='link'>           {/* navigating to the todos of user  */}
+              <i class="fa-regular fa-circle-dot"></i>
+              <p>dashboard</p>
+              </Link>
+            </li>
+            <li>
+              <Link to="/" className='link'>
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <p>log out</p>
+              </Link>
+            </li>
           </ul>
         </div>
       </li>
-      {/* <li className="mb-1">
-        <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-          Tasks
+      <li>
+        <button className="custom btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#team-collapse" aria-expanded="false">
+          <h6>Projects</h6>
         </button>
-        <div className="collapse" id="orders-collapse">
-          <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" className="link-dark rounded">New</a></li>
-            <li><a href="#" className="link-dark rounded">Processed</a></li>
-            <li><a href="#" className="link-dark rounded">Shipped</a></li>
-            <li><a href="#" className="link-dark rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li>
-      <li className="mb-1">
-        <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#documents-collapse" aria-expanded="false">
-          Documents
-        </button>
-        <div className="collapse" id="documents-collapse">
-          <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" className="link-dark rounded">New</a></li>
-            <li><a href="#" className="link-dark rounded">Processed</a></li>
-            <li><a href="#" className="link-dark rounded">Shipped</a></li>
-            <li><a href="#" className="link-dark rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li> */}
-      <li className="border-top my-3"></li>
-      <li className="mb-1">
-        <button className="clr btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          Account
-        </button>
-        <div className="collapse" id="account-collapse">
-          <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" className="link-dark rounded">New...</a></li>
-            <li><a href="#" className="link-dark rounded">Profile</a></li>
-            <li><a href="#" className="link-dark rounded">Settings</a></li>
-            <li><a href="#" className="link-dark rounded">Sign out</a></li>
+        <div className="collapse" id="team-collapse">
+          <ul className="pos list-unstyled">
+            <li>
+              <button className="teams btn btn-toggle align-items-center rounded collapsed mx-1" data-bs-toggle="collapse" data-bs-target="#teams-collapse" aria-expanded="false">
+              <i class="fa-solid fa-p"></i>
+              <p>Your Projects</p>
+              </button>
+              <div className="collapse" id="teams-collapse">
+                <ul className="pos list-unstyled">
+                  {projects.data?.map((project) => (
+                    <li onClick={() => handleProjectClick(project)} key={project?._id}  className='teamName'>{project?.name}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+
+            
+            <li>
+              <Link
+                to={`/${teamId}/${teamName}/create-project`}
+                 className='link'      >  
+                  <i class="fa-solid fa-monument"></i>
+                   <p>Create Project</p>
+                </Link>
+            </li>
           </ul>
         </div>
       </li>

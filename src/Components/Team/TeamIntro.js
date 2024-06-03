@@ -1,25 +1,45 @@
 import React, { useState,useEffect, useRef } from 'react'
-import { useLocation, useParams } from 'react-router-dom';
 import "../../Styles/TeamIntro.css"
 import getAccessToken from '../../Utils/auth.js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMemberDetails, setMemberRole } from '../../Data_Store/Features/memberSlice.js';
 import membAdd from "../../Sound/membAdd.wav"
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
 
 export default function TeamIntro() {
 
+  // getting team id and name from url
+   const {teamId,teamName} = useParams();
+   
   // getting the user from store
    const team = useSelector((store)=>store.currTeam.data);
-   const {isLoading,members} = useSelector((store)=> store.member);
+
+   // all members data
+   const [members,setMembers] = useState();
+   const [isLoading,setIsLoading] = useState(false);
+
+     // projects data from projects slice
+  const projects = useSelector((store)=> store.project);
+   
+   // user details
+   const user = useSelector((store)=> store.user.data);
 
   // state variable for the storing details of each member
   const [member,setMember] = useState([]);
-
   const [arrow, setArrow] = useState(null);
-
   const [admin, setAdmin] = useState(null);
+  const [role,setRole] = useState('');  // for role of member
+  const [show,setShow] = useState(null); // showing options on clicking on dots of each member
+  const [roleShow,setRoleShow] = useState(null) // for showing input box for role change
 
+  // for navigating programmatically
+  const navigate = useNavigate();
   const usernameRef = useRef();
   const audioRef = useRef();
+  const optionsRef = useRef();      // for keeping track of options opening closing
+
+
 
   useEffect(() => {
     const getAdmin = () => {
@@ -38,36 +58,85 @@ export default function TeamIntro() {
     setAdmin(getAdmin());
   }, [members]); 
 
-  // useEffect(() => {
-  //   // Fetch member details when the component mounts
-  //   fetchMemberDetails();
-  // }, [team]);
+  // fetching member details
+  useEffect(()=>{
+     fetchMemberDetails(teamId);
+  },[])
 
-  // const fetchMemberDetails= async () =>{
-  //    try {
+  const handleChangeRole=(memberId)=>{
+        setRoleShow(roleShow=>roleShow===memberId?null:memberId); // for showing input box for role change
+  }
+  const fetchMemberDetails  = async (teamId) => {
+    setIsLoading(true);
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/members/${teamId}`, {
+          method: 'GET',  
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getAccessToken()}`
+          },
+        });
 
-  //     const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/members/${team?._id}`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${getAccessToken()}`
-  //       },
-  //     });;
+        if (!response.ok) {
+          return  Promise.reject(response);
+        }
+       const res = await response.json();
 
-  //     if (!response.ok) {
-  //       console.error('Error:', response.statusText);
-  //       return;
-  //     }
-  //     const memberObj = await response.json();
-  //     const memberData = await memberObj.data;
-  //     setMember(memberData);
-      
-      
-  //    } catch (error) {
-  //     console.error('Error in showing members of teams:', error.message);
-  //    }
-  // }
+       setMembers(res.data);
+       setIsLoading(false);
+        
+      } catch (error) {
+        return  error.message || "An error occurred while loading";
+      }
+}
 
+ // for setting role of a member in a team 
+  const handleRoleSet = async (memberId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/setRole`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          teamId,
+          memberId,
+          role
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Failed to set role: ${errorMessage}`);
+      }
+  
+      const result = await response.json();
+      const roleGiven = result.data.role;
+
+      setMembers(members => {
+        return members.map((member)=>{
+           if(member._id===memberId) 
+             return {...member,role:roleGiven}
+           else 
+             return member; 
+        })
+      })
+
+    } catch (error) {
+      console.error('Error setting role:', error.message);
+    }
+  };
+
+  // showing text of cancelling and setting role based on what member selected for setting
+  const setOrCancelRole=(memberId)=>{
+      return memberId===roleShow?'cancel':'set role';
+  }
+
+  // for storing the newly added member always at second position as first place is for admin
+  const addMemberAtSecondPosition = (addedMember, members) => {
+    return [members[0], addedMember, ...members.slice(1)];
+  };
   const handleAddMember= async () =>{
     try{
         let username = usernameRef.current.value;
@@ -92,7 +161,8 @@ export default function TeamIntro() {
         }
         const responseJson = await response.json();
         const addedMember = await responseJson.data;
-        setMember([addedMember,...member]);
+
+        setMembers(members=> addMemberAtSecondPosition(addedMember,members));
         
         // playing add sound on member successfully addition
         audioRef.current.play();
@@ -104,7 +174,7 @@ export default function TeamIntro() {
        }
   }
 
-  const handleRemoveMember= async (memberId,memberName) =>{
+  const handleRemoveMember= async (memberId) =>{
        try {
          const response  = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/remove-members`,{
           method: 'POST',
@@ -123,42 +193,88 @@ export default function TeamIntro() {
           return;
         }
 
-        const updated = member.filter((m)=> m.fullname!==memberName)
-        for (let index = 0; index < updated.length; index++) {
-          const element = updated[index];
-          console.log('name : '+element.fullname);
-        }
-        setMember(updated);
+        // filetering out removed member
+        setMembers((members)=>
+          members.filter((member)=> member._id!==memberId))
 
+        console.log('member removed successfully!')
        } catch (error) {
         console.log("error in removing member : ",error)
        }
   }
 
+  function getUserColor(user) {
+    // Convert user's unique identifier (e.g., ID, username, or email) to a numeric hash
+    let hash = 0;
+    for (let i = 0; i < user.length; i++) {
+      hash = user.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    // Convert hash to a hexadecimal color code
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+
+    return color;
+  }
+
+  const nameLogo = (name) => {
+    return name[0].toUpperCase() + name.split(' ')[1][0].toUpperCase();
+  }
+  const handleProjectClick=(project)=>{
+        
+    const {repo} = project;
+    localStorage.setItem("owner",repo.owner);
+    localStorage.setItem("repoName",repo.repoName);
+    localStorage.setItem("selectedBranch",'main');
+    navigate(`/project/${project.name}/${project._id}`)
+}
+
+const handleShow = (memberId)=>{
+   setShow(show=> show===memberId?null:memberId)
+}
+// checking if click is made outside box
+const handleClickOutside = (event) => {
+  if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+    setShow(null);
+    setRoleShow(null);
+  }
+};
+// for closing the boxes if clicked outside of them
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
+    <section className='team-intro'>
+      {
     team ?
-    <div  className="team-intro">
+    <div  className="team">
         <div id="intro-memb">
           <div id="intro">
-            <h3 >Meet the team {team?.name}!</h3>
-            <div id="desc">
-            <h6>{team?.description}</h6>
-            </div>
-             <div style={{width:'100%',height:'1px',background:'rgba(145, 144, 144, 0.4)'}}></div>
+            <h4 >Meet the team {team?.name}!</h4>
+            <h6>Bug hai bhai opening closing me</h6>
+            {/* <h6>{team?.description}</h6> */}
           </div>
           <div id="memb">
+             <h5>Team Members</h5>
             <div id="search-add">
-              <div >
+              <div className='sa'>
               <input type="search" placeholder='Search team members' required/>
-              <div className="logo">
+              <div className="saLogo">
               <i className="fa-solid fa-magnifying-glass"></i>
               </div>
               </div>
               { 
               // (user?._id===team?.owner) &&
-              <div>
-              <input type="search" ref={usernameRef}  placeholder='Enter username to add' />
-              <div className="logo" onClick={handleAddMember} >
+              <div className='sa'>
+              <input  type="search" ref={usernameRef}  placeholder='Enter username to add' />
+              <div className="saLogo" onClick={handleAddMember} >
                <i className="fa-solid fa-plus"></i>
                <audio ref={audioRef} src={membAdd}/>
               </div>
@@ -172,51 +288,86 @@ export default function TeamIntro() {
             )}
               
               {!isLoading  ? <div id="members">
-              
-              <li id='admin'><h6>{admin?.fullname}</h6> <h6>{admin?.email}</h6> <button className='btn btn-success'>admin</button></li>
-              <ul>
+{/*               
+              <li id='admin'>
+                <h6>{admin?.fullname}</h6>
+                <h6>{admin?.email}</h6>
+                 <h6>Admin</h6>
+              </li> */}
+              <div>
                 {
-                  members.map((member)=>(
-                    <div key={member._id}>
-                    <div id="eachMemb">
+                  members?.map((member)=>{
+                  return <div id='eachMemb'>
+                    <div className="logo-name">
+                       <div className="circle" style={{ background: getUserColor(member.username) }}>
+                        <Link to={`/profile/${member.username}`}>{nameLogo(member.fullname)}</Link>
+                        </div>
+                        <p>{member.fullname}</p>
+                     </div>
+                       <div>
+                        { 
+                        //  showing input for role setting or the role
+                          !member.role||(roleShow===member._id)? 
+                           <div id='roleInp'>  
+                            <input type="text" placeholder='Set role' onChange={(e)=> setRole(e.target.value)}/>
+                            <button onClick={()=>handleRoleSet(member._id)}>set</button>
+                          </div>
+                           :<p className='role'>{member.role}</p>
+                        }
+                       </div>
 
-                     <li>
-                     <div className="arrow" onClick={() => {setArrow(arrow===member.email?null:member.email) }}  style={{ rotate: (arrow===member.email) ? '0deg' : '-90deg'}} ><svg viewBox="-122.9 121.1 105.9 61.9" className="icon-arrow-down-mini" width="10" height="10"><path d="M-63.2,180.3l43.5-43.5c1.7-1.7,2.7-4,2.7-6.5s-1-4.8-2.7-6.5c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.7l-37.2,37.2l-37.2-37.2
- c-1.7-1.7-4-2.7-6.5-2.7s-4.8,1-6.5,2.6c-1.9,1.8-2.8,4.2-2.8,6.6c0,2.3,0.9,4.6,2.6,6.5l0,0c11.4,11.5,41,41.2,43,43.3l0.2,0.2
- C-73.5,183.9-66.8,183.9-63.2,180.3z"></path></svg></div>
-                      <p>{member.fullname}</p> 
-                      <p>{member.email}</p>
-                      </li>
-                
-                     {
-                    //  (user?._id===team?.owner) && 
-                     <button onClick={()=>handleRemoveMember(member._id,member.fullname)} className='btn btn-danger'>D</button>}
-                       
+                     {/* dots for modification of members */}
+                     <div className="membMnp">
+                      <i class="fa-solid fa-ellipsis" onClick={()=> handleShow(member._id)}></i>
+                      </div>
+                     {/* options of modification some portion visible to leader/owner only */}
+                  <div>{  show===member._id &&
+                       <div className="updMemb" ref={optionsRef}>
+                        <p><Link to={`/profile/${member.username}`}>Profile</Link></p>
+
+                        {/* options visible to leader/admin only  */}
+                        {(team.owner===user._id) &&
+                        <>
+                        {/* removing member from team  */}
+                        <p onClick={()=> handleRemoveMember(member._id)}>Remove</p>
+                        {/* whether to set or cancel the role setting */}
+                        <p onClick={()=> handleChangeRole(member._id)}>{setOrCancelRole(member._id)}</p>   
+                        </>
+                        }
                     </div>
-                    {arrow===member.email && <h6>ISKO SHI DETAIL KE SATH SHOW KRNA HAI</h6>}
+                  }</div>
                     </div>
-                  ))
-                  }
-              </ul>
-              </div> : <center><h3 style={{color:'red'}}>Loading...</h3></center> }
+
+                 })
+                }
+              </div>    
+              </div> : <div className='loading'><div class="spinner-border text-light" role="status">
+  <span class="sr-only">Loading...</span>
+</div></div> }
             </div>
           </div>
         </div>
-        {/* <div id="team-Imp">
-          <div id="obj">
-            <div id="objImg">
-              nothing now!
-            </div>
-            <div id="objList">
-              <ul>
-                <li>Lorem ipsum dolor sit amet consectetur.</li>
-                <li>Lorem ipsum dolor sit.</li>
-                <li>Lorem ipsum dolor sit amet.</li>
-                <li>Lorem ipsum dolor sit ame</li>
-              </ul>
-            </div>
-          </div>
-        </div> */}
+       
     </div> : <h1>Loading...</h1>
+    }
+     <div className="projects">
+       <div className="prCr">
+         <h5>Team Projects</h5>
+    <Link to={`/${teamId}/${teamName}/create-project`}><button>Create</button></Link>
+       </div>
+
+       <div className="srchProj">
+         <input type="search" placeholder='search project'/>
+       </div>
+
+        <div className="projList">
+        {
+          projects.data.map((project)=>{
+            return <li onClick={()=>{handleProjectClick(project)}}>{project.name}</li>
+          })
+        }
+         </div>
+    </div> 
+    </section>
   )
 }

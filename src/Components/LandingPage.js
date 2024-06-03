@@ -34,7 +34,7 @@ const LandingPage = () => {
                 with your personal to-do list.   </p>
                 <div className="goTo">
                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                 <p>View all todos</p>
+                 <p><Link to='/dashboard'>View all todos</Link></p>
                 </div>
             </div>
             <div className="boxes">
@@ -42,7 +42,7 @@ const LandingPage = () => {
               <p>Plan your future projects and keep track of     your long-term goals.  </p>
               <div className="goTo">
                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                 <p>View all plans</p>
+                 <p><Link to='/dashboard'>View all plans</Link></p>
                 </div>
             </div>
             <div className="boxes">
@@ -50,7 +50,7 @@ const LandingPage = () => {
               <p>Never miss an important date or deadline with your reminders </p>
               <div className="goTo">
                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                 <p>View all reminders</p>
+                 <p><Link to='/dashboard'>View all reminders</Link></p>
                 </div>
             </div>
           </div>

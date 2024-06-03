@@ -29,7 +29,7 @@ const memberSlice = createSlice({
     name: 'member',
     initialState: {
          isLoading: true,
-         members : null,
+         members : [],
          isError: false,
     },
     extraReducers:(builder)=>{
@@ -50,8 +50,17 @@ const memberSlice = createSlice({
     }
     
     ,reducers: {
-       
+      setMemberRole: (state, action) => {
+        console.log('ok bhai')
+        // Find the member in state.members and update its role
+        const { memberId, role } = action.payload;
+        const memberIndex = state.members.findIndex(member => member._id === memberId);
+        if (memberIndex !== -1) {
+            state.members[memberIndex].role = role;
+        }
+    },
     },
 });
 
+export const {setMemberRole} = memberSlice.actions;
 export default memberSlice.reducer;

@@ -17,6 +17,7 @@ import CreateProject from './Components/Project/CreateProject.js';
 import ProjectIntro from './Components/Project/ProjectIntro.js';
 import Project from './Components/Project/Project.js';
 import ProjectTasks from './Components/Project/ProjectTasks.js';
+import RepoFileFolder from './Components/RepoFileFolder.js'
 import ProjectDocs from './Components/Project/ProjectDocs.js';
 import FolderShow from './Components/FolderShow.js';
 import store from './Data_Store/Store/Store.js';
@@ -24,6 +25,7 @@ import Repo from './Components/Repo/Repo.js';
 import FileFolderContent from './Components/FileFolderContent.js';
 import Profile from './Components/Profile.js';
 import Dashboard from './Components/Dashboard/Dashboard.js';
+import PullRequest from './Components/Project/PullRequest.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -39,12 +41,22 @@ const router = createBrowserRouter([
       {path:'/register',element: <RegisterPage/>},
       {path:"/login",element:<Login /> },
       
-      {path:'/:teamId/:teamName',element:<Team/>},
+      {path:'/:teamId/:teamName',element:<Team/>, children:[
+        {path:'/:teamId/:teamName',element:<TeamIntro/>},
+        {path:'/:teamId/:teamName/create-project',element:<CreateProject/>}
+      ]},
 
-      {path:'/project/:projectName/:projectId',element:<Project/>,children:[
+      {path:'/project/:projectName/:projectId',element:<Project/>,
+     
+      children:[
         {path:'/project/:projectName/:projectId',element:<ProjectIntro/>},
          {path:'/project/:projectName/:projectId/tasks',element:<ProjectTasks/>},
-         {path:'/project/:projectName/:projectId/docs',element:<ProjectDocs/>},
+         {path:'/project/:projectName/:projectId/docs',element:<ProjectDocs/>,
+         
+         children:[
+          {path:'/project/:projectName/:projectId/docs',element:<RepoFileFolder/>},
+          {path:'/project/:projectName/:projectId/docs/pulls',element:<PullRequest/>},
+         ]},
         {path:'/project/:projectName/:projectId/:folderName',element:<FolderShow/>},
       ]},
       {path:'/project/:projectName/content/:path', element: <Repo/>}

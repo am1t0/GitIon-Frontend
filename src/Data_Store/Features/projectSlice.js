@@ -28,7 +28,7 @@ const projectSlice = createSlice({
     name : 'project',
     initialState:{
         isLoading: true,
-        data : null,
+        data : [],
         isError: false,
     },
     extraReducers: (builder)=>{

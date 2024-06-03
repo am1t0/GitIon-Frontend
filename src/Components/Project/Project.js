@@ -15,7 +15,6 @@ export default function Project() {
     const [content,setContent] = useState('Documents')
     const dispatch = useDispatch();
     const {projectId} = useParams();
-    const currProject = useSelector((store)=> store.currProject.data);
     const repodata = useSelector((store)=> store.repo);
     const selectedBranch = localStorage.getItem('selectedBranch');
 

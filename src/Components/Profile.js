@@ -11,16 +11,18 @@ import { fetchUser } from '../Data_Store/Features/userSlice';
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const [user, setUser] = useState();
-  const [loading , setLoading] = useState(false);
+  const [Imgloading , setImgLoading] = useState(false);
+  const [dataLoading,setDataLoading] = useState(false);
   const profileRef = useRef();
   const [editform, setEditForm] = useState(false);
   const { username } = useParams();
 
-  const { data, isLoading } = useSelector((store) => store.user);
+  const {data,isLoading} = useSelector((store)=> store.user);
+
+  const [profile,setProfile] = useState({});  // state for storing fetched user's profile data
 
   const handleProfileChange = async () => {
-    setLoading(true);
+    setImgLoading(true);
     const selectedFile = profileRef.current.files[0];
 
     if (!selectedFile) {
@@ -32,7 +34,7 @@ export default function Profile() {
     formData.append('profile', selectedFile);
 
     try {
-        const response = await fetch( `${process.env.REACT_APP_API_BASE_URL}/users/profile-photo/${user?.username}`, {
+        const response = await fetch( `${process.env.REACT_APP_API_BASE_URL}/users/profile-photo/${username}`, {
             method: 'POST',
             headers:{
               'Authorization': `Bearer ${getAccessToken()}`
@@ -43,7 +45,7 @@ export default function Profile() {
         if (response.ok) {
             console.log('File uploaded successfully');
             dispatch(fetchUser()).then(()=>{
-              setLoading(false);
+              setImgLoading(false);
 
             })
 
@@ -56,65 +58,72 @@ export default function Profile() {
     }
 };
 
-  // JAB TU DUSRE KI PROFILE DEKHEGA TO USERNAME SE BHI DATA NIKALNA PADEGA
   useEffect(() => {
+     fetchProfileDetails();
+  }, [])
 
-    setUser(data);
+  // fetching user's profile info
+  const fetchProfileDetails = async()=>{
+    setDataLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/profile/${username}`, {
+        method: 'GET',  
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+      });
 
-    // const fetchUserDetails = async () => {
-    //   try {
+      if (!response.ok) {
+        return  Promise.reject(response);
+      }
+     const res = await response.json();
 
+     // update the state with the fetched user detail
+     setProfile(res);
 
-    //     const response = await fetch('', {
-    //       headers: {
-    //         Authorization: `Bearer ${getAccessToken()}`,
-    //       },
-    //     });
-    //     if (!response.ok) {
-    //       throw new Error('Failed to fetch repository contents');
-    //     }
-
-    //     const data = await response.json();
-    //     // setUser(data);
-    //   } catch (error) {
-    //     console.error('Error fetching repository contents:', error.message);
-    //   }
-    // };
-
-    //   fetchUserDetails();
-  }, [user])
-
+     // stoping the loader
+     setDataLoading(false);
+      
+    } catch (error) {
+      return  error.message || "An error occurred while loading";
+    }
+  }
   return (
 
-    (!isLoading ) ?
+    (!dataLoading && !isLoading) ?
     <div className='frame'>
       {
-        editform && <ProfileEditForm setEditForm={setEditForm} username={username} setUser={setUser} />
+        editform && <ProfileEditForm setEditForm={setEditForm} username={username} setUser={setProfile} />
       }
       <div className="left-frm">
         <div className="prf-img">
           <div id="bg">
-             {/* <img src={user?.profile} alt="fkljdjfdl" /> */}
-             {/* <i class="fa-solid fa-camera"></i> */}
           </div>
-          <section className={user?.profile ? "img with-image" : "img without-image"}>
-            {user?.profile ? (
-              !loading ?<img src={user?.profile} alt="" /> :<div class="spinner-border" id='img-load' role="status">
+          <section className={profile?.profile ? "img with-image" : "img without-image"}>
+            {profile?.profile ? (
+              !Imgloading ?<img src={profile?.profile} alt="" /> :<div class="spinner-border" id='img-load' role="status">
               <span class="sr-only">Loading...</span>
             </div>
             ) : (
               <div className="no-image-placeholder">No Image</div>
             )}
+            {/* only that particular user can change his profile picture  */}
+           {  username=== data.username&& 
             <p className='hoverProfile'><input type="file" name="profile" id='profile-upload' ref={profileRef} onChange={handleProfileChange}/>Upload photo</p>
+           }
           </section>
 
           <section className='names'>
             <div>
-              <h5>{user?.fullname}</h5>
-              <h6>@{user?.username}</h6>
+              <h5>{profile?.fullname}</h5>
+              <h6>@{profile?.username}</h6>
             </div>
             <div className="prf-ed">
+              {/* only that user can edit his/her profile not any visitor  */}
+              {  data.username=== username && 
               <i class="fa-regular fa-pen-to-square" onClick={() => setEditForm(true)}></i>
+              }
             </div>
           </section>
         </div>
@@ -122,13 +131,13 @@ export default function Profile() {
         <div className="coreDetail">
           <section>
             <ul id='c-info'>
-              <li><p className='lt'>Phone</p> <p className='rt'>+91 {user?.phone}</p></li>
-              <li><p className='lt'>Address</p><p className='rt'>{user?.address}</p></li>
+              <li><p className='lt'>Phone</p> <p className='rt'>+91 {profile?.phone}</p></li>
+              <li><p className='lt'>Address</p><p className='rt'>{profile?.address}</p></li>
             </ul>
             <div className="socials">
-              <a target='_blank' href={user?.githubProfile}><img src={github} alt="" /></a>
-              <a target='_blank' href={user?.linkedinProfile}><img src={linkedin} alt="" /></a>
-              <a target='_blank' href={user?.email}><img src={email} alt="" /></a>
+              <a target='_blank' href={profile?.githubProfile}><img src={github} alt="" /></a>
+              <a target='_blank' href={profile?.linkedinProfile}><img src={linkedin} alt="" /></a>
+              <a target='_blank' href={profile?.email}><img src={email} alt="" /></a>
             </div>
           </section>
         </div>
@@ -145,8 +154,8 @@ export default function Profile() {
           </section>
           <section className="block">
             <p id='part'>College</p>
-            <h6>{user?.collegName}</h6>
-            <p>{user?.collegeAddress}</p>
+            <h6>{profile?.collegName}</h6>
+            <p>{profile?.collegeAddress}</p>
           </section>
           <section className="block">
             <p id='part'>skills</p>
@@ -186,6 +195,8 @@ export default function Profile() {
       </div>
 
     </div>
-    : <h1>Loading...</h1>
+    :  <div className='profileLoad'><div class="spinner-border text-light" role="status">
+    <span class="sr-only">Loading...</span>
+  </div></div> 
   )
 }

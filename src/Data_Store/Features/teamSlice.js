@@ -15,7 +15,7 @@ export const fetchTeam  = createAsyncThunk('fetchTeam', async () => {
          return  Promise.reject(response.statusText);
        }
        const data = await response.json();
-       
+      //  console.log('all data is , ',data);
        return data;
 
    } catch (error) {
