@@ -1,0 +1,27 @@
+.pullForm{
+    /* outline: 1px solid; */
+    margin-top: 20px;
+    padding: 2px 20px;
+    width: 60rem;
+}
+.pullForm button{
+margin-top: 10px;
+}
+
+.pullInps{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* outline: 1px solid; */
+}
+
+.pullInps input,textarea{
+    border: 1px solid rgb(37, 37, 37);
+    background: black;
+    box-shadow: none;
+    border-radius: 6px;
+}
+
+.pullInps textarea{
+    height: 100px;
+}

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '../../Styles/PullRequest.css'
+import { Link, useParams } from 'react-router-dom';
 
 const PullRequests = () => {
   const [pullRequests, setPullRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const {projectName,projectId} = useParams();
   const owner = localStorage.getItem('owner');
   const repoName = localStorage.getItem('repoName');
 
@@ -24,7 +26,7 @@ const PullRequests = () => {
 
         const data = await response.json();
         setPullRequests(data);
-        console.log(data);
+
       } catch (error) {
         setError(error);
       } finally {
@@ -41,9 +43,19 @@ const PullRequests = () => {
   return (
     <div className='pullRequest'>
       <ul className='pullReqList'>
+        <div className="upOfPull">
         <div className="reqVar">
             <p>opened</p>
             <p>closed</p>
+        </div>
+        <div className="newPull">
+          <button>
+            <Link 
+             to={`/project/${projectName}/${projectId}/docs/compare`}>
+              New pull request
+            </Link>
+          </button>
+        </div>
         </div>
         {pullRequests.map(pr => (
           <li key={pr.id} className='eachPr'>

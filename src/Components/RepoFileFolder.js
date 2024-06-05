@@ -37,11 +37,6 @@ export default function FilesAndFolders() {
   const  repoContent = useSelector((state) => state.repo.data);
   
   const selectedBranch = localStorage.getItem('selectedBranch');
-
-    useEffect(()=>{
-      dispatch(fetchBranches({project:{repo:{owner,repoName}}}));
-  },[])
-  
   const trimmedName = projectName.trim();
 
   // LINK OF REPO

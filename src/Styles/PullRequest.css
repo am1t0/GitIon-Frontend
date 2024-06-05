@@ -6,6 +6,13 @@
     /* border: 1px solid red; */
     padding: 10px 0px;
 }
+.upOfPull{
+     border: 1px solid red;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     width: 50%;
+}
 .reqVar{
     /* outline: 1px solid; */
     /* width: 8rem;s */
@@ -19,6 +26,19 @@
     border-radius: 3px;
     padding: 1px 4px;
     outline: 1px solid rgb(112, 112, 112);
+}
+.newPull button{
+  border: none;
+  background: green;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+.newPull button:hover{
+    background: rgb(4, 159, 4);
+}
+.newPull button a{
+    color: white;
 }
 .eachPr{
     /* outline: 1px solid rgb(80, 80, 80); */

@@ -26,6 +26,7 @@ import FileFolderContent from './Components/FileFolderContent.js';
 import Profile from './Components/Profile.js';
 import Dashboard from './Components/Dashboard/Dashboard.js';
 import PullRequest from './Components/Project/PullRequest.js';
+import PullReqCompare from './Components/Project/PullReqCompare.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
          children:[
           {path:'/project/:projectName/:projectId/docs',element:<RepoFileFolder/>},
           {path:'/project/:projectName/:projectId/docs/pulls',element:<PullRequest/>},
+          {path:'/project/:projectName/:projectId/docs/compare',element:<PullReqCompare/>}
          ]},
         {path:'/project/:projectName/:projectId/:folderName',element:<FolderShow/>},
       ]},
