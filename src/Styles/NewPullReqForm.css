@@ -6,6 +6,11 @@
 }
 .pullForm button{
 margin-top: 10px;
+border: none;
+background: green;
+font-size: 14px;
+padding: 3px 10px;
+border-radius: 4px;
 }
 
 .pullInps{
@@ -16,10 +21,13 @@ margin-top: 10px;
 }
 
 .pullInps input,textarea{
-    border: 1px solid rgb(37, 37, 37);
+    border: 1px solid rgb(74, 74, 74);
     background: black;
     box-shadow: none;
     border-radius: 6px;
+}
+.pullInps input:focus,textarea:focus{
+    border: 2px solid rgb(16, 71, 199);
 }
 
 .pullInps textarea{

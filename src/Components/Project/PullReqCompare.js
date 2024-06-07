@@ -4,15 +4,20 @@ import ChangedFiles from './ChangedFiles';
 import { useSelector } from 'react-redux';
 import { fetchBranches } from '../../Data_Store/Features/branchSlice';
 import NewPullReqForm from './NewPullReqForm';
+import CommitsList from './CommitsList';
 
 export default function PullReqCompare() {
   const owner = localStorage.getItem('owner');
   const repoName = localStorage.getItem('repoName');
-  const [comparison, setComparison] = useState(null); // for storing different files
-  const [branches,setBranches] = useState([])  // branches list
+
+  const [comparison, setComparison] = useState(null);        // for storing different files
+  const [branches,setBranches] = useState([])                // branches list
   const [createPullReq,setCreatePullReq] = useState(false);  // when user want's to create new pull request
 
-  const selectFirstRef = useRef(null)     //
+  const [baseBranch,setBaseBranch] = useState('main')
+  const [headBranch,setHeadBranch] = useState('main')
+
+  const selectFirstRef = useRef(null)     
   const selectSecondRef = useRef(null)
 
   useEffect(() => {
@@ -75,13 +80,8 @@ export default function PullReqCompare() {
       </div>;
       case 'ahead':
         return (
-          <div>
-          <h4>Commits</h4>
-          <ul>
-            {comparison?.commits?.map(commit => (
-              <li key={commit.sha}>{commit.commit.message}</li>
-            ))}
-          </ul>
+          <div className='aheadComp'>
+          <CommitsList commits={comparison.commits}/>
           <h4>Changed Files</h4>
           <ul>
             {comparison?.files?.map(file => (
@@ -98,6 +98,13 @@ export default function PullReqCompare() {
 
     }
   };
+
+  const handleCreatePullReq = ()=>{
+    setBaseBranch(selectFirstRef.current.value);     // setting base and compare branch from select tags
+    setHeadBranch(selectSecondRef.current.value);
+
+    setCreatePullReq(true);   // showing the form now for creating pull request
+  }
   return (
     comparison &&
      <section>
@@ -131,14 +138,15 @@ export default function PullReqCompare() {
      {/* creating new pull request button    */}
        <div className="newPull">
         { 
-          (comparison.status==='ahead') &&
-          <button onClick={()=>setCreatePullReq(true)}>create pull request</button>
+          (comparison.status==='ahead' && !createPullReq) &&
+          <button onClick={handleCreatePullReq}>create pull request</button>
         }
       </div>            
    </div>
 
+      {/* new pull request form component  */}
       {
-        createPullReq && <NewPullReqForm/>
+        createPullReq && <NewPullReqForm base={baseBranch}  head={headBranch}/>
       }
 
       <div className="actionAccStatus">

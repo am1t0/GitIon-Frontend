@@ -26,6 +26,7 @@ const PullRequests = () => {
 
         const data = await response.json();
         setPullRequests(data);
+        console.log('Pull requests are ',data);
 
       } catch (error) {
         setError(error);
@@ -60,9 +61,13 @@ const PullRequests = () => {
         {pullRequests.map(pr => (
           <li key={pr.id} className='eachPr'>
              <i class="fa-solid fa-code-pull-request"></i>
+            <Link
+             to={`/project/${projectName}/${projectId}/docs/pull/${pr.number}`}
+            >
              <p>
              {pr.title}
              </p>
+            </Link>
           </li>
         ))}
       </ul>

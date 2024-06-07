@@ -49,3 +49,9 @@
 .noPull i{
     font-size: 18px;
 }
+
+/* when comparsion is made and compare branch is ahead  */
+.aheadComp{
+   /* outline: 1px solid; */
+   padding-top: 20px;
+}
