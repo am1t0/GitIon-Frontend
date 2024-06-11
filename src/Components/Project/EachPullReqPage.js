@@ -14,6 +14,8 @@ export default function EachPullReqPage() {
   // loading while fetching data
   const [loading, setLoading] = useState(false)
   const [pullReqData, setPullReqData] = useState({});
+  const [mergeable,setMergeable] = useState({});
+  const [conflictingFiles,setConflictingFiles] = useState();
 
   const [commits,setCommits] = useState();
 
@@ -38,6 +40,9 @@ export default function EachPullReqPage() {
         const data = await response.json();
 
         setPullReqData(data);
+    
+        setMergeable(data.mergeable);
+
       } catch (err) {
         console.log('error', err)
       } finally {
@@ -73,6 +78,35 @@ export default function EachPullReqPage() {
      fetchCommits();
   },[])
 
+  //fetch conflicts if there : 
+  useEffect(()=>{
+    const fetchFiles = async () => {
+      try {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/pulls/${pullNumber}/files`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+          console.log('files are ',data)
+          // Filter conflicting files based on status or other heuristic
+          const conflicts = data.filter(file => file.status === 'modified' && file.patch.includes('<<<<<<'));
+          setConflictingFiles(conflicts);
+          console.log('now conflicting files are ',conflicts)
+      } catch (err) {
+        console.log('error', err);
+      }
+    };
+
+    fetchFiles();
+  },[])
+
   return (
     !loading ?
       <div className='eachPull'>
@@ -106,10 +140,33 @@ export default function EachPullReqPage() {
 
         <div className="mergeCond">
           <div className='mergeState'>
-              <h6>Any Conflicts??</h6>
+            {
+              mergeable === null ? (
+                <h6>Checking mergeability...</h6>
+              ) : mergeable ? (
+                <div className="conflictsOrNot">
+                 <i class="fa-solid fa-check no-conflict-i"></i>
+                   <h6>This branch has no conflicts with the base branch</h6>
+                </div>
+              ) : (
+                <div className="conflictsOrNot">
+                   <i class="fa-solid fa-triangle-exclamation conflict-i"></i>
+                   <h6>There are conflicts that must be resolved before merging.</h6>
+
+                   {/* currntly showing conflicts on github */}
+                   <a 
+                   href={`https://github.com/${owner}/${repoName}/pull/${pullNumber}/conflicts`}
+                   target='_blank'
+                   rel="noreferrer"
+                   style={{marginLeft:'20px',color:'yellow'}}
+                   >
+                   See Conflicts</a>
+                </div>
+              )
+            }
           </div>
           <div className="mergeBtn">
-             <button>Merge pull request</button>
+            <button disabled={!mergeable} className={!mergeable? 'disable Mbtn':'notDisable Mbtn'}>Merge pull request</button>
           </div>
         </div>
         <div className="addComment">

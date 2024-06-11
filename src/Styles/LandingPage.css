@@ -4,15 +4,20 @@
     width: 100%;
     padding: 20px 40px 0px 40px;
 }
+
+/* styling notifications section  */
 .notifications{
     border: 1px solid rgb(62, 62, 62);
-    height: 6rem;
     width: 50%;
     margin: 20px 0px;
     border-radius: 4px;
     padding: 3px 5px;
 }
-
+.eachInv{
+    border: 1px solid rgb(62, 62, 62);
+    border-radius: 5px;
+    padding: 5px;
+}
 .parts{
     /* border: 2px solid blue; */
     height: 66vh;

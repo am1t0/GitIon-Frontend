@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
-import LandingPage from './Components/LandingPage';
+import LandingPage from './Components/Entry/LandingPage';
 import RegisterPage from './Components/Register';
 import Login from './Components/Login';
 import Home from './Components/Home';
@@ -35,18 +35,13 @@ const router = createBrowserRouter([
   {
     path:'/',element: <App/> , children:[
       {path:'/',element:<Home/> , children:[
-        { path: '/', element: <LandingPage /> },
+        { path: '/', element: <LandingPage/> },
         {path:'/profile/:username',element:<Profile/>},
         { path: '/dashboard', element: <Dashboard /> },
-        {path:'/create-team',element: <CreateTeam/>}
+        {path:'/create-project',element: <CreateProject/>}
       ]},
       {path:'/register',element: <RegisterPage/>},
       {path:"/login",element:<Login /> },
-      
-      {path:'/:teamId/:teamName',element:<Team/>, children:[
-        {path:'/:teamId/:teamName',element:<TeamIntro/>},
-        {path:'/:teamId/:teamName/create-project',element:<CreateProject/>}
-      ]},
 
       {path:'/project/:projectName/:projectId',element:<Project/>,
      

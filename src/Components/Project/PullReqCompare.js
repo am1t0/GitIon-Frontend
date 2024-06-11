@@ -59,6 +59,7 @@ export default function PullReqCompare() {
     })
     .then(response => response.json())
     .then(data => {setComparison(data)
+      console.log('what is the difference fetching ',data)
     })
     .catch(error => console.error('Error:', error));
   }
@@ -86,12 +87,28 @@ export default function PullReqCompare() {
           <ul>
             {comparison?.files?.map(file => (
               <li key={file.filename}>
+                <p>{file.filename}</p>
                <ChangedFiles file={file}/>          
               </li>
             ))}
           </ul>
         </div>
         );
+        case 'diverged': 
+          return(
+            <div className='aheadComp'>
+            <CommitsList commits={comparison.commits}/>
+            <h4>Changed Files</h4>
+            <ul>
+              {comparison?.files?.map(file => (
+                <li key={file.filename}>
+                  <p>{file.filename}</p>
+                 <ChangedFiles file={file}/>          
+                </li>
+              ))}
+            </ul>
+          </div>
+          )
       default:
         return null;
 

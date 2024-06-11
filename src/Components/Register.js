@@ -4,18 +4,40 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const  usernameRef = useRef();
   const  emailRef = useRef();
   const  fullnameRef = useRef();
   const  passwordRef = useRef();
-  const skillsRef = useRef();
   const gitTokenRef = useRef();
   
-  const handleRegister = async () => {
-  
+  // fetching user's github data
+  const fetchGithubData = async (token) => {
+    const response = await fetch('https://api.github.com/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch GitHub data');
+    }
+
+    const data = await response.json();
+    return data;
+  };
+
+  // register user 
+  const registerUser = async (githubData) => {
+
+    const username =  githubData.login;
+    const email =  emailRef.current.value;
+    const fullname =  fullnameRef.current.value;
+    const password =  passwordRef.current.value;
+    const gitToken =  gitTokenRef.current.value;
+
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/register`, {
         method: 'POST',
@@ -23,12 +45,12 @@ const RegisterPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: usernameRef.current.value,
-          email: emailRef.current.value,
-          fullname: fullnameRef.current.value,
-          password: passwordRef.current.value,
-          skills: skillsRef.current.value.split(','),
-          gitToken: gitTokenRef.current.value,
+          username,
+          email,
+          fullname,
+          password,
+          gitToken,
+          githubData
         }),
       });
 
@@ -38,20 +60,27 @@ const RegisterPage = () => {
       }
 
       const responseData = await response.json();
-      console.log("The response is: ",responseData);
-      const { user, accessToken } = responseData.data;
+      const {accessToken } = responseData.data;
 
-         
       localStorage.setItem('access_token', accessToken);
 
-         // Wait for Redux state to update before navigating
-        await new Promise((resolve) => setTimeout(resolve, 0));
-
-        navigate('/Home')
-
+      navigate('/Home');
     } catch (error) {
       // Handle registration error
       console.error("Registration failed:", error.message);
+    }
+  };
+
+  // on submitting register form using this function to first fetch github data of user then registering him
+  const handleRegister = async (e) => {
+     e.preventDefault()
+
+     try {
+      const githubData = await fetchGithubData(gitTokenRef.current.value);
+
+      await registerUser(githubData);
+    } catch (error) {
+      console.error("Error fetching GitHub data or registering user:", error.message);
     }
   };
   const handleSocial=(type)=>{}
@@ -66,7 +95,7 @@ const RegisterPage = () => {
             <Link to='/login'><h5>Log in</h5></Link>
          </div>
         </div>
-      <div className='form'>
+      <form className='form' onSubmit={handleRegister}>
   
         <div id="social-accnt">
             <div className='social-handle'  onClick={()=> handleSocial('google')}>
@@ -81,42 +110,31 @@ const RegisterPage = () => {
         <div className="social-divider">
             <span>or</span>
           </div>
+
         <div className='inputBox'>
-          <input type="text"  ref={usernameRef} placeholder='Username'/>
+          <input type="text" required ref={fullnameRef} placeholder='fullname'/>
         </div>
   
         <div className='inputBox'>
-          <input type="email" ref={emailRef} placeholder='email'/>
-        </div>
-        
-        <div className='inputBox'>
-          <input type="text" ref={skillsRef}  placeholder='skills with spaces'/>
+          <input type="email" required ref={emailRef} placeholder='email'/>
         </div>
 
         <div className='inputBox'>
-          <input type="text" ref={fullnameRef} placeholder='fullname'/>
-        </div>
-
-        <div className='inputBox'>
-          <input type="text" ref={gitTokenRef} placeholder='gitToken'/>
+          <input type="text" required ref={gitTokenRef} placeholder='gitToken'/>
         </div>
         
         
         <div className='inputBox'>
-          <input type="password" ref={passwordRef}  placeholder='password'/>
+          <input type="password" required ref={passwordRef}  placeholder='password'/>
         </div>
         
-
-        <div className="inputBox">
         <button 
-        style={{width:'120px'}}
-        className='btn btn-warning'
-        type="button" 
-        onClick={handleRegister}>
+        className='btn btn-warning my-4'
+        type="submit" >
           Register
         </button>
-        </div>
-      </div>
+
+      </form>
       
       </div>
        

@@ -2,14 +2,9 @@ import React, { useEffect ,useState} from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import "../../Styles/TeamSidebar.css"
-import { setProject } from '../../Data_Store/Features/currProjectSlice';
-import { fetchData } from '../../Data_Store/Features/repoContentSlice';
-import { fetchProjects } from '../../Data_Store/Features/projectSlice';
-import getAccessToken from '../../Utils/auth';
 
 export default function TeamSidebar({setShow}) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   // getting team id and name from routed link
   const {teamId,teamName} = useParams();

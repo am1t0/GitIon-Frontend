@@ -1,29 +1,37 @@
 import React, { useEffect } from 'react'
-import '../Styles/LandingPage.css'
-import team from '../Images/LandingTeam.png'
-import personal from '../Images/personal.png'
+import '../../Styles/LandingPage.css'
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Notifications from './Notifications';
 
 
 const LandingPage = () => {
 
+  const navigate = useNavigate()
+
   // getting all user's data
   const { data, isLoading } = useSelector((store) => store.user);
 
-  // list of all teams for user
-  const teams = useSelector((store)=>store.team?.data?.data)
+  // list of all projects for user
+  const projects = useSelector((store)=> store.projects.data?.data);
 
   const upper = (name)=>{
      return name[0].toUpperCase()+name.slice(1);
   }
+  const handleProjectClick=(project)=>{
+        
+    const {repo} = project;
+    localStorage.setItem("owner",repo.owner);
+    localStorage.setItem("repoName",repo.repoName);
+    localStorage.setItem("selectedBranch",'main');
+    localStorage.setItem('leaderToken', project.leaderToken);
+    navigate(`/project/${project.name}/${project._id}`)
+}
   return (
     <div className='landingPage'>
       <h4>Welcome back, {data.fullname} !</h4>
-      <div className="notifications">
-        <h5>Notifications</h5>
-      </div>
 
+      <Notifications/>
       <div className="parts">
         <section className="personal-space">
           <h4>Personal Space</h4>
@@ -61,16 +69,16 @@ const LandingPage = () => {
            
            <div className="teamsGoto">
             <div className="thd">
-            <h5>Teams</h5>
-             <button type="button"><Link to={'/create-team'}>Create</Link></button>
+            <h5>Projects</h5>
+             <button type="button"><Link to={'/create-project'}>Create</Link></button>
             </div>
             <div className="Tsrch">
                <input type="search" placeholder='search team..' />
             </div>
             <div className="Tlist">
                {
-                teams?.map((team)=>{
-                  return <li><Link to={`${team._id}/${team.name}`}>{upper(team.name)}</Link></li>
+                projects?.map((project)=>{
+                  return <li onClick={()=>handleProjectClick(project)}>{upper(project.name)}</li>
                 })
                }
             </div>

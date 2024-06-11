@@ -12,13 +12,19 @@ export default function Sidebar({handleTeamCreated }) {
   const user = useSelector((store)=>store.user.data);     // user for navigating to it's profile 
 
   const navigate = useNavigate();   
- 
-  const handleTeamClick = (team) => {         // for navigating to the team 
-      navigate(`/${team._id}/${team.name}`);
-  }
 
+  const handleProjectClick=(project)=>{
+        
+    const {repo} = project;
+    localStorage.setItem("owner",repo.owner);
+    localStorage.setItem("repoName",repo.repoName);
+    localStorage.setItem("selectedBranch",'main');
+    localStorage.setItem('leaderToken', project.leaderToken);
+    navigate(`/project/${project.name}/${project._id}`)
+}
   
-  const teams = useSelector((store)=>store.team?.data?.data)
+  // list of all projects for user
+  const projects = useSelector((store)=> store.projects.data?.data);
 
 
   return (
@@ -87,32 +93,29 @@ export default function Sidebar({handleTeamCreated }) {
     </li>
     <li>
       <button className="custom btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#team-collapse" aria-expanded="false">
-        <h6>Team Space</h6>
+        <h6>Projects Space</h6>
       </button>
       <div className="collapse" id="team-collapse">
         <ul className="pos list-unstyled">
           <li>
             <button className="teams btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#teams-collapse" aria-expanded="false">
             <i class="fa-brands fa-unity"></i>
-            <p>Teams</p>
+            <p>Projects</p>
             </button>
             <div className="collapse" id="teams-collapse">
               <ul className="pos list-unstyled">
-                {teams?.map((team) => (
-                  <li onClick={() => handleTeamClick(team)} key={team?._id}  className='teamName'>{team?.name}</li>
+                {projects?.map((project) => (
+                  <li onClick={()=> handleProjectClick(project)} key={project._id}  className='teamName'>{project.name}</li>
                 ))}
               </ul>
             </div>
           </li>
           <li>
             <Link
-              to={{
-                pathname: '/create-team',
-                state: { handleTeamCreated: handleTeamCreated }
-                }}
+              to={`/create-project`}
               className='link'      >  
                 <i class="fa-solid fa-monument"></i>
-                 <p>Build team</p>
+                 <p>Create Project</p>
               </Link>
           </li>
         </ul>

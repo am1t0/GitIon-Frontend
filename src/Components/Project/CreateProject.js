@@ -8,11 +8,11 @@ import '../../Styles/CreateProject.css'
 
 export default function CreateProject() {
 
+  const user = useSelector((store)=> store.user.data)
+
   // PROJECT FORM DETAILS VARIABLES
   const nameRef = useRef(null);
-  const projectOverViewRef = useRef();
-  const projectObjectivesViewRef = useRef();
-  const techStackRef = useRef();
+  const descriptionRef = useRef(null)
   
   // REPOFORM DETAILS VARAIBLES
   const RprivacyRef  = useRef();
@@ -22,7 +22,7 @@ export default function CreateProject() {
 
 
     const navigate = useNavigate();
-    const currTeam = useSelector((store)=>store.currTeam.data);
+
     const [project,setProject] = useState('');
 
 
@@ -65,13 +65,11 @@ export default function CreateProject() {
               },
               body: JSON.stringify({
                 name: nameRef.current.value,
-                projectOverview : projectOverViewRef.current.value,
-                projectObjectives : projectObjectivesViewRef.current.value.split(','),
-                techStack : techStackRef.current.value.split(','),
-                teamId: currTeam?._id,
+                description:descriptionRef.current.value,
+                leaderToken:user.gitToken
               }),
           });
-          console.log(response);
+    
           if (!response.ok) {
             console.error('Error:', response.statusText);
             return;
@@ -96,7 +94,7 @@ const handleCreateRepository = async () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem('leaderToken')}`,
+              'Authorization': `Bearer ${user.gitToken}`,
             },
             body: JSON.stringify({
               name: RnameRef.current.value,
@@ -163,7 +161,7 @@ const handleConnectRepository = async () => {
   
 }      
   return (
-    <div className="outerBox" style={{background:'black'}}>
+    <div className="outerBox" style={{background:'white'}}>
     <div className='project-n-repo'>
       
       {/* form for project creation  */}
@@ -176,20 +174,11 @@ const handleConnectRepository = async () => {
         <label htmlFor="name"><p>Name of Project*</p></label>
          <input type="text" ref={nameRef} />
       </div>
+       
        <div className="inputs">
-       <label htmlFor="project-overview"><p>Project Overview*</p></label>
-         <textarea type="text" ref={projectOverViewRef}/>
+        <label htmlFor="description"><p>Description of Project*</p></label>
+        <textarea ref={descriptionRef} ></textarea>
        </div>
-
-      <div className="inputs">
-      <label htmlFor="project-objective"><p>Project Objectives*</p></label>
-         <input type="text" ref={projectObjectivesViewRef} />
-      </div>
-      <div className="inputs">
-      <label htmlFor="tech-stack"><p>Tech Stack*</p></label>
-         <input type="text" ref={techStackRef}/>
-      </div>
- 
     <div className="projectBtn">
         <button className='btn btn-success' onClick={handleProjectCreate}>Create</button>
     </div>
@@ -278,9 +267,7 @@ const handleConnectRepository = async () => {
       </form>
     </div>}
     </div>
-    {/* <div className="other">
-       <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius nihil maiores ut nam laboriosam aut commodi sunt, sed veniam animi quos distinctio. Minima suscipit nihil, perspiciatis cumque esse odit adipisci fuga obcaecati nisi eius, recusandae, consectetur officia optio beatae porro necessitatibus iste. Quia magnam, aliquid quaerat in inventore laudantium expedita perferendis alias ut veritatis aperiam voluptas rem adipisci optio. Cumque accusantium ipsum voluptates minima explicabo, necessitatibus eius quae ab quo quaerat, nesciunt ratione sed porro iusto repellendus, consectetur inventore id impedit esse tenetur. Unde repellat dolores corrupti quaerat! Natus vel fugiat debitis id officia in omnis et explicabo qui eos?</p>
-    </div> */}
+
     </div>
   )
 }

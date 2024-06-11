@@ -58,6 +58,7 @@
     border: 2px solid;
     color: white;
     width: 240px;
+    height: 2.4rem;
     padding: 10px;
     border-radius: 5px;
    outline: none;
@@ -65,11 +66,10 @@
    border-width: 0.0925rem;
    border-color: #30363d;
    border-style: solid;
-   transition: all .3s  ease-in-out;
+   transition: all .2s  ease-in-out;
 }
 .inputBox input:focus{
-    border-color: rgb(255, 255, 255);
-    border-width: 1px;
+  border: 2px solid rgb(41, 41, 186);
 }
 
 .social-divider{

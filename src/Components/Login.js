@@ -29,7 +29,7 @@ const  Login = () => {
       }
 
       const responseData = await response.json();
-      const { user, accessToken } = responseData.data;
+      const {accessToken } = responseData.data;
 
     
       // Store the access token in localStorage

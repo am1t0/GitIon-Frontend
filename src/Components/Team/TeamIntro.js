@@ -4,6 +4,7 @@ import getAccessToken from '../../Utils/auth.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMemberDetails, setMemberRole } from '../../Data_Store/Features/memberSlice.js';
 import membAdd from "../../Sound/membAdd.wav"
+import empty from '../../Images/empty.png'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 
@@ -32,6 +33,8 @@ export default function TeamIntro() {
   const [role,setRole] = useState('');  // for role of member
   const [show,setShow] = useState(null); // showing options on clicking on dots of each member
   const [roleShow,setRoleShow] = useState(null) // for showing input box for role change
+
+  const [placeholders,setPlaceholders] = useState(0)
 
   // for navigating programmatically
   const navigate = useNavigate();
@@ -83,7 +86,13 @@ export default function TeamIntro() {
        const res = await response.json();
 
        setMembers(res.data);
+
+       const Placeholderlength = 5-res.data.length;
+
+       setPlaceholders(Placeholderlength>=0?Placeholderlength:0);
+
        setIsLoading(false);
+
         
       } catch (error) {
         return  error.message || "An error occurred while loading";
@@ -258,11 +267,9 @@ const handleClickOutside = (event) => {
         <div id="intro-memb">
           <div id="intro">
             <h4 >Meet the team {team?.name}!</h4>
-            <h6>Bug hai bhai opening closing me</h6>
             {/* <h6>{team?.description}</h6> */}
           </div>
           <div id="memb">
-             <h5>Team Members</h5>
             <div id="search-add">
               <div className='sa'>
               <input type="search" placeholder='Search team members' required/>
@@ -288,21 +295,18 @@ const handleClickOutside = (event) => {
             )}
               
               {!isLoading  ? <div id="members">
-{/*               
-              <li id='admin'>
-                <h6>{admin?.fullname}</h6>
-                <h6>{admin?.email}</h6>
-                 <h6>Admin</h6>
-              </li> */}
+                <h5>Team Members</h5>
               <div>
                 {
                   members?.map((member)=>{
                   return <div id='eachMemb'>
                     <div className="logo-name">
+                    <Link to={`/profile/${member.username}`}>
                        <div className="circle" style={{ background: getUserColor(member.username) }}>
-                        <Link to={`/profile/${member.username}`}>{nameLogo(member.fullname)}</Link>
+                          {nameLogo(member.fullname)}
                         </div>
                         <p>{member.fullname}</p>
+                      </Link>
                      </div>
                        <div>
                         { 
@@ -340,6 +344,9 @@ const handleClickOutside = (event) => {
 
                  })
                 }
+                  <section className="moreMemb">
+                    <h5>Add members</h5>
+                  </section>
               </div>    
               </div> : <div className='loading'><div class="spinner-border text-light" role="status">
   <span class="sr-only">Loading...</span>
@@ -353,7 +360,7 @@ const handleClickOutside = (event) => {
      <div className="projects">
        <div className="prCr">
          <h5>Team Projects</h5>
-    <Link to={`/${teamId}/${teamName}/create-project`}><button>Create</button></Link>
+         <Link to={`/${teamId}/${teamName}/create-project`}><button>Create</button></Link>
        </div>
 
        <div className="srchProj">
@@ -361,10 +368,15 @@ const handleClickOutside = (event) => {
        </div>
 
         <div className="projList">
-        {
+        { projects.data.length>0 ?
           projects.data.map((project)=>{
             return <li onClick={()=>{handleProjectClick(project)}}>{project.name}</li>
           })
+          :<div class="empty-state">
+          <h5>No Projects Yet</h5>
+          <p>Click the button below to add your first project.</p>
+          <button onclick="openNewProjectModal()">Create New Project</button>
+      </div>
         }
          </div>
     </div> 

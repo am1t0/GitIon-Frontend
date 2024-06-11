@@ -16,8 +16,10 @@ export const fetchProjects  = createAsyncThunk('fetchProjects', async (teamId) =
           return;
         }
        const res = await response.json();
-
+       
+       console.log('projects for user is ',res.data);
        return res.data;
+
         
       } catch (error) {
         return  error.message || "An error occurred while loading";
