@@ -9,34 +9,32 @@ import { fetchUser } from './Data_Store/Features/userSlice';
 import { fetchProjects } from './Data_Store/Features/projectsSlice.js';
 
 function App() {
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const {isLoading,isError} = useSelector((store)=> store.user);
-  
-  useEffect(()=>{
-    dispatch(fetchUser())
-    dispatch(fetchProjects())
-  },[dispatch])
+  const { isLoading, isError } = useSelector((store) => store.user);
 
-  // when  the user is not logged in and tries to access any other page except login then redirect them to login
   useEffect(() => {
-    if (!isLoading && isError) {
+    dispatch(fetchUser());
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isError) {
       navigate('/login'); 
     }
   }, [isLoading, isError, navigate]);
 
-  return (
-  !isLoading?
-    
-   <div>
-    <Header/>
-    <Outlet/>
-    <Footer/>
-   </div>
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
-   :<h1>Loading...</h1>
+  return (
+    <div>
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
   );
 }
 

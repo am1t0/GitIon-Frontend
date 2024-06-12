@@ -7,7 +7,7 @@ import github from '../../Images/github.png'
 
 export default function SearchUser(props) {
 
-  const {sendInvitation,remove} = props;
+  const {addInvite,remove} = props;
 
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState([]);
@@ -19,10 +19,7 @@ export default function SearchUser(props) {
 
     return user.githubData ? user.githubData.avatar_url : github;
   }
-  const handleUserSelection = (username) => {
-    setQuery(null) // closing search table
-    setSelectedUser(username)   //showing this username in input
-  }
+
   const fetchUsers = async (query) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users/all-users?q=${query}`, {
@@ -86,11 +83,9 @@ export default function SearchUser(props) {
           ))}
         </div>
       }
-      <div className="saLogo" onClick={()=> sendInvitation(query)} >
+      <div className="saLogo" onClick={()=> addInvite(query)} >
         <i className="fa-solid fa-plus"></i>
       </div>
-
-      <button className='btn btn-primary' onClick={()=> remove(query)}>Remove</button>
 
     </div>
   )

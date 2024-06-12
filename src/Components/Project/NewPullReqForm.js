@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../../Styles/NewPullReqForm.css'
+import { useSelector } from 'react-redux';
 
 export default function NewPullReqForm({base,head}) {
+
+  const user = useSelector((store)=> store.user.data);
 
   const titleRef = useRef(null);
   const bodyRef = useRef(null);
@@ -9,7 +12,6 @@ export default function NewPullReqForm({base,head}) {
 
   const owner = localStorage.getItem('owner');
   const repoName = localStorage.getItem('repoName');
-  const token = localStorage.getItem('leaderToken');
 
   const handlePullReqSubm = async (e) => {
     e.preventDefault();
@@ -17,12 +19,10 @@ export default function NewPullReqForm({base,head}) {
     const title = titleRef.current.value;
     const body = bodyRef.current.value;
 
-  
-
     const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/pulls`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${""}`,
+        'Authorization': `Bearer ${user.gitToken}`,
         'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },

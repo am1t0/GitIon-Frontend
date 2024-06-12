@@ -8,22 +8,25 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
-
   const navigate = useNavigate();
   
-  const {isLoading,isError} = useSelector((store)=> store.user);
+  const { isLoading, isError } = useSelector((store) => store.user);
+  
   useEffect(() => {
-    if (!isLoading && isError) {
+    if (isError) {
       navigate('/login'); 
     }
   }, [isLoading, isError, navigate]);
 
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
-    !isLoading &&
-   <div style={{display:'flex'}}>  
-     <Sidebar/>
-     <Outlet/>
-   </div>
+    <div style={{ display: 'flex' }}>
+      <Sidebar />
+      <Outlet />
+    </div>
   );
 };
 

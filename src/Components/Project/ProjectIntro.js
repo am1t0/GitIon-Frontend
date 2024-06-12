@@ -22,9 +22,6 @@ export default function ProjectIntro() {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  // projects data from projects slice
-  const projects = useSelector((store) => store.project);
-
   // user details
   const user = useSelector((store) => store.user.data);
 
@@ -164,52 +161,61 @@ const sendInvitation = async (username) => {
 
     if (response.ok) {
       console.log('Invitation sent successfully:', response);
-      const data = await response.json();
-      console.log('data on Adding collaborator is ',data);
-      console.log('now adding it temporarily in team');
-     
-      handleAddMember(username); // Call handleAddMember if the invitation is successful
+      return true
+    
     } else {
       const errorData = await response.json();
       console.error('Error sending invitation:', errorData);
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.log('error occured ',error)
+    return false;
   }
 };
-  const handleAddMember = async (username) => {
-   
-    try {
-      if (!username) return alert("Username can't be empty");
+const handleAddMember = async (username) => {
+     
+  try {
+    if (!username) return alert("Username can't be empty");
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/add-members`, {
-        method: 'POST',
-        body: JSON.stringify({
-          username,
-          projectId
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAccessToken()}`
-        },
-      })
+    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/add-members`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        projectId
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getAccessToken()}`
+      },
+    })
 
-      if (!response.ok) {
-        console.error('Error:', response.statusText);
-        return;
-      }
+    if (response.ok) {
       const responseJson = await response.json();
       const addedMember = await responseJson.data;
 
-      setMembers(members => addMemberAtSecondPosition(addedMember, members));
+      console.log('added member successfully in our database',addedMember);
 
+      const result = await sendInvitation(username);
+
+      if(result){
+      setMembers(members => addMemberAtSecondPosition(addedMember, members));
+  
       // playing add sound on member successfully addition
       audioRef.current.play();
-
-    } catch (error) {
-      console.error('Error in showing members of teams:', error.message);
+      }
+      else{
+        console.log('Error occured while sending invitation');
+        console.log('database me se hta us member ko ab');
+      }
     }
+    else{
+      console.error('Error:', response.statusText);
+    }
+
+  } catch (error) {
+    console.error('Error in showing members of teams:', error.message);
   }
+}
 
   // Function to remove a collaborator
 const removeCollaborator = async (username) => {
@@ -324,8 +330,13 @@ const removeCollaborator = async (username) => {
                     </div>
                   </div>
 
-                  <SearchUser sendInvitation={sendInvitation} remove={removeCollaborator}/>
+                  {/* searching and adding option only to owner  */}
+                  {user._id === project.owner && 
+                    <>
+                    <SearchUser addInvite={handleAddMember} remove={removeCollaborator}/>
                   <audio ref={audioRef} src={membAdd} />
+                    </>
+                  }
 
                 </div>
 
