@@ -62,7 +62,7 @@ const LandingPage = () => {
           </div>
         </section>
         <section className='team-space'>
-          <h5>Team Space</h5>
+          <h5>Project Space</h5>
           <div className="items">
             <div className="teamsGoto">
               <div className="thd">

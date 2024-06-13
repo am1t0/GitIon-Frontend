@@ -44,12 +44,13 @@
 }
 
 #memb{
-    margin-top: 30px;
-    border: 1px solid rgb(59, 59, 59);
+    margin-top: 10px;
+    /* border: 1px solid rgb(59, 59, 59); */
     border-radius: 5px;
-    padding: 10px 0px;
-    height: 35rem;
-    overflow: visible;
+    padding: 10px 0px 10px 0px;
+    width: 45rem;
+    min-height: 30rem;
+    background: rgb(29, 29, 39);
 }
 #memb h5{
     text-align: center;
@@ -120,7 +121,7 @@
 }
 .moreMemb{
     /* outline: 1px solid; */
-    height: 16rem;
+    /* height: 16rem; */
     background: rgb(19, 19, 40);
     display: flex;
     align-items: center;
@@ -130,15 +131,31 @@
     color: gray;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+.headMembList{
+    /* outline: 1px solid; */
+    padding: 10px;
+}
+.headMembList h5{
+    margin: 0;
+}
+#teamMemb{
+    /* border: 1px solid red; */
+    min-height: 6rem;
+    overflow-y: auto;
+}
 #members{
-    padding: 1px 0px 1px 0px;
-    margin-top: 19px;
+    /* border: 1px solid; */
+    position: relative;
+    /* width: 38em; */
+    max-height: 27rem;
+    /* padding: 1px 0px 1px 0px; */
+    /* margin-top: 19px; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 #eachMemb{
-    position: relative;   /*for updating options positionning */
+    /* position: relative;   for updating options positionning */
     outline: 1px solid rgb(69, 69, 69);
     min-width: 38rem;
     margin: 15px 0px;
@@ -212,20 +229,22 @@
 
 /* updating and modifying etc. options  */
 .updMemb{
+    /* outline: 1px solid; */
     position: absolute;
     border-radius: 3px;
-    right: -43px;
-    top: 10px;
+    right:16px;
+    top: 0;
     padding: 2px;
     background: rgb(66, 65, 65);
     z-index: 1;
 }
 .updMemb p{
     /* outline: 1px solid; */
-    margin-bottom: 5px;
-    padding: 2px 7px;
+    margin-bottom: 4px;
+    padding: 2px 4px;
     width: 4rem;
-    font-size: 14px;
+    color: rgb(224, 224, 224);
+    font-size: 13px;
 }
 .updMemb p:hover{
    background: black;
@@ -235,7 +254,7 @@
     background-color: rgb(42, 42, 42);
 }
 .updMemb p a{
-    color: white;
+    color: rgb(224, 224, 224);
 }
 #admin{
     margin: 17px 30px;

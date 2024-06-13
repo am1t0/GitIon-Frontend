@@ -21,6 +21,8 @@ export default function Profile() {
 
   const [profile,setProfile] = useState({});  // state for storing fetched user's profile data
 
+  const [profileImg,setProfileImg] = useState(null);
+
   const handleProfileChange = async () => {
     setImgLoading(true);
     const selectedFile = profileRef.current.files[0];
@@ -79,8 +81,11 @@ export default function Profile() {
       }
      const res = await response.json();
 
+      setProfileImg(res.githubData.avatar_url)
+
      // update the state with the fetched user detail
      setProfile(res);
+
 
      // stoping the loader
      setDataLoading(false);
@@ -100,9 +105,9 @@ export default function Profile() {
         <div className="prf-img">
           <div id="bg">
           </div>
-          <section className={profile?.profile ? "img with-image" : "img without-image"}>
-            {profile?.profile ? (
-              !Imgloading ?<img src={profile?.profile} alt="" /> :<div class="spinner-border" id='img-load' role="status">
+          <section className={profileImg? "img with-image" : "img without-image"}>
+            {profileImg ? (
+              !Imgloading ?<img src={profileImg} alt="" /> :<div class="spinner-border" id='img-load' role="status">
               <span class="sr-only">Loading...</span>
             </div>
             ) : (

@@ -1,11 +1,11 @@
 .header{
     /* border: 2px solid; */
-    background-color: #0D1117;
+    background-color: #182437;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 8vh;
-    border-bottom:1px solid rgb(61, 61, 61);
+    height: 9vh;
+    /* border-bottom:1px solid rgb(61, 61, 61); */
 }
 
 .logo-hac{

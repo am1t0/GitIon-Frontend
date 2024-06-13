@@ -7,6 +7,8 @@ import membAdd from "../../Sound/membAdd.wav"
 import empty from '../../Images/empty.png'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import SearchUser from './SearchUser.js';
+import NoCollaborator from '../EmptyCases/NoCollaborator.js';
+import LessCollaborators from '../EmptyCases/LessCollaborators.js';
 
 
 export default function ProjectIntro() {
@@ -25,7 +27,7 @@ export default function ProjectIntro() {
   // user details
   const user = useSelector((store) => store.user.data);
 
-  const [addUser,setAddUser] = useState();
+  const [addUser, setAddUser] = useState();
   // state variable for the storing details of each member
   const [member, setMember] = useState([]);
   const [admin, setAdmin] = useState(null);
@@ -95,40 +97,42 @@ export default function ProjectIntro() {
 
   // for setting role of a member in a team 
   const handleRoleSet = async (memberId) => {
-    // try {
-    //   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/setRole`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${getAccessToken()}`
-    //     },
-    //     body: JSON.stringify({
-    //       teamId,
-    //       memberId,
-    //       role
-    //     }),
-    //   });
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/setRole`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+        body: JSON.stringify({
+          projectId,
+          memberId,
+          role
+        }),
+      });
 
-    //   if (!response.ok) {
-    //     const errorMessage = await response.text();
-    //     throw new Error(`Failed to set role: ${errorMessage}`);
-    //   }
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Failed to set role: ${errorMessage}`);
+      }
 
-    //   const result = await response.json();
-    //   const roleGiven = result.data.role;
+      const result = await response.json();
+      const roleGiven = result.data.role;
 
-    //   setMembers(members => {
-    //     return members.map((member)=>{
-    //        if(member._id===memberId) 
-    //          return {...member,role:roleGiven}
-    //        else 
-    //          return member; 
-    //     })
-    //   })
-
-    // } catch (error) {
-    //   console.error('Error setting role:', error.message);
-    // }
+      setMembers(members => {
+        return members.map((member) => {
+          if (member._id === memberId)
+            return { ...member, role: roleGiven }
+          else
+            return member;
+        })
+      })
+    } catch (error) {
+      console.error('Error setting role:', error.message);
+    }
+    finally {
+      setRoleShow(false)
+    }
   };
 
   // showing text of cancelling and setting role based on what member selected for setting
@@ -141,135 +145,137 @@ export default function ProjectIntro() {
     return [members[0], addedMember, ...members.slice(1)];
   };
 
-// Function to send an invitation
-const owner = localStorage.getItem('owner')
-const repo = localStorage.getItem('repoName')
-const token = localStorage.getItem('leaderToken')
+  // Function to send an invitation
+  const owner = localStorage.getItem('owner')
+  const repo = localStorage.getItem('repoName')
+  const token = localStorage.getItem('leaderToken')
 
-const sendInvitation = async (username) => {
-  console.log('inviation dene ki taiyarriii..')
-  const url = `https://api.github.com/repos/${owner}/${repo}/collaborators/${username}`;
+  const sendInvitation = async (username) => {
+    console.log('inviation dene ki taiyarriii..')
+    const url = `https://api.github.com/repos/${owner}/${repo}/collaborators/${username}`;
 
-  try {
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+      });
 
-    if (response.ok) {
-      console.log('Invitation sent successfully:', response);
-      return true
-    
-    } else {
-      const errorData = await response.json();
-      console.error('Error sending invitation:', errorData);
-    }
-  } catch (error) {
-    console.log('error occured ',error)
-    return false;
-  }
-};
-const handleAddMember = async (username) => {
-     
-  try {
-    if (!username) return alert("Username can't be empty");
+      if (response.ok) {
+        console.log('Invitation sent successfully:', response);
+        return true
 
-    const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/add-members`, {
-      method: 'POST',
-      body: JSON.stringify({
-        username,
-        projectId
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getAccessToken()}`
-      },
-    })
-
-    if (response.ok) {
-      const responseJson = await response.json();
-      const addedMember = await responseJson.data;
-
-      console.log('added member successfully in our database',addedMember);
-
-      const result = await sendInvitation(username);
-
-      if(result){
-      setMembers(members => addMemberAtSecondPosition(addedMember, members));
-  
-      // playing add sound on member successfully addition
-      audioRef.current.play();
+      } else {
+        const errorData = await response.json();
+        console.error('Error sending invitation:', errorData);
       }
-      else{
-        console.log('Error occured while sending invitation');
-        console.log('database me se hta us member ko ab');
-      }
+    } catch (error) {
+      console.log('error occured ', error)
+      return false;
     }
-    else{
-      console.error('Error:', response.statusText);
-    }
+  };
+  const handleAddMember = async (username) => {
 
-  } catch (error) {
-    console.error('Error in showing members of teams:', error.message);
+    try {
+      if (!username) return alert("Username can't be empty");
+
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/add-members`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          projectId
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+      })
+
+      if (response.ok) {
+        const responseJson = await response.json();
+        const addedMember = await responseJson.data;
+
+        console.log('added member successfully in our database', addedMember);
+
+        const result = await sendInvitation(username);
+
+        if (result) {
+          setMembers(members => addMemberAtSecondPosition(addedMember, members));
+
+          // playing add sound on member successfully addition
+          audioRef.current.play();
+        }
+        else {
+          console.log('Error occured while sending invitation');
+          console.log('database me se hta us member ko ab');
+        }
+      }
+      else {
+        console.error('Error:', response.statusText);
+      }
+
+    } catch (error) {
+      console.error('Error in showing members of teams:', error.message);
+    }
   }
-}
+
 
   // Function to remove a collaborator
-const removeCollaborator = async (username) => {
-  const url = `https://api.github.com/repos/${owner}/${repo}/collaborators/${username}`;
+  const removeCollaborator = async (username, memberId) => {
+    const url = `https://api.github.com/repos/${owner}/${repo}/collaborators/${username}`;
 
-  try {
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `token ${token}`,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        console.log(`Collaborator ${username} removed successfully.`);
+        console.log('now removing from our project')
+        await handleRemoveMember(memberId)
+      } else {
+        const errorData = await response.json().catch(() => null); // Parse JSON if possible
+        console.error('Error removing collaborator:', errorData || response.statusText);
       }
-    });
-
-    if (response.ok) {
-      console.log(`Collaborator ${username} removed successfully.`);
-    } else {
-      const errorData = await response.json().catch(() => null); // Parse JSON if possible
-      console.error('Error removing collaborator:', errorData || response.statusText);
+    } catch (error) {
+      console.error('Error:', error);
     }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
-
+  };
 
   const handleRemoveMember = async (memberId) => {
-    //  try {
-    //    const response  = await fetch(`${process.env.REACT_APP_API_BASE_URL}/teams/remove-members`,{
-    //     method: 'POST',
-    //     body:JSON.stringify({
-    //       memberId : memberId,
-    //       teamId: team._id
-    //     }),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${getAccessToken()}`
-    //     },
-    //   })
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/projects/remove-member`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+          memberId,
+          projectId
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getAccessToken()}`
+        },
+      })
 
-    //   if (!response.ok) {
-    //     console.error('Error:', response.statusText);
-    //     return;
-    //   }
+      if (!response.ok) {
+        console.error('Error:', response.statusText);
+        return;
+      }
 
-    //   // filetering out removed member
-    //   setMembers((members)=>
-    //     members.filter((member)=> member._id!==memberId))
+      // filetering out removed member
+      setMembers((members) =>
+        members.filter((member) => member._id !== memberId))
 
-    //   console.log('member removed successfully!')
-    //  } catch (error) {
-    //   console.log("error in removing member : ",error)
-    //  }
+      console.log('member removed successfully!')
+    } catch (error) {
+      console.log("error in removing member : ", error)
+    }
   }
 
   function getUserColor(user) {
@@ -300,7 +306,6 @@ const removeCollaborator = async (username) => {
   const handleClickOutside = (event) => {
     if (optionsRef.current && !optionsRef.current.contains(event.target)) {
       setShow(null);
-      setRoleShow(null);
     }
   };
   // for closing the boxes if clicked outside of them
@@ -314,11 +319,12 @@ const removeCollaborator = async (username) => {
   return (
     <section className='team-intro'>
       {
-        project ?
+        project && members ?
           <div className="team">
             <div id="intro-memb">
               <div id="intro">
-                <h4 >Meet the team {projectName}!</h4>
+                <h4 >Welcome to {projectName}</h4>
+                <p>{project.description} Lorem ipsum dolor sit amet.</p>
                 {/* <h6>{team?.description}</h6> */}
               </div>
               <div id="memb">
@@ -331,18 +337,20 @@ const removeCollaborator = async (username) => {
                   </div>
 
                   {/* searching and adding option only to owner  */}
-                  {user._id === project.owner && 
+                  {user._id === project.owner &&
                     <>
-                    <SearchUser addInvite={handleAddMember} remove={removeCollaborator}/>
-                  <audio ref={audioRef} src={membAdd} />
+                      <SearchUser addInvite={handleAddMember} remove={removeCollaborator} />
+                      <audio ref={audioRef} src={membAdd} />
                     </>
                   }
 
                 </div>
+                <div className="headMembList">
+                  <h5>Project Members</h5>
+                </div>
 
                 <div id="teamMemb">
                   {!isLoading ? <div id="members">
-                    <h5>Team Members</h5>
                     <div>
                       {
                         members?.map((member) => {
@@ -358,7 +366,7 @@ const removeCollaborator = async (username) => {
                             <div>
                               {
                                 // member has accepted invitation or not
-                                member.isAccepted||project.owner===member._id ? (
+                                member.isAccepted || project.owner === member._id ? (
                                   // showing input for role setting or the role
                                   (!member.role || roleShow === member._id) ? (
                                     <div id='roleInp'>
@@ -372,23 +380,13 @@ const removeCollaborator = async (username) => {
                                   ) : (
                                     <p className='role'>{member.role}</p>
                                   )
-                                ) : (
-                                  member._id === user._id ? (
-                                    <div className="invitation">
-                                      <button className='btn btn-success'>Accept</button>
-                                      <button className='btn btn-warning'>Decline</button>
-                                    </div>
-                                  )
-                                    : (
-                                      <h4>pending..</h4>
-                                    )
-                                )
+                                ) : <h6>pending request</h6>
                               }
                             </div>
 
                             {
                               /* dots for modification of members */
-                             ( member.isAccepted||project.owner===member._id ) && (
+                              (member.isAccepted || project.owner === member._id) && (
                                 <div className="membMnp">
                                   <i className="fa-solid fa-ellipsis" onClick={() => handleShow(member._id)}></i>
                                   {
@@ -403,7 +401,7 @@ const removeCollaborator = async (username) => {
                                           project.owner === user._id && (
                                             <>
                                               {/* removing member from team */}
-                                              <p onClick={() => handleRemoveMember(member._id)}>Remove</p>
+                                              <p onClick={() => removeCollaborator(member.username, member._id)}>Remove</p>
                                               {/* whether to set or cancel the role setting */}
                                               <p onClick={() => handleChangeRole(member._id)}>{setOrCancelRole(member._id)}</p>
                                             </>
@@ -417,17 +415,24 @@ const removeCollaborator = async (username) => {
                             }
 
                           </div>
-
                         })
                       }
-                      <section className="moreMemb">
-                        <h5>Add members</h5>
-                      </section>
                     </div>
                   </div> : <div className='loading'><div class="spinner-border text-light" role="status">
                     <span class="sr-only">Loading...</span>
                   </div></div>}
                 </div>
+                 
+             {
+              members?.length===1 &&  <NoCollaborator/>
+             } 
+             {
+              (members?.length<=4 && members?.length>1) && <LessCollaborators/>
+             }  
+
+              </div>
+
+              <div>
               </div>
             </div>
 
